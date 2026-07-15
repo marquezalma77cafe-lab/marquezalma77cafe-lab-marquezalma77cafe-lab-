@@ -448,9 +448,21 @@ footer{background:#071F14;color:rgba(255,255,255,.75);padding:5rem 0 2rem}
       <button class="pestana" data-panel="especialidades">Especialidades</button>
       <button class="pestana" data-panel="doctorado">Doctorado</button>
     </div>
-    <div class="panel-programas visible" id="maestrias"></div>
-    <div class="panel-programas" id="especialidades"></div>
-    <div class="panel-programas" id="doctorado"></div>
+    <div class="panel-programas visible" id="maestrias">
+      <button class="fila-programa revelar" data-programa="mgp"><span class="indice">01</span><h3>Maestría en Gestión Pública</h3><span class="detalle">24 meses · Semipresencial</span><span class="flechita">↗</span></button>
+      <button class="fila-programa revelar" data-programa="mpp"><span class="indice">02</span><h3>Maestría en Políticas Públicas</h3><span class="detalle">24 meses · En línea</span><span class="flechita">↗</span></button>
+      <button class="fila-programa revelar" data-programa="mfp"><span class="indice">03</span><h3>Maestría en Finanzas y Hacienda Pública</h3><span class="detalle">24 meses · Semipresencial</span><span class="flechita">↗</span></button>
+      <button class="fila-programa revelar" data-programa="madg"><span class="indice">04</span><h3>Maestría en Alta Dirección de Gobierno</h3><span class="detalle">20 meses · Ejecutiva</span><span class="flechita">↗</span></button>
+    </div>
+    <div class="panel-programas" id="especialidades">
+      <button class="fila-programa revelar" data-programa="ece"><span class="indice">01</span><h3>Contrataciones del Estado</h3><span class="detalle">9 meses · En línea</span><span class="flechita">↗</span></button>
+      <button class="fila-programa revelar" data-programa="egm"><span class="indice">02</span><h3>Gestión Municipal y Desarrollo Local</h3><span class="detalle">9 meses · Semipresencial</span><span class="flechita">↗</span></button>
+      <button class="fila-programa revelar" data-programa="eta"><span class="indice">03</span><h3>Transparencia y Anticorrupción</h3><span class="detalle">8 meses · En línea</span><span class="flechita">↗</span></button>
+      <button class="fila-programa revelar" data-programa="egd"><span class="indice">04</span><h3>Gobierno Digital e Innovación Pública</h3><span class="detalle">8 meses · En línea · Nuevo</span><span class="flechita">↗</span></button>
+    </div>
+    <div class="panel-programas" id="doctorado">
+      <button class="fila-programa revelar" data-programa="dgp"><span class="indice">01</span><h3>Doctorado en Gestión Pública y Gobernanza</h3><span class="detalle">36 meses · Semipresencial</span><span class="flechita">↗</span></button>
+    </div>
   </div>
 </section>
 
@@ -467,7 +479,40 @@ footer{background:#071F14;color:rgba(255,255,255,.75);padding:5rem 0 2rem}
         <button class="control" id="sigDocente" aria-label="Siguiente">→</button>
       </div>
     </div>
-    <div class="carril" id="carrilClaustro"></div>
+    <div class="carril" id="carrilClaustro">
+      <article class="docente revelar" data-docente="0">
+        <div class="docente-retrato"><div class="lienzo" style="background:linear-gradient(150deg,#0C4A30,#14603F)"></div><span class="iniciales">AR</span></div>
+        <div class="docente-cuerpo"><h3 class="serif">Dra. Alejandra Ríos</h3><div class="cargo">Directora Académica</div><p>Políticas públicas y evaluación</p></div>
+      </article>
+      <article class="docente revelar" data-docente="1">
+        <div class="docente-retrato"><div class="lienzo" style="background:linear-gradient(150deg,#9C7C35,#C6A15B)"></div><span class="iniciales">JM</span></div>
+        <div class="docente-cuerpo"><h3 class="serif">Dr. Javier Morales</h3><div class="cargo">Coordinador del Doctorado</div><p>Teoría del Estado y gobernanza</p></div>
+      </article>
+      <article class="docente revelar" data-docente="2">
+        <div class="docente-retrato"><div class="lienzo" style="background:linear-gradient(150deg,#072F1E,#0C4A30)"></div><span class="iniciales">SC</span></div>
+        <div class="docente-cuerpo"><h3 class="serif">Dra. Sofía Castellanos</h3><div class="cargo">Profesora investigadora</div><p>Finanzas públicas</p></div>
+      </article>
+      <article class="docente revelar" data-docente="3">
+        <div class="docente-retrato"><div class="lienzo" style="background:linear-gradient(150deg,#14603F,#C6A15B)"></div><span class="iniciales">RH</span></div>
+        <div class="docente-cuerpo"><h3 class="serif">Dr. Rodrigo Herrera</h3><div class="cargo">Profesor investigador</div><p>Derecho administrativo</p></div>
+      </article>
+      <article class="docente revelar" data-docente="4">
+        <div class="docente-retrato"><div class="lienzo" style="background:linear-gradient(150deg,#0C4A30,#14603F)"></div><span class="iniciales">LV</span></div>
+        <div class="docente-cuerpo"><h3 class="serif">Dra. Lucía Valdés</h3><div class="cargo">Coordinadora de Gobierno Digital</div><p>Innovación y gobierno digital</p></div>
+      </article>
+      <article class="docente revelar" data-docente="5">
+        <div class="docente-retrato"><div class="lienzo" style="background:linear-gradient(150deg,#9C7C35,#C6A15B)"></div><span class="iniciales">MG</span></div>
+        <div class="docente-cuerpo"><h3 class="serif">Dr. Manuel Gutiérrez</h3><div class="cargo">Profesor investigador</div><p>Gestión municipal</p></div>
+      </article>
+      <article class="docente revelar" data-docente="6">
+        <div class="docente-retrato"><div class="lienzo" style="background:linear-gradient(150deg,#072F1E,#0C4A30)"></div><span class="iniciales">PT</span></div>
+        <div class="docente-cuerpo"><h3 class="serif">Dra. Patricia Torres</h3><div class="cargo">Profesora investigadora</div><p>Integridad y anticorrupción</p></div>
+      </article>
+      <article class="docente revelar" data-docente="7">
+        <div class="docente-retrato"><div class="lienzo" style="background:linear-gradient(150deg,#14603F,#C6A15B)"></div><span class="iniciales">ES</span></div>
+        <div class="docente-cuerpo"><h3 class="serif">Dr. Ernesto Salinas</h3><div class="cargo">Profesor investigador</div><p>Liderazgo y alta dirección</p></div>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -487,7 +532,50 @@ footer{background:#071F14;color:rgba(255,255,255,.75);padding:5rem 0 2rem}
       <button class="filtro" data-cat="digital">Gobierno digital</button>
       <button class="filtro" data-cat="integridad">Integridad</button>
     </div>
-    <div class="blog-grid" id="blogGrid"></div>
+    <div class="blog-grid" id="blogGrid">
+      <article class="articulo" data-blog="0" data-cat="gestion">
+        <div class="articulo-imagen"><div class="lienzo" data-arte="0" style="background:linear-gradient(135deg,#0C4A30,#14603F)"></div></div>
+        <time>10 de julio de 2026</time>
+        <span class="cat">Gestión pública</span>
+        <h3>Gestión por resultados: del discurso a la práctica</h3>
+        <p>Cinco condiciones que separan a los gobiernos que miden de los que realmente mejoran, y cómo construirlas paso a paso.</p>
+      </article>
+      <article class="articulo" data-blog="1" data-cat="digital">
+        <div class="articulo-imagen"><div class="lienzo" data-arte="1" style="background:linear-gradient(135deg,#14603F,#0C4A30)"></div></div>
+        <time>3 de julio de 2026</time>
+        <span class="cat">Gobierno digital</span>
+        <h3>Inteligencia artificial en el Estado: promesas y límites</h3>
+        <p>Qué puede (y qué no debería) automatizar un gobierno. Un marco práctico de adopción responsable de IA en servicios públicos.</p>
+      </article>
+      <article class="articulo" data-blog="2" data-cat="integridad">
+        <div class="articulo-imagen"><div class="lienzo" data-arte="2" style="background:linear-gradient(135deg,#0A3B26,#C6A15B)"></div></div>
+        <time>26 de junio de 2026</time>
+        <span class="cat">Integridad</span>
+        <h3>Compras públicas transparentes: el estándar que sí funciona</h3>
+        <p>Lecciones de los países que redujeron la corrupción en contrataciones con datos abiertos y vigilancia ciudadana.</p>
+      </article>
+      <article class="articulo" data-blog="3" data-cat="politicas">
+        <div class="articulo-imagen"><div class="lienzo" data-arte="3" style="background:linear-gradient(135deg,#9C7C35,#0C4A30)"></div></div>
+        <time>19 de junio de 2026</time>
+        <span class="cat">Políticas públicas</span>
+        <h3>Evaluar programas sociales: lo que la evidencia nos enseña</h3>
+        <p>Por qué la evaluación de impacto debe planearse desde el diseño y no al final, con tres casos latinoamericanos.</p>
+      </article>
+      <article class="articulo" data-blog="4" data-cat="gestion">
+        <div class="articulo-imagen"><div class="lienzo" data-arte="4" style="background:linear-gradient(135deg,#0C4A30,#C6A15B)"></div></div>
+        <time>12 de junio de 2026</time>
+        <span class="cat">Gestión pública</span>
+        <h3>El servicio profesional de carrera que necesitamos</h3>
+        <p>Mérito, estabilidad y evaluación: los tres pilares de una burocracia profesional y las reformas pendientes.</p>
+      </article>
+      <article class="articulo" data-blog="5" data-cat="digital">
+        <div class="articulo-imagen"><div class="lienzo" data-arte="5" style="background:linear-gradient(135deg,#14603F,#9C7C35)"></div></div>
+        <time>5 de junio de 2026</time>
+        <span class="cat">Gobierno digital</span>
+        <h3>Trámites 100 % digitales: la ruta crítica municipal</h3>
+        <p>Guía práctica para digitalizar los diez trámites de mayor demanda en un gobierno local en menos de un año.</p>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -829,14 +917,8 @@ function modalPrograma(clave){
 }
 
 /* ── Filas de programas ── */
-const contadores={maestrias:0,especialidades:0,doctorado:0};
-Object.entries(programas).forEach(([clave,p])=>{
-  const n=++contadores[p.panel];
-  const fila=document.createElement("button");
-  fila.className="fila-programa revelar";
-  fila.innerHTML=`<span class="indice">${String(n).padStart(2,"0")}</span><h3>${p.nombre}</h3><span class="detalle">${p.detalle}</span><span class="flechita">↗</span>`;
-  fila.addEventListener("click",()=>modalPrograma(clave));
-  document.getElementById(p.panel).appendChild(fila);
+document.querySelectorAll(".fila-programa").forEach(f=>{
+  f.addEventListener("click",()=>modalPrograma(f.dataset.programa));
 });
 
 /* ── Pestañas ── */
@@ -849,21 +931,8 @@ document.querySelectorAll(".pestana").forEach(p=>p.addEventListener("click",()=>
 
 /* ── Claustro ── */
 const carril=document.getElementById("carrilClaustro");
-const tonos=[["#0C4A30","#14603F"],["#9C7C35","#C6A15B"],["#072F1E","#0C4A30"],["#14603F","#C6A15B"]];
-claustro.forEach(d=>{
-  const [t1,t2]=tonos[d.tono];
-  const el=document.createElement("article");
-  el.className="docente revelar";
-  el.innerHTML=`
-    <div class="docente-retrato">
-      <div class="lienzo" style="background:linear-gradient(150deg,${t1},${t2})"></div>
-      <span class="iniciales">${d.ini}</span>
-    </div>
-    <div class="docente-cuerpo">
-      <h3 class="serif">${d.nombre}</h3>
-      <div class="cargo">${d.cargo}</div>
-      <p>${d.area}</p>
-    </div>`;
+document.querySelectorAll(".docente").forEach(el=>{
+  const d=claustro[+el.dataset.docente];
   el.addEventListener("click",()=>abrirModal(`
     <span class="ceja">Claustro de maestros</span>
     <h3>${d.nombre}</h3>
@@ -872,7 +941,6 @@ claustro.forEach(d=>{
     <h4>Líneas de especialización</h4>
     <ul>${d.lineas.map(l=>`<li>${l}</li>`).join("")}</ul>
   `));
-  carril.appendChild(el);
 });
 document.getElementById("antDocente").addEventListener("click",()=>carril.scrollBy({left:-320,behavior:"smooth"}));
 document.getElementById("sigDocente").addEventListener("click",()=>carril.scrollBy({left:320,behavior:"smooth"}));
@@ -889,26 +957,16 @@ function modalArticulo(a){
     <a href="#admision" class="btn" onclick="cerrarModal()">Quiero saber más <span class="flecha">→</span></a>
   `);
 }
-function pintarBlog(cat){
-  blogGrid.innerHTML="";
-  articulos.filter(a=>cat==="todos"||a.cat===cat).forEach(a=>{
-    const el=document.createElement("article");
-    el.className="articulo";
-    el.innerHTML=`
-      <div class="articulo-imagen"><div class="lienzo" style='background:${arte(a.arte)} center/cover'></div></div>
-      <time>${a.fecha}</time>
-      <span class="cat">${a.catNombre}</span>
-      <h3>${a.titulo}</h3>
-      <p>${a.resumen}</p>`;
-    el.addEventListener("click",()=>modalArticulo(a));
-    blogGrid.appendChild(el);
-  });
-}
-pintarBlog("todos");
+document.querySelectorAll(".articulo[data-blog]").forEach(el=>{
+  el.addEventListener("click",()=>modalArticulo(articulos[+el.dataset.blog]));
+});
 document.querySelectorAll(".filtro").forEach(f=>f.addEventListener("click",()=>{
   document.querySelectorAll(".filtro").forEach(x=>x.classList.remove("activo"));
   f.classList.add("activo");
-  pintarBlog(f.dataset.cat);
+  const cat=f.dataset.cat;
+  document.querySelectorAll(".articulo[data-blog]").forEach(a=>{
+    a.style.display=(cat==="todos"||a.dataset.cat===cat)?"":"none";
+  });
 }));
 /* Historias destacadas → modal del artículo correspondiente */
 document.querySelectorAll("[data-articulo]").forEach(el=>{
