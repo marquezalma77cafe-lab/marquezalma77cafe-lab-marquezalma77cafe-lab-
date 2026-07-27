@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Analizador de URLs de Redes Sociales</title>
+  <meta name="description" content="Analiza URLs de redes sociales: plataforma, tipo de contenido, usuario e ID. Limpia parámetros de rastreo y genera enlaces canónicos y de embed." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <span class="logo">🔗</span>
+      <div>
+        <h1>Analizador de URLs</h1>
+        <p class="tagline">Redes sociales · limpieza y diagnóstico de enlaces</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel input-panel">
+      <label for="url-input" class="field-label">Pega una URL de red social</label>
+      <div class="input-row">
+        <input
+          id="url-input"
+          type="text"
+          inputmode="url"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="https://www.instagram.com/reel/Cxyz.../?igshid=..."
+        />
+        <button id="analyze-btn" type="button">Analizar</button>
+      </div>
+      <div class="examples">
+        <span>Ejemplos:</span>
+        <button class="chip" data-url="https://www.instagram.com/reel/Cx1y2z3aBcD/?igshid=abc123">Instagram Reel</button>
+        <button class="chip" data-url="https://www.tiktok.com/@alma/video/7412345678901234567?is_from_webapp=1">TikTok</button>
+        <button class="chip" data-url="https://youtu.be/dQw4w9WgXcQ?feature=share">YouTube</button>
+        <button class="chip" data-url="https://x.com/nasa/status/1751809439580061850?s=20">X / Twitter</button>
+      </div>
+      <p id="error-msg" class="error-msg" hidden></p>
+    </section>
+
+    <section id="results" class="results" hidden>
+      <div class="panel summary-panel">
+        <div class="platform-badge" id="platform-badge">
+          <span class="platform-icon" id="platform-icon">🌐</span>
+          <div>
+            <div class="platform-name" id="platform-name">—</div>
+            <div class="content-type" id="content-type">—</div>
+          </div>
+        </div>
+        <div class="detail-grid" id="detail-grid"></div>
+      </div>
+
+      <div class="panel" id="clean-panel">
+        <h2>URL limpia (canónica)</h2>
+        <div class="url-box">
+          <code id="clean-url">—</code>
+          <button class="copy-btn" data-copy="clean-url" type="button">Copiar</button>
+        </div>
+      </div>
+
+      <div class="panel" id="embed-panel" hidden>
+        <h2>URL de inserción (embed)</h2>
+        <div class="url-box">
+          <code id="embed-url">—</code>
+          <button class="copy-btn" data-copy="embed-url" type="button">Copiar</button>
+        </div>
+      </div>
+
+      <div class="panel" id="warnings-panel" hidden>
+        <h2>Avisos</h2>
+        <ul id="warnings-list"></ul>
+      </div>
+
+      <div class="panel" id="params-panel" hidden>
+        <h2>Parámetros de la URL</h2>
+        <table class="params-table">
+          <thead><tr><th>Clave</th><th>Valor</th><th>Rastreo</th></tr></thead>
+          <tbody id="params-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Análisis 100% local en tu navegador · sin llamadas externas · <a href="/api/health" target="_blank" rel="noopener">API</a></p>
+  </footer>
+
+  <script src="../src/analyzer.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "social-url-analyzer",
+  "version": "1.0.0",
+  "description": "Plataforma para analizar URLs de redes sociales: detecta plataforma, tipo de contenido, usuario e ID; limpia parámetros de rastreo y genera URLs canónicas y de embed.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/analyzer.test.js"
+  },
+  "keywords": [
+    "social",
+    "url",
+    "analyzer",
+    "instagram",
+    "tiktok",
+    "youtube"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
