@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Analiza enlaces de redes sociales: plataforma, tipo de contenido, usuario e ID. Limpia rastreadores y genera enlaces limpios y de inserción. 100% local." />
+<title>Analizador de enlaces de redes sociales</title>
+<style>
+  :root {
+    --bg: #f7f3f4;
+    --surface: #ffffff;
+    --surface-2: #f2ebee;
+    --border: #e7dde1;
+    --text: #1a141d;
+    --muted: #6d6470;
+    --accent: #e11d48;
+    --accent-2: #6d5cff;
+    --accent-ink: #ffffff;
+    --warn: #b45309;
+    --warn-bg: #fdf2e2;
+    --track: #c81e4e;
+    --code: #7a1130;
+    --shadow: 0 10px 30px rgba(40, 20, 40, 0.10);
+    --radius: 16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #120f15;
+      --surface: #1b171f;
+      --surface-2: #241e28;
+      --border: #322b37;
+      --text: #f1ecf1;
+      --muted: #a79fad;
+      --accent: #ff4d6d;
+      --accent-2: #9a8bff;
+      --accent-ink: #1a0810;
+      --warn: #f5b45a;
+      --warn-bg: rgba(245, 166, 35, 0.10);
+      --track: #ff7a99;
+      --code: #ffd9e2;
+      --shadow: 0 12px 34px rgba(0, 0, 0, 0.40);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f7f3f4; --surface: #ffffff; --surface-2: #f2ebee; --border: #e7dde1;
+    --text: #1a141d; --muted: #6d6470; --accent: #e11d48; --accent-2: #6d5cff;
+    --accent-ink: #ffffff; --warn: #b45309; --warn-bg: #fdf2e2; --track: #c81e4e;
+    --code: #7a1130; --shadow: 0 10px 30px rgba(40, 20, 40, 0.10);
+  }
+  :root[data-theme="dark"] {
+    --bg: #120f15; --surface: #1b171f; --surface-2: #241e28; --border: #322b37;
+    --text: #f1ecf1; --muted: #a79fad; --accent: #ff4d6d; --accent-2: #9a8bff;
+    --accent-ink: #1a0810; --warn: #f5b45a; --warn-bg: rgba(245,166,35,0.10);
+    --track: #ff7a99; --code: #ffd9e2; --shadow: 0 12px 34px rgba(0,0,0,0.40);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(900px 480px at 50% -8%, color-mix(in srgb, var(--accent) 12%, var(--bg)) 0%, var(--bg) 62%);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 34px 20px 60px; }
+
+  header.top { margin-bottom: 22px; }
+  .kicker {
+    font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; margin: 0 0 6px;
+  }
+  h1.title {
+    margin: 0; font-size: clamp(26px, 6vw, 36px); line-height: 1.08;
+    letter-spacing: -0.02em; font-weight: 800; text-wrap: balance;
+  }
+  .sub { margin: 8px 0 0; color: var(--muted); font-size: 15px; max-width: 52ch; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+
+  label.lbl { display: block; font-weight: 650; font-size: 14px; margin-bottom: 10px; }
+  .input-row { display: flex; gap: 10px; }
+  #url {
+    flex: 1; min-width: 0;
+    padding: 14px 15px; font-size: 15px;
+    color: var(--text); background: var(--surface-2);
+    border: 1px solid var(--border); border-radius: 12px; outline: none;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  #url:focus { border-color: var(--accent-2); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-2) 25%, transparent); }
+  button.go {
+    padding: 0 22px; border: none; border-radius: 12px; cursor: pointer;
+    font-size: 15px; font-weight: 750; color: var(--accent-ink);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    transition: transform .07s, filter .15s;
+    white-space: nowrap;
+  }
+  button.go:hover { filter: brightness(1.05); }
+  button.go:active { transform: scale(.97); }
+  button.go:focus-visible, .chip:focus-visible, .copy:focus-visible {
+    outline: 2px solid var(--accent-2); outline-offset: 2px;
+  }
+
+  .examples { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+  .examples .hint { font-size: 12.5px; color: var(--muted); margin-right: 2px; }
+  .chip {
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
+    padding: 6px 12px; border-radius: 999px; font-size: 13px; cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .chip:hover { border-color: var(--accent-2); }
+
+  .error {
+    margin: 0; padding: 12px 14px; border-radius: 12px; font-size: 14px;
+    color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  [hidden] { display: none !important; }
+
+  /* Summary */
+  .badge { display: flex; align-items: center; gap: 14px; }
+  .glyph {
+    width: 56px; height: 56px; flex: none; display: grid; place-items: center;
+    font-size: 28px; border-radius: 15px; background: var(--surface-2);
+    border: 1px solid var(--border);
+  }
+  .pname { font-size: 19px; font-weight: 750; letter-spacing: -0.01em; }
+  .ptype { color: var(--muted); font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .cell { background: var(--surface-2); border: 1px solid var(--border); border-radius: 11px; padding: 11px 13px; }
+  .cell .k { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .cell .v { margin-top: 3px; font-size: 15px; word-break: break-all; }
+
+  h2.h { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0 0 11px; }
+
+  .urlbox { display: flex; align-items: center; gap: 10px; background: var(--surface-2);
+    border: 1px solid var(--border); border-radius: 12px; padding: 11px 12px; }
+  .urlbox code {
+    flex: 1; min-width: 0; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px; word-break: break-all; color: var(--code);
+  }
+  .copy {
+    flex: none; border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    padding: 7px 12px; border-radius: 9px; cursor: pointer; font-size: 13px; font-weight: 600;
+    transition: border-color .15s;
+  }
+  .copy:hover { border-color: var(--accent-2); }
+
+  ul.warns { margin: 0; padding-left: 18px; }
+  ul.warns li { color: var(--warn); font-size: 14px; margin-bottom: 6px; }
+
+  table.params { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.params th, table.params td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); word-break: break-all; }
+  table.params th { color: var(--muted); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em; }
+  table.params tr.trk td { color: var(--track); }
+  table.params code { font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .tag-yes { color: var(--track); font-weight: 650; }
+
+  footer.foot { text-align: center; color: var(--muted); font-size: 12.5px; margin-top: 26px; }
+
+  @media (max-width: 540px) {
+    .input-row { flex-direction: column; }
+    button.go { padding: 13px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="kicker">Herramienta de creador</p>
+    <h1 class="title">Analizador de enlaces de redes sociales</h1>
+    <p class="sub">Pega cualquier enlace de Instagram, TikTok, YouTube, X y más. Detecta la plataforma, el tipo de contenido, el usuario y el ID, limpia los rastreadores y te da el enlace limpio y el de inserción.</p>
+  </header>
+
+  <div class="card">
+    <label class="lbl" for="url">Enlace a analizar</label>
+    <div class="input-row">
+      <input id="url" type="text" inputmode="url" autocomplete="off" spellcheck="false"
+        placeholder="https://www.instagram.com/reel/Cxyz.../?igshid=..." />
+      <button class="go" id="go" type="button">Analizar</button>
+    </div>
+    <div class="examples">
+      <span class="hint">Prueba:</span>
+      <button class="chip" data-url="https://www.instagram.com/reel/Cx1y2z3aBcD/?igshid=abc123">Instagram Reel</button>
+      <button class="chip" data-url="https://www.tiktok.com/@alma/video/7412345678901234567?is_from_webapp=1">TikTok</button>
+      <button class="chip" data-url="https://youtu.be/dQw4w9WgXcQ?feature=share">YouTube</button>
+      <button class="chip" data-url="https://x.com/nasa/status/1751809439580061850?s=20">X / Twitter</button>
+    </div>
+    <p class="error" id="err" hidden></p>
+  </div>
+
+  <div class="stack" id="results" hidden style="margin-top:16px;">
+    <div class="card stack">
+      <div class="badge">
+        <div class="glyph" id="glyph">🌐</div>
+        <div>
+          <div class="pname" id="pname">—</div>
+          <div class="ptype" id="ptype">—</div>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="h">Enlace limpio (sin rastreadores)</h2>
+      <div class="urlbox"><code id="clean">—</code><button class="copy" data-copy="clean" type="button">Copiar</button></div>
+    </div>
+
+    <div class="card" id="embedCard" hidden>
+      <h2 class="h">Enlace de inserción (embed)</h2>
+      <div class="urlbox"><code id="embed">—</code><button class="copy" data-copy="embed" type="button">Copiar</button></div>
+    </div>
+
+    <div class="card" id="warnCard" hidden>
+      <h2 class="h">Avisos</h2>
+      <ul class="warns" id="warns"></ul>
+    </div>
+
+    <div class="card" id="paramCard" hidden>
+      <h2 class="h">Parámetros del enlace</h2>
+      <div style="overflow-x:auto;">
+        <table class="params">
+          <thead><tr><th>Clave</th><th>Valor</th><th>Rastreo</th></tr></thead>
+          <tbody id="params"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot">Todo el análisis ocurre en tu navegador · no se envía ningún enlace a internet</footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var TRACKING_PARAMS = ["igshid","igsh","fbclid","gclid","dclid","msclkid","yclid",
+    "mc_cid","mc_eid","ref","ref_src","ref_url","referrer","s","spm","share_app_id",
+    "share_link_id","share_item_id","timestamp","sender_device","sender_web_id",
+    "social_sharing","source","feature","app","_r","_t","_d","is_from_webapp","web_id",
+    "trk","originalSubdomain","mibextid","rdid"];
+  var TRACKING_PREFIXES = ["utm_"];
+  var SHORTENERS = ["bit.ly","t.co","tinyurl.com","goo.gl","ow.ly","buff.ly","lnkd.in",
+    "rebrand.ly","cutt.ly","shorturl.at"];
+
+  var PLATFORMS = [
+    { id:"instagram", name:"Instagram", hosts:["instagram.com","instagr.am"], parse:pIG },
+    { id:"tiktok", name:"TikTok", hosts:["tiktok.com","vm.tiktok.com","vt.tiktok.com"], parse:pTT },
+    { id:"youtube", name:"YouTube", hosts:["youtube.com","youtu.be","m.youtube.com","music.youtube.com"], parse:pYT },
+    { id:"twitter", name:"X (Twitter)", hosts:["twitter.com","x.com","mobile.twitter.com"], parse:pTW },
+    { id:"facebook", name:"Facebook", hosts:["facebook.com","fb.com","fb.watch","m.facebook.com"], parse:pFB },
+    { id:"threads", name:"Threads", hosts:["threads.net","threads.com"], parse:pTH },
+    { id:"linkedin", name:"LinkedIn", hosts:["linkedin.com"], parse:pLI },
+    { id:"pinterest", name:"Pinterest", hosts:["pinterest.com","pin.it"], parse:pPI },
+    { id:"reddit", name:"Reddit", hosts:["reddit.com","redd.it"], parse:pRD },
+    { id:"twitch", name:"Twitch", hosts:["twitch.tv"], parse:pTC },
+    { id:"snapchat", name:"Snapchat", hosts:["snapchat.com"], parse:pSC }
+  ];
+
+  var ICONS = { instagram:"📸", tiktok:"🎵", youtube:"▶️", twitter:"🐦", facebook:"👍",
+    threads:"🧵", linkedin:"💼", pinterest:"📌", reddit:"👽", twitch:"🎮", snapchat:"👻",
+    shortener:"🔗", generic:"🌐" };
+
+  function dec(s){ try { return decodeURIComponent(s); } catch(e){ return s; } }
+  function seg(p){ return p.split("/").filter(Boolean).map(dec); }
+  function stripWww(h){ return h.replace(/^www\./i, ""); }
+  function isTrk(k){
+    if (TRACKING_PARAMS.indexOf(k) !== -1) return true;
+    for (var i=0;i<TRACKING_PREFIXES.length;i++){ if (k.toLowerCase().indexOf(TRACKING_PREFIXES[i])===0) return true; }
+    return false;
+  }
+
+  function pIG(c){ var s=c.seg; if(!s.length) return {t:"inicio"};
+    var f=s[0].toLowerCase();
+    if(f==="p"&&s[1]) return {t:"post",id:s[1],e:"https://www.instagram.com/p/"+s[1]+"/embed"};
+    if((f==="reel"||f==="reels")&&s[1]) return {t:"reel",id:s[1],e:"https://www.instagram.com/reel/"+s[1]+"/embed"};
+    if(f==="tv"&&s[1]) return {t:"igtv",id:s[1],e:"https://www.instagram.com/tv/"+s[1]+"/embed"};
+    if(f==="stories"&&s[1]) return {t:"historia",u:s[1],id:s[2]};
+    if(f==="explore"||f==="accounts"||f==="direct") return {t:"sistema"};
+    if(s[1]&&(s[1]==="reel"||s[1]==="p")&&s[2]) return {t:s[1]==="reel"?"reel":"post",u:s[0],id:s[2]};
+    return {t:"perfil",u:s[0]};
+  }
+  function pTT(c){ var s=c.seg,h=c.host;
+    if(h==="vm.tiktok.com"||h==="vt.tiktok.com") return {t:"enlace corto",id:s[0]};
+    if(!s.length) return {t:"inicio"};
+    if(s[0].charAt(0)==="@"){ var u=s[0].slice(1);
+      if(s[1]==="video"&&s[2]) return {t:"video",u:u,id:s[2],e:"https://www.tiktok.com/embed/v2/"+s[2]};
+      if(s[1]==="live") return {t:"live",u:u};
+      return {t:"perfil",u:u}; }
+    if(s[0]==="t"&&s[1]) return {t:"enlace corto",id:s[1]};
+    if(s[0]==="tag"&&s[1]) return {t:"hashtag",id:s[1]};
+    return {t:"desconocido"};
+  }
+  function pYT(c){ var s=c.seg,u=c.url,h=c.host;
+    if(h==="youtu.be"){ return s[0]?{t:"video",id:s[0],e:"https://www.youtube.com/embed/"+s[0]}:{t:"inicio"}; }
+    if(!s.length){ var v0=u.searchParams.get("v"); return v0?{t:"video",id:v0,e:"https://www.youtube.com/embed/"+v0}:{t:"inicio"}; }
+    var f=s[0].toLowerCase();
+    if(f==="watch"){ var v=u.searchParams.get("v"); return v?{t:"video",id:v,e:"https://www.youtube.com/embed/"+v}:{t:"video"}; }
+    if(f==="shorts"&&s[1]) return {t:"short",id:s[1],e:"https://www.youtube.com/embed/"+s[1]};
+    if(f==="embed"&&s[1]) return {t:"embed",id:s[1],e:"https://www.youtube.com/embed/"+s[1]};
+    if(f==="live"&&s[1]) return {t:"directo",id:s[1],e:"https://www.youtube.com/embed/"+s[1]};
+    if(f==="playlist"){ return {t:"playlist",id:u.searchParams.get("list")||undefined}; }
+    if(f.charAt(0)==="@") return {t:"canal",u:f.slice(1)};
+    if(f==="channel"&&s[1]) return {t:"canal",id:s[1]};
+    if(f==="c"||f==="user") return {t:"canal",u:s[1]};
+    return {t:"desconocido"};
+  }
+  function pTW(c){ var s=c.seg; if(!s.length) return {t:"inicio"};
+    var r=["home","explore","notifications","messages","search","settings","i","hashtag"];
+    if(r.indexOf(s[0].toLowerCase())!==-1) return {t:"sistema"};
+    if(s[1]==="status"&&s[2]) return {t:"tweet",u:s[0],id:s[2]};
+    return {t:"perfil",u:s[0]};
+  }
+  function pFB(c){ var s=c.seg,u=c.url,h=c.host;
+    if(h==="fb.watch") return {t:"video",id:s[0]};
+    if(!s.length) return {t:"inicio"};
+    var f=s[0].toLowerCase();
+    if(f==="watch") return {t:"video",id:u.searchParams.get("v")||undefined};
+    if(f==="reel"&&s[1]) return {t:"reel",id:s[1]};
+    if(f==="story.php"||f==="stories") return {t:"historia"};
+    if(f==="groups"&&s[1]) return {t:"grupo",id:s[1]};
+    if(f==="events"&&s[1]) return {t:"evento",id:s[1]};
+    if(f==="profile.php") return {t:"perfil",u:u.searchParams.get("id")||undefined};
+    if(s[1]==="posts"&&s[2]) return {t:"post",u:s[0],id:s[2]};
+    if(s[1]==="videos"&&s[2]) return {t:"video",u:s[0],id:s[2]};
+    return {t:"página",u:s[0]};
+  }
+  function pTH(c){ var s=c.seg; if(!s.length) return {t:"inicio"};
+    if(s[0].charAt(0)==="@"){ var u=s[0].slice(1);
+      if(s[1]==="post"&&s[2]) return {t:"post",u:u,id:s[2]}; return {t:"perfil",u:u}; }
+    return {t:"desconocido"};
+  }
+  function pLI(c){ var s=c.seg; if(!s.length) return {t:"inicio"};
+    var f=s[0].toLowerCase();
+    if(f==="in"&&s[1]) return {t:"perfil",u:s[1]};
+    if(f==="company"&&s[1]) return {t:"empresa",u:s[1]};
+    if(f==="posts"&&s[1]) return {t:"post",id:s[1]};
+    if(f==="feed"&&s[1]==="update") return {t:"post",id:s[2]};
+    if(f==="jobs") return {t:"empleo"};
+    return {t:"desconocido"};
+  }
+  function pPI(c){ var s=c.seg,h=c.host;
+    if(h==="pin.it") return {t:"enlace corto",id:s[0]};
+    if(!s.length) return {t:"inicio"};
+    if(s[0].toLowerCase()==="pin"&&s[1]) return {t:"pin",id:s[1]};
+    if(s[1]) return {t:"tablero",u:s[0],id:s[1]};
+    return {t:"perfil",u:s[0]};
+  }
+  function pRD(c){ var s=c.seg,h=c.host;
+    if(h==="redd.it") return {t:"enlace corto",id:s[0]};
+    if(!s.length) return {t:"inicio"};
+    var f=s[0].toLowerCase();
+    if(f==="r"&&s[1]){ if(s[2]==="comments"&&s[3]) return {t:"post",u:s[1],id:s[3]}; return {t:"subreddit",u:s[1]}; }
+    if(f==="user"||f==="u") return {t:"usuario",u:s[1]};
+    return {t:"desconocido"};
+  }
+  function pTC(c){ var s=c.seg; if(!s.length) return {t:"inicio"};
+    var f=s[0].toLowerCase();
+    if(f==="videos"&&s[1]) return {t:"vod",id:s[1]};
+    if(f==="directory") return {t:"sistema"};
+    if(s[1]==="clip"&&s[2]) return {t:"clip",u:s[0],id:s[2]};
+    return {t:"canal",u:s[0]};
+  }
+  function pSC(c){ var s=c.seg; if(!s.length) return {t:"inicio"};
+    if(s[0].toLowerCase()==="add"&&s[1]) return {t:"perfil",u:s[1]};
+    if(s[0].toLowerCase()==="t"&&s[1]) return {t:"enlace corto",id:s[1]};
+    return {t:"desconocido"};
+  }
+
+  function normalize(raw){
+    if(typeof raw!=="string") return "";
+    var s=raw.trim(); if(!s) return "";
+    s=s.replace(/^<|>$/g,"");
+    if(!/^https?:\/\//i.test(s)){ if(/\s/.test(s)) return s; s="https://"+s; }
+    return s;
+  }
+
+  function collectParams(url){
+    var out=[]; url.searchParams.forEach(function(v,k){ out.push({key:k,value:v,tracking:isTrk(k)}); }); return out;
+  }
+  function cleanUrl(url,host){
+    var c=new URL(url.toString()); c.hostname=host;
+    var keep=[]; c.searchParams.forEach(function(v,k){ if(!isTrk(k)) keep.push([k,v]); });
+    var keys=[]; c.searchParams.forEach(function(_,k){ keys.push(k); });
+    keys.forEach(function(k){ c.searchParams.delete(k); });
+    keep.forEach(function(p){ c.searchParams.append(p[0],p[1]); });
+    c.hash=""; return c.toString().replace(/\?$/,"");
+  }
+
+  function analyze(raw){
+    var norm=normalize(raw);
+    if(!norm) return {ok:false,error:"No has introducido ninguna URL."};
+    var url; try { url=new URL(norm); } catch(e){ return {ok:false,error:"La URL no tiene un formato válido."}; }
+    if(url.protocol!=="http:"&&url.protocol!=="https:") return {ok:false,error:"Solo se admiten enlaces http(s)."};
+    var host=stripWww(url.hostname.toLowerCase()); var warnings=[];
+    if(url.protocol==="http:") warnings.push("El enlace usa http sin cifrar; se recomienda https.");
+    if(SHORTENERS.indexOf(host)!==-1){
+      return {ok:true,platform:"shortener",platformName:"Enlace acortado",contentType:"redirección",
+        host:host,cleanUrl:cleanUrl(url,host),embedUrl:null,params:collectParams(url),trackingRemoved:[],
+        warnings:["Es un enlace acortado; el destino real no puede resolverse sin conexión."],username:null,contentId:null,path:url.pathname};
+    }
+    var plat=null;
+    for(var i=0;i<PLATFORMS.length;i++){ if(PLATFORMS[i].hosts.indexOf(host)!==-1){ plat=PLATFORMS[i]; break; } }
+    var s=seg(url.pathname); var d={t:"desconocido"};
+    if(plat){ try { d=plat.parse({seg:s,url:url,host:host})||d; } catch(e){ d={t:"desconocido"}; } }
+    else warnings.push("Dominio no reconocido como red social; análisis genérico.");
+    var params=collectParams(url); var trk=params.filter(function(p){return p.tracking;}).map(function(p){return p.key;});
+    if(trk.length) warnings.push("Parámetros de rastreo detectados: "+trk.join(", ")+".");
+    return {ok:true, platform:plat?plat.id:"generic", platformName:plat?plat.name:host,
+      contentType:d.t||"desconocido", username:d.u||null, contentId:d.id||null, host:host, path:url.pathname,
+      cleanUrl:cleanUrl(url,host), embedUrl:d.e||null, params:params, trackingRemoved:trk, warnings:warnings};
+  }
+
+  // ---- UI ----
+  var $=function(id){ return document.getElementById(id); };
+  var input=$("url"), err=$("err"), results=$("results");
+
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function cap(s){ return s? s.charAt(0).toUpperCase()+s.slice(1):s; }
+
+  function run(){
+    err.hidden=true;
+    var r=analyze(input.value);
+    if(!r.ok){ err.textContent=r.error; err.hidden=false; results.hidden=true; return; }
+    render(r);
+  }
+
+  function render(r){
+    results.hidden=false;
+    $("glyph").textContent=ICONS[r.platform]||"🌐";
+    $("pname").textContent=r.platformName;
+    $("ptype").textContent=cap(r.contentType||"—");
+
+    var g=$("grid"); g.innerHTML="";
+    addCell(g,"Dominio",r.host);
+    if(r.username) addCell(g,"Usuario","@"+String(r.username).replace(/^@/,""));
+    if(r.contentId) addCell(g,"ID de contenido",r.contentId);
+    if(r.path&&r.path!=="/") addCell(g,"Ruta",r.path);
+
+    $("clean").textContent=r.cleanUrl||input.value;
+
+    var ec=$("embedCard");
+    if(r.embedUrl){ $("embed").textContent=r.embedUrl; ec.hidden=false; } else ec.hidden=true;
+
+    var wc=$("warnCard"), wl=$("warns"); wl.innerHTML="";
+    if(r.warnings&&r.warnings.length){ r.warnings.forEach(function(w){ var li=document.createElement("li"); li.textContent=w; wl.appendChild(li); }); wc.hidden=false; }
+    else wc.hidden=true;
+
+    var pc=$("paramCard"), pb=$("params"); pb.innerHTML="";
+    if(r.params&&r.params.length){
+      r.params.forEach(function(p){
+        var tr=document.createElement("tr"); if(p.tracking) tr.className="trk";
+        tr.innerHTML="<td><code>"+esc(p.key)+"</code></td><td>"+esc(p.value)+"</td><td>"+(p.tracking?'<span class="tag-yes">🚫 sí</span>':"—")+"</td>";
+        pb.appendChild(tr);
+      });
+      pc.hidden=false;
+    } else pc.hidden=true;
+
+    results.scrollIntoView({behavior:"smooth",block:"nearest"});
+  }
+
+  function addCell(g,k,v){
+    var d=document.createElement("div"); d.className="cell";
+    var kk=document.createElement("div"); kk.className="k"; kk.textContent=k;
+    var vv=document.createElement("div"); vv.className="v"; vv.textContent=v;
+    d.appendChild(kk); d.appendChild(vv); g.appendChild(d);
+  }
+
+  $("go").addEventListener("click",run);
+  input.addEventListener("keydown",function(e){ if(e.key==="Enter") run(); });
+  [].forEach.call(document.querySelectorAll(".chip"),function(c){
+    c.addEventListener("click",function(){ input.value=c.getAttribute("data-url"); run(); });
+  });
+  [].forEach.call(document.querySelectorAll(".copy"),function(b){
+    b.addEventListener("click",function(){
+      var t=$(b.getAttribute("data-copy")); var txt=t?t.textContent:"";
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt).then(function(){
+          var p=b.textContent; b.textContent="¡Copiado!"; setTimeout(function(){ b.textContent=p; },1200);
+        }).catch(function(){});
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -47,6 +47,13 @@ Pega una URL y pulsa **Analizar**. Hay ejemplos de un clic para probar.
 > La interfaz también funciona abriendo `public/index.html` directamente en el
 > navegador (el motor de análisis es 100% cliente).
 
+### Archivo autónomo (sin instalar nada)
+
+`plataforma.html` es una versión de **un solo archivo** con todo incluido (estilos
+y lógica). Ábrelo directamente en el navegador con doble clic: no necesita servidor
+ni dependencias, y no envía ningún enlace a internet. Ideal para usarla al vuelo o
+compartirla.
+
 ### API
 
 ```
