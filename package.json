@@ -6,6 +6,8 @@
     "start": "remotion studio src/index.ts",
     "render": "remotion render src/index.ts TeacherPositiveMessage out/teacher-positive-message.mp4",
     "still": "remotion still src/index.ts TeacherPositiveMessage out/preview.png",
+    "render:aveo": "remotion render src/index.ts ChevroletAveoSaltillo out/chevrolet-aveo-saltillo.mp4",
+    "still:aveo": "remotion still src/index.ts ChevroletAveoSaltillo out/chevrolet-aveo-saltillo-preview.png",
     "upgrade": "remotion upgrade"
   },
   "dependencies": {
