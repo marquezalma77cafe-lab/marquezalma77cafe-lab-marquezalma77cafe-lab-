@@ -14,9 +14,19 @@
         <h1>📋 Lista de Asistencia</h1>
         <p class="subtitle">Pasa lista, lleva el control y exporta el reporte del día</p>
       </div>
-      <div class="header-date">
-        <label for="attendance-date">Fecha</label>
-        <input type="date" id="attendance-date">
+      <div class="header-controls">
+        <div class="header-date">
+          <label for="group-select">Grupo</label>
+          <div class="group-controls">
+            <select id="group-select"></select>
+            <button type="button" id="add-group-btn" class="btn btn-ghost" title="Nuevo grupo">+ Grupo</button>
+            <button type="button" id="delete-group-btn" class="btn btn-ghost" title="Eliminar grupo">🗑</button>
+          </div>
+        </div>
+        <div class="header-date">
+          <label for="attendance-date">Fecha</label>
+          <input type="date" id="attendance-date">
+        </div>
       </div>
     </header>
 
@@ -64,6 +74,11 @@
       <div class="import-panel-header">
         <h2>Revisa los nombres detectados</h2>
         <p id="import-panel-sub" class="import-panel-sub"></p>
+      </div>
+      <div class="import-group-field">
+        <label for="import-group-name">Agregar a grupo</label>
+        <input type="text" id="import-group-name" list="group-name-options" placeholder="Nombre del grupo">
+        <datalist id="group-name-options"></datalist>
       </div>
       <ul class="import-list" id="import-list"></ul>
       <div class="import-actions">

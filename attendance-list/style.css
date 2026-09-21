@@ -62,12 +62,55 @@ body {
   color: var(--text-muted);
 }
 
-.header-date input {
+.header-date input,
+.header-date select {
   padding: 8px 10px;
   border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 0.95rem;
   background: var(--surface);
+  color: var(--text);
+}
+
+.header-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.group-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.group-controls select {
+  min-width: 160px;
+}
+
+.group-controls .btn {
+  padding: 8px 10px;
+  font-size: 0.8rem;
+}
+
+.import-group-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+  max-width: 320px;
+}
+
+.import-group-field label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.import-group-field input {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.92rem;
 }
 
 .summary-bar {
