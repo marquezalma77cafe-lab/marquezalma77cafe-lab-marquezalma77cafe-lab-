@@ -16,6 +16,14 @@
   const resetDayBtn = document.getElementById("reset-day");
   const exportCsvBtn = document.getElementById("export-csv");
 
+  const importPdfBtn = document.getElementById("import-pdf-btn");
+  const pdfInput = document.getElementById("pdf-input");
+  const importPanel = document.getElementById("import-panel");
+  const importPanelSub = document.getElementById("import-panel-sub");
+  const importList = document.getElementById("import-list");
+  const importCancelBtn = document.getElementById("import-cancel");
+  const importConfirmBtn = document.getElementById("import-confirm");
+
   const summaryTotal = document.getElementById("summary-total");
   const summaryPresent = document.getElementById("summary-present");
   const summaryLate = document.getElementById("summary-late");
@@ -115,6 +123,133 @@
     URL.revokeObjectURL(url);
   };
 
+  const HEADER_WORD_PATTERN = /\b(lista|asistencia|grupo|grado|escuela|profesor|profesora|maestro|maestra|fecha|salón|salon|nombre|alumno|alumnos|matr[íi]cula|periodo|ciclo)\b/i;
+
+  const cleanDetectedLine = (raw) =>
+    raw
+      .replace(/^\s*\d+\s*[.)\-:]?\s*/, "") // leading numbering: "1.", "1)", "1-"
+      .replace(/^\s*[•\-*]\s*/, "") // leading bullet
+      .replace(/\s{2,}/g, " ")
+      .trim();
+
+  const looksLikeName = (line) => {
+    if (line.length < 3 || line.length > 60) return false;
+    const letters = line.replace(/[^\p{L}]/gu, "");
+    if (letters.length < 3) return false;
+    return true;
+  };
+
+  const extractLinesFromPdf = async (file) => {
+    if (!window.pdfjsLib) {
+      throw new Error("No se pudo cargar el lector de PDF (revisa tu conexión a internet) e inténtalo de nuevo.");
+    }
+    if (window.pdfjsLib.GlobalWorkerOptions && !window.pdfjsLib.GlobalWorkerOptions.workerSrc) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    }
+    const buffer = await file.arrayBuffer();
+    const pdf = await window.pdfjsLib.getDocument({ data: buffer }).promise;
+    const rawLines = [];
+    let current = "";
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum);
+      const content = await page.getTextContent();
+      content.items.forEach((item) => {
+        current += item.str;
+        if (item.hasEOL) {
+          rawLines.push(current);
+          current = "";
+        } else if (item.str) {
+          current += " ";
+        }
+      });
+      if (current.trim()) {
+        rawLines.push(current);
+        current = "";
+      }
+    }
+    return rawLines
+      .map(cleanDetectedLine)
+      .filter(looksLikeName);
+  };
+
+  const existingNames = () => new Set(students.map((s) => s.name.trim().toLowerCase()));
+
+  const openImportPanel = (lines) => {
+    importList.innerHTML = "";
+    const known = existingNames();
+
+    if (lines.length === 0) {
+      importPanelSub.textContent = "No se detectó texto reconocible en el PDF. Prueba con otro archivo o agrega a los alumnos manualmente.";
+      importConfirmBtn.disabled = true;
+    } else {
+      importPanelSub.textContent = `Se detectaron ${lines.length} línea(s). Desmarca lo que no sea un alumno y confirma.`;
+      importConfirmBtn.disabled = false;
+    }
+
+    lines.forEach((line, i) => {
+      const isDuplicate = known.has(line.toLowerCase());
+      const maybeHeader = HEADER_WORD_PATTERN.test(line);
+
+      const li = document.createElement("li");
+      li.className = `import-item${maybeHeader ? " maybe-header" : ""}${isDuplicate ? " duplicate" : ""}`;
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = `import-item-${i}`;
+      checkbox.checked = !maybeHeader && !isDuplicate;
+      checkbox.dataset.line = line;
+
+      const label = document.createElement("label");
+      label.htmlFor = checkbox.id;
+      label.textContent = line;
+      label.style.flex = "1";
+
+      li.appendChild(checkbox);
+      li.appendChild(label);
+
+      if (isDuplicate) {
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = "ya está en la lista";
+        li.appendChild(tag);
+      } else if (maybeHeader) {
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = "¿encabezado?";
+        li.appendChild(tag);
+      }
+
+      importList.appendChild(li);
+    });
+
+    importPanel.hidden = false;
+  };
+
+  const closeImportPanel = () => {
+    importPanel.hidden = true;
+    importList.innerHTML = "";
+    pdfInput.value = "";
+  };
+
+  const confirmImport = () => {
+    const checked = Array.from(importList.querySelectorAll('input[type="checkbox"]:checked'));
+    const known = existingNames();
+    let added = 0;
+    checked.forEach((checkbox) => {
+      const name = checkbox.dataset.line.trim();
+      if (!name || known.has(name.toLowerCase())) return;
+      students.push({ id: crypto.randomUUID(), name });
+      known.add(name.toLowerCase());
+      added++;
+    });
+    if (added > 0) {
+      persistStudents();
+      render();
+    }
+    closeImportPanel();
+  };
+
   const renderSummary = () => {
     const date = currentDate();
     const dayRecord = records[date] || {};
@@ -210,6 +345,24 @@
     if (confirm("¿Reiniciar la asistencia de este día?")) resetDay();
   });
   exportCsvBtn.addEventListener("click", exportCsv);
+
+  importPdfBtn.addEventListener("click", () => pdfInput.click());
+  pdfInput.addEventListener("change", async () => {
+    const file = pdfInput.files[0];
+    if (!file) return;
+    importPdfBtn.disabled = true;
+    try {
+      const lines = await extractLinesFromPdf(file);
+      openImportPanel(lines);
+    } catch (err) {
+      alert(err.message || "No se pudo leer el PDF. Intenta con otro archivo.");
+      pdfInput.value = "";
+    } finally {
+      importPdfBtn.disabled = false;
+    }
+  });
+  importCancelBtn.addEventListener("click", closeImportPanel);
+  importConfirmBtn.addEventListener("click", confirmImport);
 
   dateInput.value = todayIso();
   render();
