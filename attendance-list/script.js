@@ -174,7 +174,7 @@
   const slugify = (text) =>
     text
       .normalize("NFD")
-      .replace(/[̀-ͯ]/g, "")
+      .replace(/\p{Diacritic}/gu, "")
       .replace(/[^a-zA-Z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "")
       .toLowerCase() || "grupo";
