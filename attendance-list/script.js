@@ -16,6 +16,7 @@
   const markAllPresentBtn = document.getElementById("mark-all-present");
   const resetDayBtn = document.getElementById("reset-day");
   const exportCsvBtn = document.getElementById("export-csv");
+  const exportPdfBtn = document.getElementById("export-pdf");
 
   const groupSelect = document.getElementById("group-select");
   const addGroupBtn = document.getElementById("add-group-btn");
@@ -178,6 +179,100 @@
       .replace(/[^a-zA-Z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "")
       .toLowerCase() || "grupo";
+
+  // --- PDF export (printable roster) ---------------------------------------
+
+  const PDF_MARGIN = 40;
+  const PDF_ROW_HEIGHT = 22;
+  const PDF_STATUS_COLOR = { present: [34, 139, 34], late: [180, 120, 10], absent: [190, 60, 50] };
+
+  const drawPdfTableHeader = (doc, y, pageWidth) => {
+    doc.setFillColor(240, 240, 240);
+    doc.rect(PDF_MARGIN, y - 14, pageWidth - PDF_MARGIN * 2, 20, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(60, 60, 60);
+    doc.text("#", PDF_MARGIN + 6, y);
+    doc.text("Alumno", PDF_MARGIN + 40, y);
+    doc.text("Estado", PDF_MARGIN + 340, y);
+    doc.setFont("helvetica", "normal");
+    return y + 20;
+  };
+
+  const buildAttendancePdf = (group, date) => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: "pt", format: "letter" });
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.setTextColor(20, 20, 20);
+    doc.text("Lista de Asistencia", PDF_MARGIN, 50);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    doc.setTextColor(70, 70, 70);
+    doc.text(group.name, PDF_MARGIN, 68);
+    doc.text(`Fecha: ${date}`, PDF_MARGIN, 84);
+
+    const dayRecord = group.records[date] || {};
+    let present = 0, late = 0, absent = 0;
+    group.students.forEach((s) => {
+      const st = dayRecord[s.id];
+      if (st === "present") present++;
+      else if (st === "late") late++;
+      else if (st === "absent") absent++;
+    });
+    const total = group.students.length;
+    const rate = total === 0 ? 0 : Math.round(((present + late) / total) * 100);
+    doc.text(
+      `Alumnos: ${total}   Presentes: ${present}   Retardos: ${late}   Ausentes: ${absent}   Asistencia: ${rate}%`,
+      PDF_MARGIN,
+      100
+    );
+
+    let y = 130;
+    y = drawPdfTableHeader(doc, y, pageWidth);
+
+    doc.setFontSize(10);
+    group.students.forEach((student, i) => {
+      if (y > pageHeight - PDF_MARGIN) {
+        doc.addPage();
+        y = PDF_MARGIN + 20;
+        y = drawPdfTableHeader(doc, y, pageWidth);
+        doc.setFontSize(10);
+      }
+
+      doc.setTextColor(30, 30, 30);
+      doc.text(String(i + 1), PDF_MARGIN + 6, y);
+      doc.text(student.name, PDF_MARGIN + 40, y);
+
+      const status = getStatus(date, student.id);
+      const label = status ? STATUS_LABELS[status] : "Sin registrar";
+      const color = status ? PDF_STATUS_COLOR[status] : [140, 140, 140];
+      doc.setTextColor(color[0], color[1], color[2]);
+      doc.text(label, PDF_MARGIN + 340, y);
+
+      doc.setDrawColor(225, 225, 225);
+      doc.line(PDF_MARGIN, y + 8, pageWidth - PDF_MARGIN, y + 8);
+
+      y += PDF_ROW_HEIGHT;
+    });
+
+    return doc;
+  };
+
+  const exportPdf = () => {
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      alert("No se pudo cargar el generador de PDF (revisa tu conexión a internet) e inténtalo de nuevo.");
+      return;
+    }
+    const group = activeGroup();
+    const date = currentDate();
+    const doc = buildAttendancePdf(group, date);
+    doc.save(`asistencia_${slugify(group.name)}_${date}.pdf`);
+  };
 
   // --- PDF import ---------------------------------------------------------
 
@@ -459,6 +554,7 @@
     if (confirm("¿Reiniciar la asistencia de este día?")) resetDay();
   });
   exportCsvBtn.addEventListener("click", exportCsv);
+  exportPdfBtn.addEventListener("click", exportPdf);
 
   importPdfBtn.addEventListener("click", () => pdfInput.click());
   pdfInput.addEventListener("change", async () => {
@@ -479,5 +575,6 @@
   importConfirmBtn.addEventListener("click", confirmImport);
 
   dateInput.value = todayIso();
+  persistGroups();
   render();
 })();
