@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista de Asistencia Interactiva</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="header-title">
+        <h1>📋 Lista de Asistencia</h1>
+        <p class="subtitle">Pasa lista, lleva el control y exporta el reporte del día</p>
+      </div>
+      <div class="header-date">
+        <label for="attendance-date">Fecha</label>
+        <input type="date" id="attendance-date">
+      </div>
+    </header>
+
+    <section class="summary-bar" id="summary-bar">
+      <div class="summary-card total">
+        <span class="summary-value" id="summary-total">0</span>
+        <span class="summary-label">Alumnos</span>
+      </div>
+      <div class="summary-card present">
+        <span class="summary-value" id="summary-present">0</span>
+        <span class="summary-label">Presentes</span>
+      </div>
+      <div class="summary-card late">
+        <span class="summary-value" id="summary-late">0</span>
+        <span class="summary-label">Retardos</span>
+      </div>
+      <div class="summary-card absent">
+        <span class="summary-value" id="summary-absent">0</span>
+        <span class="summary-label">Ausentes</span>
+      </div>
+      <div class="summary-card rate">
+        <span class="summary-value" id="summary-rate">0%</span>
+        <span class="summary-label">Asistencia</span>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <form id="add-student-form" class="add-form">
+        <input type="text" id="student-name-input" placeholder="Nombre del alumno" autocomplete="off" required>
+        <button type="submit" class="btn btn-primary">➕ Agregar</button>
+      </form>
+
+      <input type="search" id="search-input" class="search-input" placeholder="🔍 Buscar alumno...">
+
+      <div class="bulk-actions">
+        <button id="mark-all-present" class="btn btn-ghost">Marcar todos presentes</button>
+        <button id="reset-day" class="btn btn-ghost">Reiniciar día</button>
+        <button id="export-csv" class="btn btn-ghost">⬇️ Exportar CSV</button>
+      </div>
+    </section>
+
+    <section class="table-wrap">
+      <table class="attendance-table">
+        <thead>
+          <tr>
+            <th class="col-index">#</th>
+            <th class="col-name">Alumno</th>
+            <th class="col-status">Estado</th>
+            <th class="col-actions"></th>
+          </tr>
+        </thead>
+        <tbody id="student-list"></tbody>
+      </table>
+      <p id="empty-state" class="empty-state">Aún no hay alumnos. Agrega el primero arriba 👆</p>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
