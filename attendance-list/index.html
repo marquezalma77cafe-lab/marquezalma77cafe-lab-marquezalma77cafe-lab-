@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista de Asistencia Interactiva</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="header-title">
+        <h1>📋 Lista de Asistencia</h1>
+        <p class="subtitle">Pasa lista, lleva el control y exporta el reporte del día</p>
+      </div>
+      <div class="header-controls">
+        <div class="header-date">
+          <label for="group-select">Grupo</label>
+          <div class="group-controls">
+            <select id="group-select"></select>
+            <button type="button" id="add-group-btn" class="btn btn-ghost" title="Nuevo grupo">+ Grupo</button>
+            <button type="button" id="delete-group-btn" class="btn btn-ghost" title="Eliminar grupo">🗑</button>
+          </div>
+        </div>
+        <div class="header-date">
+          <label for="attendance-date">Fecha</label>
+          <input type="date" id="attendance-date">
+        </div>
+      </div>
+    </header>
+
+    <section class="summary-bar" id="summary-bar">
+      <div class="summary-card total">
+        <span class="summary-value" id="summary-total">0</span>
+        <span class="summary-label">Alumnos</span>
+      </div>
+      <div class="summary-card present">
+        <span class="summary-value" id="summary-present">0</span>
+        <span class="summary-label">Presentes</span>
+      </div>
+      <div class="summary-card late">
+        <span class="summary-value" id="summary-late">0</span>
+        <span class="summary-label">Retardos</span>
+      </div>
+      <div class="summary-card absent">
+        <span class="summary-value" id="summary-absent">0</span>
+        <span class="summary-label">Ausentes</span>
+      </div>
+      <div class="summary-card rate">
+        <span class="summary-value" id="summary-rate">0%</span>
+        <span class="summary-label">Asistencia</span>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <form id="add-student-form" class="add-form">
+        <input type="text" id="student-name-input" placeholder="Nombre del alumno" autocomplete="off" required>
+        <button type="submit" class="btn btn-primary">➕ Agregar</button>
+      </form>
+
+      <input type="search" id="search-input" class="search-input" placeholder="🔍 Buscar alumno...">
+
+      <div class="bulk-actions">
+        <button id="import-pdf-btn" class="btn btn-ghost">📄 Importar lista (PDF)</button>
+        <input type="file" id="pdf-input" accept="application/pdf,.pdf" hidden>
+        <button id="mark-all-present" class="btn btn-ghost">Marcar todos presentes</button>
+        <button id="reset-day" class="btn btn-ghost">Reiniciar día</button>
+        <button id="undo-bulk" class="btn btn-ghost" disabled>↩️ Deshacer</button>
+        <button id="export-csv" class="btn btn-ghost">⬇️ Exportar CSV</button>
+        <button id="export-pdf" class="btn btn-ghost" title="Se abre el diálogo de impresión: elige &quot;Guardar como PDF&quot;">🧾 Descargar PDF</button>
+      </div>
+    </section>
+
+    <section class="import-panel" id="import-panel" hidden>
+      <div class="import-panel-header">
+        <h2>Revisa los nombres detectados</h2>
+        <p id="import-panel-sub" class="import-panel-sub"></p>
+      </div>
+      <div class="import-group-field">
+        <label for="import-group-name">Agregar a grupo</label>
+        <input type="text" id="import-group-name" list="group-name-options" placeholder="Nombre del grupo">
+        <datalist id="group-name-options"></datalist>
+      </div>
+      <ul class="import-list" id="import-list"></ul>
+      <div class="import-actions">
+        <button type="button" id="import-cancel" class="btn btn-ghost">Cancelar</button>
+        <button type="button" id="import-confirm" class="btn btn-primary">Agregar seleccionados</button>
+      </div>
+    </section>
+
+    <section class="table-wrap">
+      <table class="attendance-table">
+        <thead>
+          <tr>
+            <th class="col-index">#</th>
+            <th class="col-name">Alumno</th>
+            <th class="col-status">Estado</th>
+            <th class="col-actions"></th>
+          </tr>
+        </thead>
+        <tbody id="student-list"></tbody>
+      </table>
+      <p id="empty-state" class="empty-state">Aún no hay alumnos. Agrega el primero arriba 👆</p>
+    </section>
+  </div>
+
+  <section id="print-sheet" class="print-sheet">
+    <h1 id="print-title"></h1>
+    <p id="print-meta"></p>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Alumno</th><th>Estado</th></tr>
+      </thead>
+      <tbody id="print-body"></tbody>
+    </table>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
