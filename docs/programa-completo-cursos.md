@@ -1,5 +1,6 @@
 # Programa completo de formación policial en seguridad jurídica y derechos humanos
 
+**Institución responsable:** Facultad de Jurisprudencia, Universidad Autónoma de Coahuila (Coordinación de Posgrado)
 **Dirigido a:** policías estatales y municipales de Coahuila (programa piloto en Saltillo y su zona metropolitana)
 **Modalidad:** híbrida (parte virtual y parte presencial)
 **Duración total:** 278 horas en 17 cursos, organizados en 3 niveles
@@ -311,7 +312,9 @@
 
 - Constancia por curso y diploma por nivel acreditado.
 - Buscar el aval de la academia estatal de formación policial para que las horas cuenten como formación continua para el Certificado Único Policial.
-- Buscar el aval académico de una universidad o institución especializada (por ejemplo, la Academia Interamericana de Derechos Humanos de la UAdeC).
+- El aval académico lo otorga la **Facultad de Jurisprudencia de la UAdeC**, a través de su Coordinación de Posgrado, con el registro que corresponda ante las instancias de la universidad (educación continua o posgrado).
+- Cada nivel puede registrarse como **diplomado** con valor curricular, y los tres niveles juntos pueden ser la base de una futura **especialidad** en seguridad ciudadana y derechos humanos.
+- Para reforzar el respaldo institucional se pueden sumar convenios con la comisión estatal de derechos humanos, el Poder Judicial del Estado y la academia estatal de formación policial.
 
 ## 6. Instructores por curso
 
@@ -356,3 +359,22 @@
 ---
 
 > **Nota:** antes de impartir el programa hay que verificar la vigencia de las leyes y los protocolos citados, confirmar los nombres actuales de las dependencias y adaptar los contenidos al bando de policía y los reglamentos de cada municipio.
+
+## 9. Papel de la Facultad de Jurisprudencia y de su posgrado
+
+| Aporte de la Facultad | Cómo se aprovecha en el programa |
+|---|---|
+| **Aval académico** | Constancias y diplomas emitidos por la Facultad; registro de cada nivel como diplomado |
+| **Planta docente** | Profesores de derecho constitucional, penal, procesal penal, administrativo y derechos humanos como instructores principales |
+| **Estudiantes de posgrado** | Apoyo como asistentes de instrucción, tutores en la plataforma virtual y evaluadores en los tribunales simulados |
+| **Investigación** | Evaluación de impacto del programa como tema de tesis o de proyectos de investigación del posgrado |
+| **Sala de juicios orales** (si la Facultad cuenta con una) | Sede de los tribunales simulados y de las audiencias de control de detención |
+| **Vinculación** | Convenios con la Secretaría de Seguridad Pública del Estado, los ayuntamientos, el Poder Judicial y la comisión estatal de derechos humanos |
+
+**Aliados sugeridos** (sin depender de otras dependencias universitarias con las que no haya colaboración):
+- Comisión de los Derechos Humanos del Estado de Coahuila.
+- Poder Judicial del Estado (jueces de control y su área de capacitación judicial) y defensoría pública.
+- Fiscalía General del Estado y Comisión Estatal de Búsqueda.
+- Academia estatal de formación policial y Secretariado Ejecutivo del Sistema Estatal de Seguridad Pública.
+- Organismos nacionales e internacionales: CNDH, ONU-DH y Comité Internacional de la Cruz Roja (CICR) para uso de la fuerza.
+- Otras facultades de la UAdeC con las que sí haya colaboración, por ejemplo Psicología, para los cursos de intervención en crisis y salud mental.
