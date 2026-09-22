@@ -198,6 +198,14 @@ body {
   transform: scale(0.97);
 }
 
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btn:disabled:active {
+  transform: none;
+}
+
 .btn-primary {
   background: var(--primary);
   color: #fff;

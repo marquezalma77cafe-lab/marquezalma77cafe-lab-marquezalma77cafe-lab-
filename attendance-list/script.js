@@ -15,6 +15,7 @@
   const emptyState = document.getElementById("empty-state");
   const markAllPresentBtn = document.getElementById("mark-all-present");
   const resetDayBtn = document.getElementById("reset-day");
+  const undoBtn = document.getElementById("undo-bulk");
   const exportCsvBtn = document.getElementById("export-csv");
   const exportPdfBtn = document.getElementById("export-pdf");
 
@@ -134,9 +135,35 @@
     render();
   };
 
+  // One-level undo for the two bulk actions below, which overwrite a whole
+  // day's marks at once and are easy to trigger by mistake.
+  let lastBulkSnapshot = null;
+
+  const snapshotBeforeBulkChange = (group, date) => {
+    lastBulkSnapshot = {
+      groupId: group.id,
+      date,
+      records: JSON.parse(JSON.stringify(group.records[date] || {})),
+    };
+    undoBtn.disabled = false;
+  };
+
+  const undoLastBulkChange = () => {
+    if (!lastBulkSnapshot) return;
+    const group = groups.find((g) => g.id === lastBulkSnapshot.groupId);
+    if (group) {
+      group.records[lastBulkSnapshot.date] = lastBulkSnapshot.records;
+      persistGroups();
+      render();
+    }
+    lastBulkSnapshot = null;
+    undoBtn.disabled = true;
+  };
+
   const markAllPresent = () => {
     const group = activeGroup();
     const date = currentDate();
+    snapshotBeforeBulkChange(group, date);
     group.records[date] = group.records[date] || {};
     group.students.forEach((s) => {
       group.records[date][s.id] = "present";
@@ -147,7 +174,9 @@
 
   const resetDay = () => {
     const group = activeGroup();
-    delete group.records[currentDate()];
+    const date = currentDate();
+    snapshotBeforeBulkChange(group, date);
+    delete group.records[date];
     persistGroups();
     render();
   };
@@ -555,6 +584,7 @@
   });
   exportCsvBtn.addEventListener("click", exportCsv);
   exportPdfBtn.addEventListener("click", exportPdf);
+  undoBtn.addEventListener("click", undoLastBulkChange);
 
   importPdfBtn.addEventListener("click", () => pdfInput.click());
   pdfInput.addEventListener("change", async () => {
