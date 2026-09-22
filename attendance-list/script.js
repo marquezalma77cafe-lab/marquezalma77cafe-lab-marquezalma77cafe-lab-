@@ -209,98 +209,45 @@
       .replace(/^-+|-+$/g, "")
       .toLowerCase() || "grupo";
 
-  // --- PDF export (printable roster) ---------------------------------------
+  // --- PDF export (print to PDF) --------------------------------------------
+  // Uses the browser's own print dialog ("Guardar como PDF") instead of an
+  // external library, so it needs no download permission or internet access.
 
-  const PDF_MARGIN = 40;
-  const PDF_ROW_HEIGHT = 22;
-  const PDF_STATUS_COLOR = { present: [34, 139, 34], late: [180, 120, 10], absent: [190, 60, 50] };
-
-  const drawPdfTableHeader = (doc, y, pageWidth) => {
-    doc.setFillColor(240, 240, 240);
-    doc.rect(PDF_MARGIN, y - 14, pageWidth - PDF_MARGIN * 2, 20, "F");
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.setTextColor(60, 60, 60);
-    doc.text("#", PDF_MARGIN + 6, y);
-    doc.text("Alumno", PDF_MARGIN + 40, y);
-    doc.text("Estado", PDF_MARGIN + 340, y);
-    doc.setFont("helvetica", "normal");
-    return y + 20;
-  };
-
-  const buildAttendancePdf = (group, date) => {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ unit: "pt", format: "letter" });
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.setTextColor(20, 20, 20);
-    doc.text("Lista de Asistencia", PDF_MARGIN, 50);
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(11);
-    doc.setTextColor(70, 70, 70);
-    doc.text(group.name, PDF_MARGIN, 68);
-    doc.text(`Fecha: ${date}`, PDF_MARGIN, 84);
-
-    const dayRecord = group.records[date] || {};
-    let present = 0, late = 0, absent = 0;
-    group.students.forEach((s) => {
-      const st = dayRecord[s.id];
-      if (st === "present") present++;
-      else if (st === "late") late++;
-      else if (st === "absent") absent++;
-    });
-    const total = group.students.length;
-    const rate = total === 0 ? 0 : Math.round(((present + late) / total) * 100);
-    doc.text(
-      `Alumnos: ${total}   Presentes: ${present}   Retardos: ${late}   Ausentes: ${absent}   Asistencia: ${rate}%`,
-      PDF_MARGIN,
-      100
-    );
-
-    let y = 130;
-    y = drawPdfTableHeader(doc, y, pageWidth);
-
-    doc.setFontSize(10);
-    group.students.forEach((student, i) => {
-      if (y > pageHeight - PDF_MARGIN) {
-        doc.addPage();
-        y = PDF_MARGIN + 20;
-        y = drawPdfTableHeader(doc, y, pageWidth);
-        doc.setFontSize(10);
-      }
-
-      doc.setTextColor(30, 30, 30);
-      doc.text(String(i + 1), PDF_MARGIN + 6, y);
-      doc.text(student.name, PDF_MARGIN + 40, y);
-
-      const status = getStatus(date, student.id);
-      const label = status ? STATUS_LABELS[status] : "Sin registrar";
-      const color = status ? PDF_STATUS_COLOR[status] : [140, 140, 140];
-      doc.setTextColor(color[0], color[1], color[2]);
-      doc.text(label, PDF_MARGIN + 340, y);
-
-      doc.setDrawColor(225, 225, 225);
-      doc.line(PDF_MARGIN, y + 8, pageWidth - PDF_MARGIN, y + 8);
-
-      y += PDF_ROW_HEIGHT;
-    });
-
-    return doc;
-  };
+  const printTitle = document.getElementById("print-title");
+  const printMeta = document.getElementById("print-meta");
+  const printBody = document.getElementById("print-body");
 
   const exportPdf = () => {
-    if (!window.jspdf || !window.jspdf.jsPDF) {
-      alert("No se pudo cargar el generador de PDF (revisa tu conexión a internet) e inténtalo de nuevo.");
-      return;
-    }
     const group = activeGroup();
     const date = currentDate();
-    const doc = buildAttendancePdf(group, date);
-    doc.save(`asistencia_${slugify(group.name)}_${date}.pdf`);
+    const dayRecord = group.records[date] || {};
+
+    let present = 0, late = 0, absent = 0;
+    printBody.innerHTML = "";
+    group.students.forEach((student, i) => {
+      const status = dayRecord[student.id];
+      if (status === "present") present++;
+      else if (status === "late") late++;
+      else if (status === "absent") absent++;
+
+      const tr = document.createElement("tr");
+      const tdIndex = document.createElement("td");
+      tdIndex.textContent = i + 1;
+      const tdName = document.createElement("td");
+      tdName.textContent = student.name;
+      const tdStatus = document.createElement("td");
+      tdStatus.textContent = status ? STATUS_LABELS[status] : "Sin registrar";
+      tr.append(tdIndex, tdName, tdStatus);
+      printBody.appendChild(tr);
+    });
+
+    const total = group.students.length;
+    const rate = total === 0 ? 0 : Math.round(((present + late) / total) * 100);
+    printTitle.textContent = `Lista de Asistencia — ${group.name}`;
+    printMeta.textContent =
+      `Fecha: ${date}   Alumnos: ${total}   Presentes: ${present}   Retardos: ${late}   Ausentes: ${absent}   Asistencia: ${rate}%`;
+
+    window.print();
   };
 
   // --- PDF import ---------------------------------------------------------

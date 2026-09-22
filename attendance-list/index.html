@@ -6,7 +6,6 @@
 <title>Lista de Asistencia Interactiva</title>
 <link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 </head>
 <body>
   <div class="app">
@@ -69,7 +68,7 @@
         <button id="reset-day" class="btn btn-ghost">Reiniciar día</button>
         <button id="undo-bulk" class="btn btn-ghost" disabled>↩️ Deshacer</button>
         <button id="export-csv" class="btn btn-ghost">⬇️ Exportar CSV</button>
-        <button id="export-pdf" class="btn btn-ghost">🧾 Exportar PDF</button>
+        <button id="export-pdf" class="btn btn-ghost" title="Se abre el diálogo de impresión: elige &quot;Guardar como PDF&quot;">🧾 Descargar PDF</button>
       </div>
     </section>
 
@@ -105,6 +104,17 @@
       <p id="empty-state" class="empty-state">Aún no hay alumnos. Agrega el primero arriba 👆</p>
     </section>
   </div>
+
+  <section id="print-sheet" class="print-sheet">
+    <h1 id="print-title"></h1>
+    <p id="print-meta"></p>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Alumno</th><th>Estado</th></tr>
+      </thead>
+      <tbody id="print-body"></tbody>
+    </table>
+  </section>
 
   <script src="script.js"></script>
 </body>

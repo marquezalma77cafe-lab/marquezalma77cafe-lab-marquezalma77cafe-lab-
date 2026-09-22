@@ -518,3 +518,49 @@ body {
     padding: 8px 6px;
   }
 }
+
+/* Printable roster used by "Exportar PDF": hidden on screen, shown only
+   when printing (Ctrl/Cmd+P -> "Guardar como PDF"), so it never depends on
+   any download or external library. */
+.print-sheet {
+  display: none;
+}
+
+@media print {
+  body > .app {
+    display: none;
+  }
+
+  .print-sheet {
+    display: block;
+    color: #111;
+  }
+
+  .print-sheet h1 {
+    font-size: 1.3rem;
+    margin: 0 0 4px;
+  }
+
+  .print-sheet p {
+    margin: 0 0 16px;
+    color: #444;
+    font-size: 0.9rem;
+  }
+
+  .print-sheet table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .print-sheet th,
+  .print-sheet td {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid #ccc;
+    font-size: 0.85rem;
+  }
+
+  .print-sheet th {
+    border-bottom: 2px solid #333;
+  }
+}
