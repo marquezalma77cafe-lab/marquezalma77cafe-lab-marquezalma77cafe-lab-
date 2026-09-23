@@ -1,0 +1,913 @@
+<title>Plataforma SNP Posgrado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F2F5F1;--surface:#FFFFFF;--surface2:#E9EEE8;--line:#D3DBD3;--ink:#1A2622;--ink2:#46564F;--muted:#6B7C75;
+  --accent:#0E6655;--accent-ink:#FFFFFF;--accent-soft:#DAEDE6;
+  --ok:#2A7545;--ok-soft:#DDEFE2;--warn:#8F5B00;--warn-soft:#F5E9D0;--bad:#AD3629;--bad-soft:#F6DDD9;--none:#7A8883;--none-soft:#E6EAE7;
+  --shadow:0 1px 2px rgba(20,40,34,.06),0 8px 24px rgba(20,40,34,.08);
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;--bg:#0E1513;--surface:#151F1C;--surface2:#1C2825;--line:#2A3935;--ink:#E2ECE8;--ink2:#B0C1BA;--muted:#889A94;
+  --accent:#4DBF9F;--accent-ink:#0A1411;--accent-soft:#16382F;
+  --ok:#5CC27E;--ok-soft:#163021;--warn:#E3AA4A;--warn-soft:#382B13;--bad:#F07B6D;--bad-soft:#3B1D19;--none:#8D9C97;--none-soft:#222D2A;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;--bg:#0E1513;--surface:#151F1C;--surface2:#1C2825;--line:#2A3935;--ink:#E2ECE8;--ink2:#B0C1BA;--muted:#889A94;
+  --accent:#4DBF9F;--accent-ink:#0A1411;--accent-soft:#16382F;
+  --ok:#5CC27E;--ok-soft:#163021;--warn:#E3AA4A;--warn-soft:#382B13;--bad:#F07B6D;--bad-soft:#3B1D19;--none:#8D9C97;--none-soft:#222D2A;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.5}
+h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:1.75rem}h2{font-size:1.25rem}h3{font-size:1.02rem}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num,td.n,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+.app{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100%}
+.nav{background:var(--surface);border-right:1px solid var(--line);padding:20px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:env(safe-area-inset-top,0px);height:100vh;overflow-y:auto}
+.brand{padding:4px 10px 16px;display:flex;flex-direction:column;gap:2px}
+.brand b{font-family:var(--serif);font-size:1.1rem}
+.brand small{color:var(--muted);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase}
+.nav button.item{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;background:none;border:0;border-radius:8px;padding:8px 10px;cursor:pointer;color:var(--ink2)}
+.nav button.item:hover{background:var(--surface2);color:var(--ink)}
+.nav button.item.on{background:var(--accent-soft);color:var(--ink);font-weight:600}
+.nav .count{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+.nav .group{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:14px 10px 4px}
+.nav .foot{margin-top:auto;padding:14px 10px 0;display:flex;flex-direction:column;gap:8px}
+main{padding-block:28px 60px;padding-inline:32px;max-width:1180px;width:100%}
+.head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:20px}
+.head .sub{color:var(--ink2);max-width:68ch;margin-top:6px}
+.eyebrow{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:4px}
+.stack{display:flex;flex-direction:column;gap:20px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.grid2{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.panel > h2,.panel > h3{margin-bottom:10px}
+.muted{color:var(--muted)}.small{font-size:.85rem}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--ink2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.ghost{border-color:transparent;background:none;color:var(--ink2)}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.btn.sm{padding:4px 9px;font-size:.85rem}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;padding:2px;background:var(--surface2)}
+.seg button{border:0;background:none;padding:5px 12px;border-radius:7px;cursor:pointer;color:var(--ink2)}
+.seg button.on{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+input.search,.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 10px}
+input.search{max-width:260px}
+.field textarea{min-height:76px;resize:vertical}
+.pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:500;white-space:nowrap;background:var(--none-soft);color:var(--none)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}.pill.warn{background:var(--warn-soft);color:var(--warn)}.pill.bad{background:var(--bad-soft);color:var(--bad)}.pill.acc{background:var(--accent-soft);color:var(--accent)}
+.pill.ex{background:transparent;border:1px dashed var(--muted);color:var(--muted)}
+
+/* KPI tiles */
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.tile .lbl{font-size:.8rem;color:var(--ink2)}
+.tile .val{font-family:var(--mono);font-size:1.7rem;font-weight:500;line-height:1.1}
+.tile .val small{font-size:.9rem;color:var(--muted);font-weight:400}
+.tile .foot{font-size:.78rem;color:var(--muted)}
+.meter{height:6px;border-radius:99px;background:var(--surface2);overflow:hidden;display:flex;gap:2px}
+.meter i{display:block;height:100%;border-radius:99px}
+.meter .ok{background:var(--ok)}.meter .warn{background:var(--warn)}.meter .bad{background:var(--bad)}.meter .acc{background:var(--accent)}
+
+/* tables */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--surface2);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr.click{cursor:pointer}
+tbody tr.click:hover td{background:var(--surface2)}
+td.n,th.n{text-align:right}
+.empty{padding:28px 18px;text-align:center;color:var(--ink2);display:flex;flex-direction:column;align-items:center;gap:10px}
+.empty b{font-family:var(--serif);font-size:1.05rem;color:var(--ink)}
+
+/* criteria */
+.cat{border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.cat > header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--surface2)}
+.cat > header .meter{width:160px}
+.crit{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 16px;padding:14px 16px;border-top:1px solid var(--line)}
+.crit .t{font-weight:600}
+.crit .ev{color:var(--ink2);font-size:.88rem;margin-top:2px}
+.crit .auto{font-size:.82rem;margin-top:6px;color:var(--accent);font-family:var(--mono)}
+.crit .docs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.crit .note{font-size:.85rem;margin-top:6px;padding:6px 10px;border-left:2px solid var(--line);color:var(--ink2);white-space:pre-wrap}
+.state{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;align-self:start}
+.state button{border:0;border-right:1px solid var(--line);background:var(--surface);padding:5px 9px;font-size:.8rem;cursor:pointer;color:var(--ink2)}
+.state button:last-child{border-right:0}
+.state button.on.s-cumple{background:var(--ok-soft);color:var(--ok);font-weight:600}
+.state button.on.s-parcial{background:var(--warn-soft);color:var(--warn);font-weight:600}
+.state button.on.s-no{background:var(--bad-soft);color:var(--bad);font-weight:600}
+.state button.on.s-pend{background:var(--none-soft);color:var(--ink);font-weight:600}
+.doclink{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:.8rem;color:var(--ink);text-decoration:none;background:var(--surface)}
+.doclink:hover{border-color:var(--accent)}
+
+/* steps */
+.steps{display:flex;flex-direction:column;gap:0;counter-reset:s}
+.step{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.step:first-child{border-top:0}
+.step .dot{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:.85rem;border:1.5px solid var(--line);color:var(--ink2)}
+.step.done .dot{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.step .d{color:var(--ink2);font-size:.88rem}
+.alerts{display:flex;flex-direction:column;gap:8px}
+.alert{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:10px;background:var(--surface2)}
+.alert .ic{font-family:var(--mono);font-weight:600;width:18px;text-align:center}
+.alert.bad .ic{color:var(--bad)}.alert.warn .ic{color:var(--warn)}.alert.ok .ic{color:var(--ok)}
+
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:minmax(90px,160px) minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:.86rem}
+.bar .track{height:10px;background:var(--surface2);border-radius:0 4px 4px 0}
+.bar .fill{height:100%;background:var(--accent);border-radius:0 4px 4px 0;min-width:2px}
+.bar .v{font-family:var(--mono);text-align:right;color:var(--ink2)}
+
+.drop{border:1.5px dashed var(--line);border-radius:12px;padding:22px;text-align:center;background:var(--surface);display:flex;flex-direction:column;gap:8px;align-items:center}
+.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.banner{padding:10px 14px;border-radius:10px;background:var(--warn-soft);color:var(--warn);font-size:.9rem;margin-bottom:16px}
+.note-box{padding:12px 14px;border-radius:10px;background:var(--accent-soft);color:var(--ink);font-size:.9rem}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(10,20,17,.45);display:flex;align-items:flex-start;justify-content:center;padding:max(24px,env(safe-area-inset-top,0px)) 16px 24px;overflow-y:auto;z-index:50}
+.sheet{background:var(--surface);border-radius:14px;box-shadow:var(--shadow);width:100%;max-width:720px;padding:22px}
+.sheet header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px 16px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label,.field .lab{font-size:.8rem;color:var(--ink2);font-weight:500}
+.field.wide{grid-column:1/-1}
+.field .hint{font-size:.76rem;color:var(--muted)}
+.sec{grid-column:1/-1;font-family:var(--serif);font-weight:600;padding-top:8px;border-top:1px solid var(--line);margin-top:4px}
+.checks{display:flex;flex-wrap:wrap;gap:6px 14px;padding:6px 0}
+.checks label{display:flex;gap:6px;align-items:center;font-size:.9rem;color:var(--ink)}
+.actions{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-top:18px}
+.toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:9px;font-size:.9rem;z-index:60;box-shadow:var(--shadow)}
+
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .nav{min-width:0;max-width:100vw}
+  .nav{position:sticky;top:env(safe-area-inset-top,0px);height:auto;flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);padding:8px 12px;z-index:10;gap:2px}
+  .nav .brand,.nav .group,.nav .foot,.nav .count{display:none}
+  .nav button.item{width:auto;white-space:nowrap}
+  main{padding-inline:16px;padding-block:20px 48px}
+  .crit{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app">
+  <nav class="nav" id="nav" aria-label="Secciones"></nav>
+  <main id="main"></main>
+</div>
+<div class="modal" id="modal" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ============================================================
+   Catálogo de criterios: guía de trabajo basada en los criterios
+   generales del Sistema Nacional de Posgrados (SECIHTI).
+   ============================================================ */
+const CATALOGO = [
+  {id:'A', nombre:'Compromiso social y pertinencia', items:[
+    {id:'A1', t:'Justificación de la pertinencia del programa', ev:'Documento que explique qué problema regional o nacional atiende el programa y por qué es necesario.'},
+    {id:'A2', t:'Relación con agendas nacionales y necesidades del entorno', ev:'Vínculo de las LGAC y tesis con problemas prioritarios del país o de la región.'},
+    {id:'A3', t:'Acceso, equidad, inclusión y perspectiva de género', ev:'Políticas de admisión sin discriminación, acciones afirmativas, datos de matrícula por género.'},
+  ]},
+  {id:'B', nombre:'Plan de estudios y normativa', items:[
+    {id:'B1', t:'Plan de estudios vigente y aprobado', ev:'Plan aprobado por el órgano colegiado, con fecha de la última actualización.', auto:'plan'},
+    {id:'B2', t:'Objetivo, perfil de ingreso y perfil de egreso', ev:'Definidos, congruentes entre sí y publicados.', auto:'perfiles'},
+    {id:'B3', t:'Mapa curricular y programas de asignatura', ev:'Programas de cada materia con contenidos, bibliografía actualizada y forma de evaluación.'},
+    {id:'B4', t:'Reglamento o lineamientos del posgrado', ev:'Reglas de ingreso, permanencia, egreso, titulación, comités tutoriales y bajas.'},
+    {id:'B5', t:'Proceso de admisión documentado y transparente', ev:'Convocatoria de ingreso, comité de admisión, instrumentos de evaluación y actas.'},
+    {id:'B6', t:'Líneas de generación y aplicación del conocimiento (LGAC)', ev:'LGAC definidas, cada una con profesores y proyectos que la respalden.', auto:'lgac'},
+  ]},
+  {id:'C', nombre:'Núcleo académico', items:[
+    {id:'C1', t:'Profesores de tiempo completo suficientes', ev:'Profesores de la institución, de tiempo completo, que forman el núcleo académico básico.', auto:'nucleo'},
+    {id:'C2', t:'Grado académico del núcleo', ev:'Títulos de grado. Para doctorado, el núcleo debe tener doctorado.', auto:'grado'},
+    {id:'C3', t:'Pertenencia al SNII', ev:'Constancias de nombramiento vigentes en el SNII.', auto:'snii'},
+    {id:'C4', t:'Profesores por cada LGAC', ev:'Cada línea cuenta con varios profesores del núcleo.', auto:'lgacprof'},
+    {id:'C5', t:'Producción académica reciente', ev:'Artículos, libros, capítulos, patentes y desarrollos de los últimos años.', auto:'produccion'},
+    {id:'C6', t:'Colaboración nacional e internacional', ev:'Participación de profesores externos en comités, codirecciones, redes y proyectos.', auto:'externos'},
+    {id:'C7', t:'Carga equilibrada de dirección de tesis', ev:'Número de tesis que dirige cada profesor.', auto:'tesis'},
+  ]},
+  {id:'D', nombre:'Estudiantes', items:[
+    {id:'D1', t:'Dedicación de los estudiantes', ev:'En programas de investigación se espera dedicación de tiempo completo.', auto:'dedicacion'},
+    {id:'D2', t:'Comités tutoriales asignados', ev:'Cada estudiante tiene director y comité desde el primer semestre.', auto:'comite'},
+    {id:'D3', t:'Seguimiento semestral del avance', ev:'Formatos de evaluación del avance firmados por el comité cada semestre.', auto:'avance'},
+    {id:'D4', t:'Movilidad y estancias', ev:'Estancias, congresos y cursos en otras instituciones.'},
+    {id:'D5', t:'Participación en producción académica', ev:'Publicaciones y ponencias con estudiantes como coautores.', auto:'prodest'},
+  ]},
+  {id:'E', nombre:'Resultados', items:[
+    {id:'E1', t:'Eficiencia terminal por generación', ev:'Porcentaje de cada generación que obtiene el grado.', auto:'et'},
+    {id:'E2', t:'Tiempo de obtención del grado', ev:'Titulación dentro del plazo del plan de estudios.', auto:'etiempo'},
+    {id:'E3', t:'Tesis vinculadas a las LGAC', ev:'Relación de tesis con su línea de investigación.'},
+    {id:'E4', t:'Seguimiento de egresados', ev:'Base de datos de egresados, encuestas y ocupación actual.', auto:'egresados'},
+    {id:'E5', t:'Opinión de empleadores', ev:'Encuestas o entrevistas a empleadores sobre el desempeño de los egresados.'},
+  ]},
+  {id:'F', nombre:'Infraestructura y recursos', items:[
+    {id:'F1', t:'Aulas, cubículos y laboratorios', ev:'Inventario de espacios disponibles para el programa.'},
+    {id:'F2', t:'Biblioteca y acceso a información', ev:'Acervo, bases de datos y revistas electrónicas disponibles.'},
+    {id:'F3', t:'Equipo de cómputo y conectividad', ev:'Equipos, software especializado e internet para estudiantes y profesores.'},
+    {id:'F4', t:'Apoyo administrativo', ev:'Personal de coordinación y control escolar asignado al posgrado.'},
+  ]},
+  {id:'G', nombre:'Vinculación', items:[
+    {id:'G1', t:'Convenios de colaboración vigentes', ev:'Convenios con otras instituciones, nacionales o internacionales.', auto:'convenios'},
+    {id:'G2', t:'Proyectos con los sectores público, social o productivo', ev:'Proyectos, estancias o servicios con instituciones y comunidades.', auto:'proyectos'},
+    {id:'G3', t:'Financiamiento externo', ev:'Proyectos con fondos externos a la institución.', auto:'financiamiento'},
+    {id:'G4', t:'Difusión y divulgación', ev:'Coloquios, seminarios, divulgación y presencia en medios.'},
+  ]},
+  {id:'H', nombre:'Autoevaluación y mejora', items:[
+    {id:'H1', t:'Autoevaluación documentada', ev:'Análisis de fortalezas, debilidades, oportunidades y amenazas (FODA) del programa.'},
+    {id:'H2', t:'Plan de mejora con metas y responsables', ev:'Acciones con fecha y responsable para cada debilidad detectada.', auto:'mejora'},
+    {id:'H3', t:'Sitio web del programa actualizado', ev:'Página pública con plan de estudios, núcleo académico, LGAC, convocatoria e indicadores.', auto:'web'},
+    {id:'H4', t:'CVU actualizados en la plataforma de SECIHTI', ev:'Cada profesor con su CVU al día en Rizoma.', auto:'cvu'},
+  ]},
+];
+const CRITS = CATALOGO.flatMap(c=>c.items.map(i=>({...i,cat:c.id})));
+const CRIT_OPTS = CRITS.map(c=>({v:c.id,l:c.id+' · '+c.t}));
+
+const PROGS=[{id:'maestria',n:'Maestría'},{id:'doctorado',n:'Doctorado'}];
+const ESTADOS=[{k:'cumple',l:'Cumple',c:'ok'},{k:'parcial',l:'Parcial',c:'warn'},{k:'no',l:'No cumple',c:'bad'},{k:'pend',l:'Sin revisar',c:''}];
+const DOC_CATS=['Control escolar (por procesar)','Control escolar (procesado)','Plan de estudios y normativa','Núcleo académico','Estudiantes y tesis','Egresados','Vinculación','Infraestructura','Autoevaluación y plan de mejora','Otro'];
+
+/* ---------- Esquemas de captura ---------- */
+const SCHEMAS={
+  profesores:{titulo:'profesor',fields:[
+    {k:'nombre',l:'Nombre completo',t:'text',req:1,w:1},
+    {k:'grado',l:'Máximo grado',t:'select',o:['Doctorado','Maestría','Especialidad','Licenciatura']},
+    {k:'vinculo',l:'Tipo de vínculo',t:'select',o:['Facultad · tiempo completo','Facultad · medio tiempo','Facultad · asignatura','Externo nacional','Externo internacional']},
+    {k:'rol',l:'Rol en el programa',t:'select',o:['Núcleo académico básico','Colaborador','Profesor invitado'],h:'El núcleo básico suele integrarse por profesores de tiempo completo de la institución.'},
+    {k:'programas',l:'Participa en',t:'multi',o:['Maestría','Doctorado']},
+    {k:'institucion',l:'Institución de adscripción',t:'text'},
+    {k:'pais',l:'País',t:'text'},
+    {k:'snii',l:'Nivel SNII',t:'select',o:['Sin SNII','Candidato','Nivel I','Nivel II','Nivel III','Emérito']},
+    {k:'sniiVigencia',l:'Vigencia del SNII hasta',t:'date'},
+    {k:'lgac',l:'Línea de investigación (LGAC)',t:'lgac'},
+    {k:'cvu',l:'Número de CVU',t:'text'},
+    {k:'cvuActualizado',l:'CVU actualizado',t:'select',o:['Sí','No','No sé']},
+    {k:'correo',l:'Correo',t:'text'},
+    {k:'tesisDirigiendo',l:'Tesis que dirige actualmente',t:'number'},
+    {k:'notas',l:'Notas',t:'textarea',w:1},
+  ]},
+  estudiantes:{titulo:'estudiante',fields:[
+    {k:'nombre',l:'Nombre completo',t:'text',req:1,w:1},
+    {k:'programa',l:'Programa',t:'select',o:['Maestría','Doctorado'],req:1},
+    {k:'generacion',l:'Generación (año de ingreso)',t:'number',req:1},
+    {k:'fechaIngreso',l:'Fecha de ingreso',t:'date'},
+    {k:'estatus',l:'Estatus',t:'select',o:['Activo','Egresado sin grado','Titulado','Baja temporal','Baja definitiva'],req:1},
+    {k:'fechaEgreso',l:'Fecha de egreso',t:'date'},
+    {k:'fechaTitulacion',l:'Fecha de obtención del grado',t:'date'},
+    {k:'genero',l:'Género',t:'select',o:['Mujer','Hombre','No binario','Prefiere no decir']},
+    {k:'dedicacion',l:'Dedicación',t:'select',o:['Tiempo completo','Tiempo parcial']},
+    {k:'beca',l:'Beca',t:'select',o:['Beca SECIHTI','Beca institucional','Otra beca','Sin beca']},
+    {k:'director',l:'Director(a) de tesis',t:'prof'},
+    {k:'codirector',l:'Codirector(a)',t:'prof'},
+    {k:'comite',l:'Comité tutorial',t:'textarea',h:'Un nombre por línea.'},
+    {k:'lgac',l:'LGAC',t:'lgac'},
+    {k:'tema',l:'Tema de tesis',t:'text',w:1},
+    {k:'ultimoAvance',l:'Última evaluación de avance',t:'date'},
+    {k:'movilidad',l:'Movilidad, estancias y congresos',t:'textarea'},
+    {sec:'Seguimiento de egresado'},
+    {k:'ocupacion',l:'Ocupación actual',t:'text'},
+    {k:'sector',l:'Sector',t:'select',o:['Académico','Gobierno','Privado','Social u ONG','Autoempleo','Sin empleo','Se desconoce']},
+    {k:'relacion',l:'Relación del empleo con su formación',t:'select',o:['Alta','Media','Baja']},
+    {k:'ultimoContacto',l:'Último contacto',t:'date'},
+    {k:'correo',l:'Correo de contacto',t:'text'},
+    {k:'notas',l:'Notas',t:'textarea',w:1},
+  ]},
+  produccion:{titulo:'producto',fields:[
+    {k:'titulo',l:'Título',t:'text',req:1,w:1},
+    {k:'tipo',l:'Tipo',t:'select',o:['Artículo en revista indexada','Artículo arbitrado','Libro','Capítulo de libro','Ponencia en congreso','Patente','Desarrollo tecnológico','Divulgación','Otro'],req:1},
+    {k:'anio',l:'Año',t:'number',req:1},
+    {k:'autores',l:'Autores (como aparecen)',t:'text',w:1},
+    {k:'profesores',l:'Profesores del programa',t:'profmulti'},
+    {k:'conEstudiantes',l:'¿Participan estudiantes?',t:'select',o:['Sí','No']},
+    {k:'programas',l:'Programa',t:'multi',o:['Maestría','Doctorado']},
+    {k:'lgac',l:'LGAC',t:'lgac'},
+    {k:'enlace',l:'DOI o enlace',t:'text'},
+    {k:'notas',l:'Notas',t:'textarea',w:1},
+  ]},
+  vinculacion:{titulo:'actividad de vinculación',fields:[
+    {k:'nombre',l:'Nombre del convenio o proyecto',t:'text',req:1,w:1},
+    {k:'tipo',l:'Tipo',t:'select',o:['Convenio académico','Proyecto con sector público','Proyecto con sector social','Proyecto con sector productivo','Red académica','Financiamiento externo','Estancia o movilidad','Otro'],req:1},
+    {k:'contraparte',l:'Institución contraparte',t:'text'},
+    {k:'ambito',l:'Ámbito',t:'select',o:['Local','Regional','Nacional','Internacional']},
+    {k:'estado',l:'Estado',t:'select',o:['Vigente','En gestión','Concluido']},
+    {k:'inicio',l:'Inicio',t:'date'},
+    {k:'fin',l:'Fin',t:'date'},
+    {k:'responsable',l:'Responsable',t:'prof'},
+    {k:'programas',l:'Programa',t:'multi',o:['Maestría','Doctorado']},
+    {k:'monto',l:'Monto de financiamiento (MXN)',t:'number'},
+    {k:'impacto',l:'Impacto o incidencia social',t:'textarea',w:1,h:'Qué cambió gracias a este proyecto y para quién.'},
+  ]},
+  mejora:{titulo:'acción de mejora',fields:[
+    {k:'accion',l:'Acción',t:'text',req:1,w:1},
+    {k:'criterio',l:'Criterio que atiende',t:'crit'},
+    {k:'programa',l:'Programa',t:'select',o:['Ambos','Maestría','Doctorado']},
+    {k:'responsable',l:'Responsable',t:'text'},
+    {k:'fechaLimite',l:'Fecha límite',t:'date'},
+    {k:'estado',l:'Estado',t:'select',o:['Pendiente','En proceso','Concluida'],req:1},
+    {k:'meta',l:'Meta o indicador',t:'text',w:1},
+    {k:'avance',l:'Avance y observaciones',t:'textarea',w:1},
+  ]},
+  documentos:{titulo:'documento',fields:[
+    {k:'nombre',l:'Nombre del documento',t:'text',req:1,w:1},
+    {k:'categoria',l:'Categoría',t:'select',o:DOC_CATS,req:1},
+    {k:'programa',l:'Programa',t:'select',o:['Ambos','Maestría','Doctorado']},
+    {k:'criterios',l:'Evidencia de los criterios',t:'critmulti',w:1},
+    {k:'fechaDoc',l:'Fecha del documento',t:'date'},
+    {k:'notas',l:'Notas',t:'textarea',w:1},
+  ]},
+  programa:{titulo:'programa',fields:[
+    {k:'nombreOficial',l:'Nombre oficial del programa',t:'text',w:1},
+    {k:'orientacion',l:'Orientación',t:'select',o:['Investigación','Profesional']},
+    {k:'modalidad',l:'Modalidad',t:'select',o:['Escolarizada','Mixta','No escolarizada']},
+    {k:'duracion',l:'Duración',t:'text',h:'Por ejemplo: 4 semestres.'},
+    {k:'plazoMeses',l:'Plazo para obtener el grado (meses)',t:'number',h:'Se usa para calcular la titulación en tiempo.'},
+    {k:'anioCreacion',l:'Año de creación',t:'number'},
+    {k:'ultimaActualizacion',l:'Última actualización del plan de estudios',t:'date'},
+    {k:'sitioWeb',l:'Sitio web del programa',t:'text'},
+    {k:'objetivo',l:'Objetivo general',t:'textarea',w:1},
+    {k:'perfilIngreso',l:'Perfil de ingreso',t:'textarea',w:1},
+    {k:'perfilEgreso',l:'Perfil de egreso',t:'textarea',w:1},
+    {k:'lgac',l:'LGAC del programa',t:'textarea',w:1,h:'Escribe una línea por renglón.'},
+    {sec:'Metas de referencia',h:'Tómalas de la convocatoria vigente del SNP.'},
+    {k:'metaNucleo',l:'Profesores de núcleo requeridos',t:'number'},
+    {k:'metaSnii',l:'Meta de núcleo en SNII (%)',t:'number'},
+    {k:'metaEt',l:'Meta de eficiencia terminal (%)',t:'number'},
+  ]},
+  general:{titulo:'datos generales',fields:[
+    {k:'institucion',l:'Institución',t:'text',w:1},
+    {k:'dependencia',l:'Facultad o dependencia',t:'text',w:1},
+    {k:'coordinacion',l:'Coordinadora del posgrado',t:'text'},
+    {k:'convocatoria',l:'Convocatoria SNP objetivo',t:'text',h:'Por ejemplo: SNP 2027.'},
+    {k:'fechaMeta',l:'Fecha límite de postulación',t:'date'},
+  ]},
+};
+
+const COLS=['programas','criterios','profesores','estudiantes','produccion','vinculacion','documentos','mejora','config'];
+const S={db:null,assets:null,downloads:null,online:false,view:'inicio',prog:'maestria',q:{},f:{},data:Object.fromEntries(COLS.map(c=>[c,[]])),ready:false};
+try{const v=localStorage.getItem('snp.view');if(v)S.view=v;const p=localStorage.getItem('snp.prog');if(p)S.prog=p;}catch(e){}
+
+/* ---------- utilidades ---------- */
+const $=s=>document.querySelector(s);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const pct=(a,b)=>b?Math.round(a/b*100):null;
+const fmtPct=v=>v==null?'—':v+'%';
+const today=()=>new Date(new Date().toDateString());
+const d=s=>s?new Date(s+'T00:00:00'):null;
+const fmtDate=s=>{const x=d(s);return x?x.toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'}):'—'};
+const monthsBetween=(a,b)=>(b.getFullYear()-a.getFullYear())*12+(b.getMonth()-a.getMonth())+(b.getDate()-a.getDate())/30;
+const progName=id=>PROGS.find(p=>p.id===id)?.n||id;
+const inProg=(arr,name)=>Array.isArray(arr)&&arr.includes(name);
+function toast(msg){const t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,2600)}
+const get=(col,id)=>S.data[col].find(r=>r.id===id);
+const prog=id=>get('programas',id)||{};
+const general=()=>get('config','general')||{};
+function lgacList(){const s=new Set();S.data.programas.forEach(p=>(p.lgac||'').split('\n').map(x=>x.trim()).filter(Boolean).forEach(x=>s.add(x)));return[...s]}
+
+/* ---------- almacenamiento ---------- */
+const store={
+  async save(col,id,data){
+    id=id||uid();
+    const body=JSON.parse(JSON.stringify({...data,actualizado:new Date().toISOString()}));
+    delete body.id;
+    if(S.db){await S.db.collection(col).doc(id).set(body);}
+    else{const a=S.data[col];const i=a.findIndex(r=>r.id===id);if(i>=0)a[i]={id,...body};else a.push({id,...body});render();}
+    return id;
+  },
+  async remove(col,id){
+    if(S.db){await S.db.collection(col).doc(id).delete();}
+    else{S.data[col]=S.data[col].filter(r=>r.id!==id);render();}
+  }
+};
+async function safe(p,okMsg){try{const r=await p;if(okMsg)toast(okMsg);return r}catch(e){console.error(e);toast(e&&e.code==='quota_exceeded'?'Se llenó el espacio de la base de datos. Borra registros que ya no uses.':'No se pudo guardar. Revisa tu conexión e inténtalo de nuevo.');throw e}}
+
+/* ---------- cálculos ---------- */
+function profsDe(pn){return S.data.profesores.filter(p=>inProg(p.programas,pn))}
+function nucleo(pn){return profsDe(pn).filter(p=>p.rol==='Núcleo académico básico')}
+const tieneSnii=p=>p.snii&&p.snii!=='Sin SNII';
+function estDe(pn){return S.data.estudiantes.filter(e=>e.programa===pn)}
+function cohortes(pid){
+  const pn=progName(pid),plazo=+prog(pid).plazoMeses||(pid==='doctorado'?54:30);
+  const g={};
+  estDe(pn).forEach(e=>{const y=+e.generacion||0;(g[y]=g[y]||[]).push(e)});
+  return Object.keys(g).map(Number).sort((a,b)=>b-a).map(y=>{
+    const L=g[y],n=L.length,tit=L.filter(e=>e.estatus==='Titulado');
+    const enTiempo=tit.filter(e=>e.fechaIngreso&&e.fechaTitulacion&&monthsBetween(d(e.fechaIngreso),d(e.fechaTitulacion))<=plazo).length;
+    const ini=L.map(e=>d(e.fechaIngreso)).filter(Boolean).sort((a,b)=>a-b)[0]||new Date(y,7,1);
+    const enCurso=monthsBetween(ini,today())<plazo;
+    return{y,n,tit:tit.length,enTiempo,activos:L.filter(e=>e.estatus==='Activo').length,egr:L.filter(e=>e.estatus==='Egresado sin grado').length,bajas:L.filter(e=>e.estatus==='Baja definitiva').length,et:pct(tit.length,n),ett:pct(enTiempo,n),enCurso};
+  });
+}
+function etGlobal(pid){const c=cohortes(pid).filter(x=>!x.enCurso);const n=c.reduce((a,x)=>a+x.n,0);return{n,et:pct(c.reduce((a,x)=>a+x.tit,0),n),ett:pct(c.reduce((a,x)=>a+x.enTiempo,0),n),cohortes:c.length}}
+function critState(pid,cid){return get('criterios',pid+'__'+cid)||{}}
+function critSummary(pid,cat){
+  const items=cat?CATALOGO.find(c=>c.id===cat).items:CRITS;
+  const r={cumple:0,parcial:0,no:0,pend:0,total:items.length};
+  items.forEach(i=>{r[critState(pid,i.id).estado||'pend']++});return r;
+}
+function docsFor(pid,cid){const pn=progName(pid);return S.data.documentos.filter(x=>(x.criterios||[]).includes(cid)&&(!x.programa||x.programa==='Ambos'||x.programa===pn))}
+
+function autoMetric(key,pid){
+  const pn=progName(pid),P=prog(pid),N=nucleo(pn),profs=profsDe(pn),E=estDe(pn),act=E.filter(e=>e.estatus==='Activo');
+  switch(key){
+    case 'plan':{if(!P.ultimaActualizacion)return'Sin fecha de actualización registrada';const a=monthsBetween(d(P.ultimaActualizacion),today())/12;return`Última actualización: ${fmtDate(P.ultimaActualizacion)} (hace ${a.toFixed(1)} años)`}
+    case 'perfiles':return`Objetivo ${P.objetivo?'✓':'✗'} · Perfil de ingreso ${P.perfilIngreso?'✓':'✗'} · Perfil de egreso ${P.perfilEgreso?'✓':'✗'}`;
+    case 'lgac':{const l=(P.lgac||'').split('\n').filter(x=>x.trim());return`${l.length} LGAC registradas`}
+    case 'nucleo':{const tc=N.filter(p=>p.vinculo==='Facultad · tiempo completo').length;return`${N.length} en núcleo básico, ${tc} de tiempo completo de la facultad`+(P.metaNucleo?` · meta ${P.metaNucleo}`:'')}
+    case 'grado':{const doc=N.filter(p=>p.grado==='Doctorado').length;return`${doc} de ${N.length} profesores del núcleo con doctorado (${fmtPct(pct(doc,N.length))})`}
+    case 'snii':{const s=N.filter(tieneSnii).length;return`${s} de ${N.length} del núcleo en el SNII (${fmtPct(pct(s,N.length))})`+(P.metaSnii?` · meta ${P.metaSnii}%`:'')}
+    case 'lgacprof':{const l=(P.lgac||'').split('\n').map(x=>x.trim()).filter(Boolean);if(!l.length)return'Registra primero las LGAC del programa';return l.map(x=>`${x}: ${N.filter(p=>p.lgac===x).length}`).join(' · ')}
+    case 'produccion':{const y=today().getFullYear();const pr=S.data.produccion.filter(x=>inProg(x.programas,pn)&&+x.anio>=y-4);return`${pr.length} productos en los últimos 5 años`}
+    case 'externos':{const ex=profs.filter(p=>(p.vinculo||'').startsWith('Externo'));return`${ex.length} externos (${ex.filter(p=>p.vinculo==='Externo internacional').length} internacionales)`}
+    case 'tesis':{const m=Math.max(0,...profs.map(p=>+p.tesisDirigiendo||0));return`Máximo de tesis dirigidas por un profesor: ${m}`}
+    case 'dedicacion':{const tc=act.filter(e=>e.dedicacion==='Tiempo completo').length;return`${tc} de ${act.length} activos de tiempo completo`}
+    case 'comite':{const c=act.filter(e=>e.director&&e.comite).length;return`${c} de ${act.length} activos con director y comité`}
+    case 'avance':{const lim=new Date(today());lim.setMonth(lim.getMonth()-7);const ok=act.filter(e=>e.ultimoAvance&&d(e.ultimoAvance)>=lim).length;return`${ok} de ${act.length} activos evaluados en los últimos 7 meses`}
+    case 'prodest':{const pr=S.data.produccion.filter(x=>inProg(x.programas,pn));return`${pr.filter(x=>x.conEstudiantes==='Sí').length} de ${pr.length} productos con estudiantes`}
+    case 'et':{const g=etGlobal(pid);return g.n?`${fmtPct(g.et)} en ${g.cohortes} generaciones cerradas`+(P.metaEt?` · meta ${P.metaEt}%`:''):'Sin generaciones cerradas registradas'}
+    case 'etiempo':{const g=etGlobal(pid);return g.n?`${fmtPct(g.ett)} obtiene el grado dentro del plazo`:'Sin datos de titulación'}
+    case 'egresados':{const eg=E.filter(e=>e.estatus==='Titulado'||e.estatus==='Egresado sin grado');const loc=eg.filter(e=>e.ultimoContacto).length;return`${loc} de ${eg.length} egresados con contacto registrado`}
+    case 'convenios':{const c=S.data.vinculacion.filter(v=>v.tipo==='Convenio académico'&&v.estado==='Vigente'&&(!v.programas?.length||inProg(v.programas,pn)));return`${c.length} convenios vigentes`}
+    case 'proyectos':{const c=S.data.vinculacion.filter(v=>(v.tipo||'').startsWith('Proyecto')&&(!v.programas?.length||inProg(v.programas,pn)));return`${c.length} proyectos con sectores`}
+    case 'financiamiento':{const t=S.data.vinculacion.filter(v=>+v.monto>0&&(!v.programas?.length||inProg(v.programas,pn))).reduce((a,v)=>a+(+v.monto),0);return`Financiamiento externo registrado: $${t.toLocaleString('es-MX')} MXN`}
+    case 'mejora':{const m=S.data.mejora.filter(x=>!x.programa||x.programa==='Ambos'||x.programa===pn);return`${m.length} acciones, ${m.filter(x=>x.estado==='Concluida').length} concluidas`}
+    case 'web':return P.sitioWeb?`Sitio: ${P.sitioWeb}`:'Sin sitio web registrado';
+    case 'cvu':{const c=profs.filter(p=>p.cvuActualizado==='Sí').length;return`${c} de ${profs.length} profesores con CVU actualizado`}
+  }return'';
+}
+
+function alertas(){
+  const A=[],hoy=today(),en6=new Date(hoy);en6.setMonth(en6.getMonth()+6);
+  S.data.profesores.forEach(p=>{if(p.sniiVigencia&&tieneSnii(p)){const v=d(p.sniiVigencia);if(v<hoy)A.push({c:'bad',t:`El SNII de ${p.nombre} venció el ${fmtDate(p.sniiVigencia)}.`,go:'profesores'});else if(v<en6)A.push({c:'warn',t:`El SNII de ${p.nombre} vence el ${fmtDate(p.sniiVigencia)}.`,go:'profesores'})}});
+  PROGS.forEach(pg=>{const plazo=+prog(pg.id).plazoMeses||(pg.id==='doctorado'?54:30);
+    const ex=estDe(pg.n).filter(e=>e.estatus==='Activo'&&e.fechaIngreso&&monthsBetween(d(e.fechaIngreso),hoy)>plazo);
+    if(ex.length)A.push({c:'bad',t:`${ex.length} estudiante(s) de ${pg.n} activos rebasan el plazo de ${plazo} meses.`,go:'estudiantes'});
+    const lim=new Date(hoy);lim.setMonth(lim.getMonth()-7);
+    const sin=estDe(pg.n).filter(e=>e.estatus==='Activo'&&(!e.ultimoAvance||d(e.ultimoAvance)<lim));
+    if(sin.length)A.push({c:'warn',t:`${sin.length} estudiante(s) de ${pg.n} sin evaluación de avance en los últimos 7 meses.`,go:'estudiantes'});
+    const P=prog(pg.id);if(P.ultimaActualizacion&&monthsBetween(d(P.ultimaActualizacion),hoy)>60)A.push({c:'warn',t:`El plan de estudios de ${pg.n} tiene más de 5 años sin actualizarse.`,go:'programas'});
+  });
+  S.data.mejora.forEach(m=>{if(m.estado!=='Concluida'&&m.fechaLimite&&d(m.fechaLimite)<hoy)A.push({c:'bad',t:`Acción vencida: ${m.accion} (${fmtDate(m.fechaLimite)}).`,go:'mejora'})});
+  const band=S.data.documentos.filter(x=>x.categoria==='Control escolar (por procesar)').length;
+  if(band)A.push({c:'warn',t:`${band} PDF(s) de control escolar por procesar en la bandeja.`,go:'documentos'});
+  const g=general();if(g.fechaMeta){const dd=Math.round((d(g.fechaMeta)-hoy)/864e5);if(dd>=0&&dd<=120)A.push({c:dd<45?'bad':'warn',t:`Faltan ${dd} días para la fecha límite de postulación (${fmtDate(g.fechaMeta)}).`,go:'diagnostico'})}
+  return A;
+}
+
+/* ---------- navegación ---------- */
+const VIEWS=[
+  {g:'Panorama'},
+  {id:'inicio',l:'Inicio'},
+  {id:'diagnostico',l:'Diagnóstico SNP'},
+  {g:'Expediente'},
+  {id:'programas',l:'Programas'},
+  {id:'profesores',l:'Núcleo académico',c:'profesores'},
+  {id:'estudiantes',l:'Estudiantes',c:'estudiantes'},
+  {id:'egresados',l:'Egresados'},
+  {id:'produccion',l:'Producción académica',c:'produccion'},
+  {id:'vinculacion',l:'Vinculación',c:'vinculacion'},
+  {id:'documentos',l:'Documentos',c:'documentos'},
+  {g:'Mejora'},
+  {id:'mejora',l:'Plan de mejora',c:'mejora'},
+];
+function renderNav(){
+  const g=general();
+  $('#nav').innerHTML=`<div class="brand"><small>Posgrado · SNP</small><b>${esc(g.dependencia||'Mi posgrado')}</b>${g.institucion?`<span class="muted small">${esc(g.institucion)}</span>`:''}</div>`+
+  VIEWS.map(v=>v.g?`<div class="group">${v.g}</div>`:`<button class="item ${S.view===v.id?'on':''}" data-go="${v.id}"><span>${v.l}</span>${v.c?`<span class="count">${S.data[v.c].length}</span>`:''}</button>`).join('')+
+  `<div class="foot"><button class="btn sm" data-act="backup">Respaldo completo (JSON)</button><span class="muted small">${S.online?'Guardado en línea':'Sin conexión a la base de datos'}</span></div>`;
+}
+function go(v){S.view=v;try{localStorage.setItem('snp.view',v)}catch(e){}render();window.scrollTo(0,0)}
+function setProg(p){S.prog=p;try{localStorage.setItem('snp.prog',p)}catch(e){}render()}
+const progSeg=()=>`<div class="seg" role="tablist">${PROGS.map(p=>`<button data-prog="${p.id}" class="${S.prog===p.id?'on':''}">${p.n}</button>`).join('')}</div>`;
+
+/* ---------- vistas ---------- */
+function tile(lbl,val,foot,meter){return`<div class="tile"><span class="lbl">${lbl}</span><span class="val">${val}</span>${meter||''}${foot?`<span class="foot">${foot}</span>`:''}</div>`}
+function meterBar(v,goal){if(v==null)return'<div class="meter"></div>';const c=goal?(v>=goal?'ok':v>=goal*.7?'warn':'bad'):'acc';return`<div class="meter" role="img" aria-label="${v}%"><i class="${c}" style="width:${Math.min(100,v)}%"></i></div>`}
+function critMeter(s){const w=k=>s.total?s[k]/s.total*100:0;return`<div class="meter" role="img" aria-label="${s.cumple} de ${s.total} cumplidos">${s.cumple?`<i class="ok" style="width:${w('cumple')}%"></i>`:''}${s.parcial?`<i class="warn" style="width:${w('parcial')}%"></i>`:''}${s.no?`<i class="bad" style="width:${w('no')}%"></i>`:''}</div>`}
+
+function vInicio(){
+  const g=general(),A=alertas();
+  const hasEx=COLS.some(c=>S.data[c].some(r=>r.ejemplo));
+  const pasos=[
+    {t:'Datos generales y ficha de cada programa',d:'Nombre, orientación, plan de estudios, LGAC y metas de la convocatoria.',ok:!!(g.institucion&&prog('maestria').nombreOficial&&prog('doctorado').nombreOficial),go:'programas'},
+    {t:'Registrar a los profesores y clasificarlos',d:'Facultad o externo, rol en el núcleo, SNII y LGAC de cada uno.',ok:S.data.profesores.filter(p=>!p.ejemplo).length>0,go:'profesores'},
+    {t:'Subir los PDFs de control escolar',d:'Listados por generación, kárdex y actas de examen de grado van a la bandeja.',ok:S.data.documentos.some(x=>(x.categoria||'').startsWith('Control escolar')),go:'documentos'},
+    {t:'Capturar estudiantes por generación',d:'Con esto se calcula la eficiencia terminal de cada cohorte.',ok:S.data.estudiantes.filter(e=>!e.ejemplo).length>0,go:'estudiantes'},
+    {t:'Revisar los criterios del diagnóstico',d:'Marca cada criterio y liga su evidencia. Así sabrán si conviene postular el programa actual o crear uno nuevo.',ok:S.data.criterios.length>=10,go:'diagnostico'},
+    {t:'Armar el plan de mejora',d:'Una acción con responsable y fecha para cada criterio que no se cumple.',ok:S.data.mejora.filter(m=>!m.ejemplo).length>0,go:'mejora'},
+  ];
+  const done=pasos.filter(p=>p.ok).length;
+  const kp=PROGS.map(pg=>{const N=nucleo(pg.n),s=N.filter(tieneSnii).length,P=prog(pg.id),cs=critSummary(pg.id),et=etGlobal(pg.id),act=estDe(pg.n).filter(e=>e.estatus==='Activo').length;
+    return`<div class="panel"><div class="row" style="justify-content:space-between;margin-bottom:12px"><h2>${pg.n}</h2><span class="pill ${cs.cumple===cs.total?'ok':''}">${cs.cumple} de ${cs.total} criterios cumplidos</span></div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">
+      ${tile('Núcleo académico',`${N.length}${P.metaNucleo?` <small>/ ${P.metaNucleo}</small>`:''}`,'profesores de núcleo básico',P.metaNucleo?meterBar(pct(N.length,+P.metaNucleo),100):'')}
+      ${tile('Núcleo en el SNII',fmtPct(pct(s,N.length)),P.metaSnii?`meta ${P.metaSnii}%`:'sin meta registrada',meterBar(pct(s,N.length),+P.metaSnii||0))}
+      ${tile('Eficiencia terminal',fmtPct(et.et),et.n?`${et.cohortes} generaciones cerradas`:'sin generaciones cerradas',meterBar(et.et,+P.metaEt||0))}
+      ${tile('Estudiantes activos',act,`${estDe(pg.n).length} registrados en total`)}
+    </div>
+    <div style="margin-top:14px">${critMeter(cs)}<div class="row small muted" style="margin-top:6px;gap:14px"><span><span class="pill ok">Cumple ${cs.cumple}</span></span><span class="pill warn">Parcial ${cs.parcial}</span><span class="pill bad">No cumple ${cs.no}</span><span class="pill">Sin revisar ${cs.pend}</span></div></div></div>`}).join('');
+  return`<div class="head"><div><div class="eyebrow">${esc(g.convocatoria||'Preparación para el Sistema Nacional de Posgrados')}</div><h1>${esc(g.dependencia||'Plataforma del posgrado')}</h1><p class="sub">Aquí se reúne todo lo que pide el SNP: el expediente de la maestría y el doctorado, el núcleo académico, la trayectoria de los estudiantes, las evidencias y el plan de mejora.</p></div>
+    <div class="row">${hasEx?`<button class="btn" data-act="clearsample">Quitar datos de ejemplo</button>`:`<button class="btn" data-act="sample">Ver con datos de ejemplo</button>`}</div></div>
+  <div class="stack">
+    <div class="grid2">
+      <div class="panel"><div class="row" style="justify-content:space-between"><h2>Ruta de arranque</h2><span class="pill ${done===pasos.length?'ok':'acc'}">${done} de ${pasos.length}</span></div>
+        <div class="steps" style="margin-top:6px">${pasos.map((p,i)=>`<div class="step ${p.ok?'done':''}"><span class="dot">${p.ok?'✓':i+1}</span><div><div>${p.t}</div><div class="d">${p.d}</div></div><button class="btn sm" data-go="${p.go}">Abrir</button></div>`).join('')}</div></div>
+      <div class="panel"><h2>Pendientes y alertas</h2>
+        ${A.length?`<div class="alerts">${A.map(a=>`<div class="alert ${a.c}"><span class="ic" aria-hidden="true">${a.c==='bad'?'!':'•'}</span><div style="flex:1">${esc(a.t)}</div><button class="btn sm ghost" data-go="${a.go}">Ver</button></div>`).join('')}</div>`
+        :`<div class="alert ok"><span class="ic">✓</span><div>No hay alertas. Aparecerán aquí cuando un SNII esté por vencer, un estudiante rebase el plazo, una acción se retrase o haya PDFs por procesar.</div></div>`}
+        ${g.fechaMeta?'':`<p class="small muted" style="margin-top:12px">Registra la fecha límite de postulación en <a href="#" data-go="programas">Programas</a> para ver la cuenta regresiva.</p>`}
+      </div>
+    </div>
+    <div class="grid2">${kp}</div>
+    <p class="small muted">El catálogo de criterios es una guía de trabajo basada en los criterios generales del SNP. Antes de postular, compáralo con la convocatoria vigente de SECIHTI y ajusta las metas de cada programa.</p>
+  </div>`;
+}
+
+function vDiagnostico(){
+  const pid=S.prog,cs=critSummary(pid);
+  return`<div class="head"><div><div class="eyebrow">Autoevaluación</div><h1>Diagnóstico SNP</h1><p class="sub">Marca cada criterio y liga los documentos que lo respaldan. Las líneas verdes se calculan solas con los datos que captures.</p></div>${progSeg()}</div>
+  <div class="panel" style="margin-bottom:18px"><div class="row" style="justify-content:space-between"><h3>${progName(pid)}: ${cs.cumple} de ${cs.total} criterios cumplidos</h3><span class="muted small">${cs.parcial} parciales · ${cs.no} no cumplidos · ${cs.pend} sin revisar</span></div><div style="margin-top:10px">${critMeter(cs)}</div></div>
+  <div class="stack">${CATALOGO.map(cat=>{const s=critSummary(pid,cat.id);return`<section class="cat"><header><h3>${cat.id} · ${cat.nombre}</h3><div class="row"><span class="small muted mono">${s.cumple}/${s.total}</span>${critMeter(s)}</div></header>
+    ${cat.items.map(it=>{const st=critState(pid,it.id),e=st.estado||'pend',docs=docsFor(pid,it.id),am=it.auto?autoMetric(it.auto,pid):'';
+      return`<div class="crit"><div><div class="t">${it.id} · ${esc(it.t)}</div><div class="ev">${esc(it.ev)}</div>${am?`<div class="auto">${esc(am)}</div>`:''}
+        ${st.notas?`<div class="note">${esc(st.notas)}${st.responsable?`\nResponsable: ${esc(st.responsable)}`:''}</div>`:''}
+        <div class="docs">${docs.map(x=>docLink(x)).join('')}<button class="btn sm ghost" data-act="critupload" data-crit="${it.id}">+ Subir evidencia</button><button class="btn sm ghost" data-act="critnote" data-crit="${it.id}">${st.notas?'Editar nota':'+ Nota'}</button></div></div>
+        <div class="state" role="group" aria-label="Estado">${ESTADOS.map(x=>`<button class="s-${x.k} ${e===x.k?'on':''}" data-act="critstate" data-crit="${it.id}" data-v="${x.k}">${x.l}</button>`).join('')}</div></div>`}).join('')}
+  </section>`}).join('')}</div>`;
+}
+function docLink(x){const href=x.assetId?'/_blob/'+x.assetId:null;return href?`<a class="doclink" href="${href}" target="_blank" rel="noopener">📄 ${esc(x.nombre)}</a>`:`<span class="doclink">${esc(x.nombre)}${x.ejemplo?' · ejemplo':''}</span>`}
+
+function vProgramas(){
+  const g=general();
+  const card=pg=>{const P=prog(pg.id),l=(P.lgac||'').split('\n').filter(x=>x.trim());
+    const row=(k,v)=>`<tr><th style="width:42%;text-transform:none;letter-spacing:0;font-size:.85rem">${k}</th><td>${v||'<span class="muted">Por capturar</span>'}</td></tr>`;
+    return`<div class="panel"><div class="row" style="justify-content:space-between;margin-bottom:10px"><h2>${pg.n}</h2><button class="btn primary sm" data-act="editprog" data-id="${pg.id}">Editar ficha</button></div>
+    <div class="tablewrap" style="border:0"><table style="min-width:0"><tbody>
+      ${row('Nombre oficial',esc(P.nombreOficial))}${row('Orientación',esc(P.orientacion))}${row('Modalidad',esc(P.modalidad))}${row('Duración',esc(P.duracion))}
+      ${row('Plazo para el grado',P.plazoMeses?P.plazoMeses+' meses':'')}${row('Año de creación',esc(P.anioCreacion))}${row('Plan de estudios actualizado',P.ultimaActualizacion?fmtDate(P.ultimaActualizacion):'')}
+      ${row('LGAC',l.map(esc).join('<br>'))}${row('Sitio web',esc(P.sitioWeb))}
+      ${row('Metas de referencia',[P.metaNucleo&&`${P.metaNucleo} profesores de núcleo`,P.metaSnii&&`${P.metaSnii}% en SNII`,P.metaEt&&`${P.metaEt}% eficiencia terminal`].filter(Boolean).join(' · '))}
+    </tbody></table></div></div>`};
+  return`<div class="head"><div><div class="eyebrow">Expediente</div><h1>Programas</h1><p class="sub">Maestría y doctorado se evalúan como programas separados. Cada uno lleva su propia ficha, LGAC y metas.</p></div></div>
+  <div class="stack">
+    <div class="panel"><div class="row" style="justify-content:space-between"><h2>Datos generales</h2><button class="btn sm" data-act="editgeneral">Editar</button></div>
+      <p style="margin-top:8px">${[g.institucion,g.dependencia].filter(Boolean).map(esc).join(' · ')||'<span class="muted">Institución y facultad por capturar</span>'}</p>
+      <p class="small muted">${g.coordinacion?'Coordinación: '+esc(g.coordinacion):''}${g.convocatoria?' · Convocatoria objetivo: '+esc(g.convocatoria):''}${g.fechaMeta?' · Fecha límite: '+fmtDate(g.fechaMeta):''}</p></div>
+    <div class="grid2">${PROGS.map(card).join('')}</div>
+    <div class="note-box"><b>¿Programa actual o uno nuevo?</b> El programa actual trae su historial: si la eficiencia terminal de las últimas generaciones es baja, eso pesa en la evaluación. Captura las generaciones en Estudiantes y revisa el Diagnóstico antes de decidir.</div>
+  </div>`;
+}
+
+/* ---- tablas genéricas ---- */
+function filterRows(key,rows,fields){const q=(S.q[key]||'').toLowerCase().trim();if(!q)return rows;return rows.filter(r=>fields.some(f=>String(Array.isArray(r[f])?r[f].join(' '):r[f]??'').toLowerCase().includes(q)))}
+function table(col,rows,cols,emptyMsg){
+  if(!rows.length)return`<div class="tablewrap"><div class="empty"><b>${emptyMsg[0]}</b><span>${emptyMsg[1]}</span><button class="btn primary" data-act="new" data-col="${col}">Agregar ${SCHEMAS[col].titulo}</button></div></div>`;
+  return`<div class="tablewrap"><table><thead><tr>${cols.map(c=>`<th class="${c.n?'n':''}">${c.l}</th>`).join('')}</tr></thead><tbody>
+  ${rows.map(r=>`<tr class="click" data-act="edit" data-col="${col}" data-id="${r.id}" tabindex="0">${cols.map(c=>`<td class="${c.n?'n':''}">${c.f?c.f(r):esc(Array.isArray(r[c.k])?r[c.k].join(', '):r[c.k]??'')}</td>`).join('')}</tr>`).join('')}
+  </tbody></table></div>`;
+}
+const ex=r=>r.ejemplo?' <span class="pill ex">ejemplo</span>':'';
+function toolbar(col,extra=''){return`<div class="row" style="justify-content:space-between;margin-bottom:12px"><div class="row"><input class="search" id="q-${col}" data-q="${col}" placeholder="Buscar…" value="${esc(S.q[col]||'')}" aria-label="Buscar">${extra}</div><div class="row"><button class="btn sm" data-act="csv" data-col="${col}">Exportar CSV</button><button class="btn primary" data-act="new" data-col="${col}">Agregar ${SCHEMAS[col].titulo}</button></div></div>`}
+
+function vProfesores(){
+  const P=S.data.profesores,f=S.f.profProg||'Todos';
+  const rows=filterRows('profesores',P.filter(p=>f==='Todos'||inProg(p.programas,f)),['nombre','institucion','lgac','vinculo','snii']).sort((a,b)=>(a.nombre||'').localeCompare(b.nombre||''));
+  const byV={};P.forEach(p=>{const k=p.vinculo||'Sin clasificar';byV[k]=(byV[k]||0)+1});
+  const max=Math.max(1,...Object.values(byV));
+  const ls=lgacList();
+  return`<div class="head"><div><div class="eyebrow">Expediente</div><h1>Núcleo académico</h1><p class="sub">Registra a cada profesor y clasifícalo. El núcleo académico básico suele integrarse por profesores de tiempo completo de la institución; los externos nacionales e internacionales cuentan como colaboradores y fortalecen la vinculación.</p></div></div>
+  <div class="stack">
+    <div class="grid">${PROGS.map(pg=>{const N=nucleo(pg.n),s=N.filter(tieneSnii).length,Pm=prog(pg.id);return tile(`Núcleo de ${pg.n}`,`${N.length}${Pm.metaNucleo?` <small>/ ${Pm.metaNucleo}</small>`:''}`,`${s} en SNII (${fmtPct(pct(s,N.length))})`,meterBar(pct(s,N.length),+Pm.metaSnii||0))}).join('')}
+      ${tile('Externos',P.filter(p=>(p.vinculo||'').startsWith('Externo')).length,`${P.filter(p=>p.vinculo==='Externo internacional').length} internacionales`)}
+      ${tile('SNII por vencer',P.filter(p=>{if(!p.sniiVigencia||!tieneSnii(p))return 0;const v=d(p.sniiVigencia),l=new Date(today());l.setMonth(l.getMonth()+6);return v<l}).length,'en los próximos 6 meses o vencido')}
+    </div>
+    ${P.length?`<div class="grid2"><div class="panel"><h3>Profesores por tipo de vínculo</h3><div class="bars">${Object.entries(byV).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><div class="track" title="${esc(k)}: ${v}"><div class="fill" style="width:${v/max*100}%"></div></div><span class="v">${v}</span></div>`).join('')}</div></div>
+      <div class="panel"><h3>Núcleo básico por LGAC</h3>${ls.length?`<div class="tablewrap" style="border:0"><table style="min-width:0"><thead><tr><th>LGAC</th>${PROGS.map(p=>`<th class="n">${p.n}</th>`).join('')}</tr></thead><tbody>${ls.map(l=>`<tr><td>${esc(l)}</td>${PROGS.map(pg=>`<td class="n">${nucleo(pg.n).filter(p=>p.lgac===l).length}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'<p class="muted small">Registra las LGAC en la ficha de cada programa para ver esta tabla.</p>'}</div></div>`:''}
+    <div>${toolbar('profesores',`<div class="seg">${['Todos','Maestría','Doctorado'].map(x=>`<button data-f="profProg" data-v="${x}" class="${f===x?'on':''}">${x}</button>`).join('')}</div>`)}
+    ${table('profesores',rows,[
+      {l:'Nombre',f:r=>`<b>${esc(r.nombre)}</b>${ex(r)}<div class="small muted">${esc(r.institucion||'')}${r.pais?' · '+esc(r.pais):''}</div>`},
+      {l:'Vínculo',k:'vinculo'},{l:'Rol',k:'rol'},{l:'Programas',k:'programas'},
+      {l:'SNII',f:r=>r.snii?`<span class="pill ${tieneSnii(r)?'ok':''}">${esc(r.snii)}</span>`:''},
+      {l:'LGAC',k:'lgac'},{l:'Tesis',k:'tesisDirigiendo',n:1}],['Todavía no hay profesores','Empieza por los 20 profesores actuales. Puedes agregar más conforme se integren.'])}</div>
+  </div>`;
+}
+
+function vEstudiantes(){
+  const pid=S.prog,pn=progName(pid),C=cohortes(pid),g=etGlobal(pid),P=prog(pid),plazo=+P.plazoMeses||(pid==='doctorado'?54:30);
+  const st=S.f.estStatus||'Todos';
+  const rows=filterRows('estudiantes',estDe(pn).filter(e=>st==='Todos'||e.estatus===st),['nombre','director','tema','generacion','estatus']).sort((a,b)=>(+b.generacion||0)-(+a.generacion||0)||(a.nombre||'').localeCompare(b.nombre||''));
+  const stPill=s=>`<span class="pill ${s==='Titulado'?'ok':s==='Activo'?'acc':s==='Baja definitiva'?'bad':s?'warn':''}">${esc(s||'—')}</span>`;
+  return`<div class="head"><div><div class="eyebrow">Trayectoria</div><h1>Estudiantes</h1><p class="sub">Captura a cada estudiante con su generación y estatus. Con los PDFs de control escolar (listados, kárdex, actas de examen) puedes reconstruir las generaciones anteriores.</p></div>${progSeg()}</div>
+  <div class="stack">
+    <div class="grid">
+      ${tile('Eficiencia terminal',fmtPct(g.et),g.n?`${g.n} estudiantes en ${g.cohortes} generaciones cerradas`:'sin generaciones cerradas',meterBar(g.et,+P.metaEt||0))}
+      ${tile('Grado dentro del plazo',fmtPct(g.ett),`plazo de ${plazo} meses`,meterBar(g.ett,0))}
+      ${tile('Activos',estDe(pn).filter(e=>e.estatus==='Activo').length,`${estDe(pn).filter(e=>e.beca==='Beca SECIHTI').length} con beca SECIHTI`)}
+      ${tile('Mujeres',fmtPct(pct(estDe(pn).filter(e=>e.genero==='Mujer').length,estDe(pn).length)),'de la matrícula registrada')}
+    </div>
+    <div class="panel"><h3>Eficiencia terminal por generación</h3><p class="small muted" style="margin-bottom:10px">Porcentaje de cada generación que obtuvo el grado. Una generación está en curso mientras no se cumple el plazo de ${plazo} meses desde su ingreso.</p>
+    ${C.length?`<div class="tablewrap"><table><thead><tr><th>Generación</th><th class="n">Ingresaron</th><th class="n">Activos</th><th class="n">Egresados sin grado</th><th class="n">Titulados</th><th class="n">En plazo</th><th class="n">Bajas</th><th class="n">Eficiencia terminal</th><th></th></tr></thead><tbody>
+      ${C.map(c=>`<tr><td class="mono">${c.y||'Sin año'}</td><td class="n">${c.n}</td><td class="n">${c.activos}</td><td class="n">${c.egr}</td><td class="n">${c.tit}</td><td class="n">${c.enTiempo}</td><td class="n">${c.bajas}</td><td class="n"><b>${fmtPct(c.et)}</b></td><td>${c.enCurso?'<span class="pill acc">en curso</span>':(P.metaEt?(c.et>=+P.metaEt?'<span class="pill ok">✓ meta</span>':'<span class="pill bad">bajo meta</span>'):'')}</td></tr>`).join('')}
+    </tbody></table></div>`:'<p class="muted small">Aparecerá en cuanto captures estudiantes de este programa.</p>'}</div>
+    <div>${toolbar('estudiantes',`<select class="search" style="max-width:190px" id="f-est" data-fsel="estStatus" aria-label="Estatus">${['Todos','Activo','Egresado sin grado','Titulado','Baja temporal','Baja definitiva'].map(x=>`<option ${st===x?'selected':''}>${x}</option>`).join('')}</select>`)}
+    ${table('estudiantes',rows,[
+      {l:'Nombre',f:r=>`<b>${esc(r.nombre)}</b>${ex(r)}<div class="small muted">${esc(r.tema||'')}</div>`},
+      {l:'Gen.',k:'generacion',n:1},{l:'Estatus',f:r=>stPill(r.estatus)},{l:'Director(a)',k:'director'},
+      {l:'Comité',f:r=>r.comite?'<span class="pill ok">✓</span>':'<span class="pill">falta</span>'},
+      {l:'Último avance',f:r=>r.ultimoAvance?fmtDate(r.ultimoAvance):'<span class="muted">—</span>'},{l:'Beca',k:'beca'}],
+      ['Todavía no hay estudiantes de '+pn,'Sube primero los PDFs de control escolar en Documentos y captura desde ahí cada generación.'])}</div>
+  </div>`;
+}
+
+function vEgresados(){
+  const pid=S.prog,pn=progName(pid);
+  const E=estDe(pn).filter(e=>e.estatus==='Titulado'||e.estatus==='Egresado sin grado');
+  const loc=E.filter(e=>e.ultimoContacto).length;
+  const sec={};E.forEach(e=>{if(e.sector)sec[e.sector]=(sec[e.sector]||0)+1});const max=Math.max(1,...Object.values(sec));
+  const rel=E.filter(e=>e.relacion==='Alta'||e.relacion==='Media').length,relN=E.filter(e=>e.relacion).length;
+  const rows=filterRows('egresados',E,['nombre','ocupacion','sector']);
+  return`<div class="head"><div><div class="eyebrow">Resultados</div><h1>Egresados</h1><p class="sub">Aquí aparecen los estudiantes con estatus de egresado o titulado. Abre cada uno para registrar a qué se dedica y cuándo fue el último contacto.</p></div>${progSeg()}</div>
+  <div class="stack">
+    <div class="grid">
+      ${tile('Egresados registrados',E.length,`${E.filter(e=>e.estatus==='Titulado').length} con grado`)}
+      ${tile('Localizados',fmtPct(pct(loc,E.length)),`${loc} con último contacto registrado`,meterBar(pct(loc,E.length),0))}
+      ${tile('Empleo relacionado',fmtPct(pct(rel,relN)),'relación alta o media con su formación')}
+    </div>
+    ${Object.keys(sec).length?`<div class="panel"><h3>Sector donde trabajan</h3><div class="bars">${Object.entries(sec).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><div class="track" title="${esc(k)}: ${v}"><div class="fill" style="width:${v/max*100}%"></div></div><span class="v">${v}</span></div>`).join('')}</div></div>`:''}
+    <div><div class="row" style="justify-content:space-between;margin-bottom:12px"><input class="search" id="q-egresados" data-q="egresados" placeholder="Buscar…" value="${esc(S.q.egresados||'')}" aria-label="Buscar"><button class="btn sm" data-act="go" data-v="estudiantes">Ir a estudiantes</button></div>
+    ${E.length?`<div class="tablewrap"><table><thead><tr><th>Nombre</th><th class="n">Gen.</th><th>Grado obtenido</th><th>Ocupación</th><th>Sector</th><th>Último contacto</th></tr></thead><tbody>
+      ${rows.map(r=>`<tr class="click" data-act="edit" data-col="estudiantes" data-id="${r.id}" tabindex="0"><td><b>${esc(r.nombre)}</b>${ex(r)}</td><td class="n">${esc(r.generacion)}</td><td>${r.fechaTitulacion?fmtDate(r.fechaTitulacion):'<span class="muted">—</span>'}</td><td>${esc(r.ocupacion||'')}</td><td>${esc(r.sector||'')}</td><td>${r.ultimoContacto?fmtDate(r.ultimoContacto):'<span class="pill warn">sin contacto</span>'}</td></tr>`).join('')}
+    </tbody></table></div>`:`<div class="tablewrap"><div class="empty"><b>Sin egresados de ${pn} todavía</b><span>Cuando un estudiante cambie a «Egresado sin grado» o «Titulado» aparecerá aquí.</span></div></div>`}</div>
+  </div>`;
+}
+
+function vProduccion(){
+  const R=S.data.produccion,y=today().getFullYear();
+  const years=[...Array(5)].map((_,i)=>y-4+i);
+  const byY=years.map(a=>R.filter(r=>+r.anio===a).length),max=Math.max(1,...byY);
+  const rows=filterRows('produccion',R,['titulo','autores','tipo','anio','lgac']).sort((a,b)=>(+b.anio||0)-(+a.anio||0));
+  return`<div class="head"><div><div class="eyebrow">Resultados</div><h1>Producción académica</h1><p class="sub">Artículos, libros, capítulos, patentes y divulgación de los profesores y estudiantes del programa.</p></div></div>
+  <div class="stack">
+    <div class="grid">
+      ${tile('Últimos 5 años',R.filter(r=>+r.anio>=y-4).length,'productos registrados')}
+      ${tile('Artículos indexados',R.filter(r=>r.tipo==='Artículo en revista indexada'&&+r.anio>=y-4).length,'últimos 5 años')}
+      ${tile('Con estudiantes',fmtPct(pct(R.filter(r=>r.conEstudiantes==='Sí').length,R.length)),'de toda la producción')}
+    </div>
+    ${R.length?`<div class="panel"><h3>Productos por año</h3><div class="bars">${years.map((a,i)=>`<div class="bar"><span class="mono">${a}</span><div class="track" title="${a}: ${byY[i]}"><div class="fill" style="width:${byY[i]/max*100}%"></div></div><span class="v">${byY[i]}</span></div>`).join('')}</div></div>`:''}
+    <div>${toolbar('produccion')}${table('produccion',rows,[
+      {l:'Título',f:r=>`<b>${esc(r.titulo)}</b>${ex(r)}<div class="small muted">${esc(r.autores||'')}</div>`},
+      {l:'Tipo',k:'tipo'},{l:'Año',k:'anio',n:1},{l:'Estudiantes',f:r=>r.conEstudiantes==='Sí'?'<span class="pill ok">Sí</span>':esc(r.conEstudiantes||'')},{l:'LGAC',k:'lgac'}],
+      ['Sin producción registrada','Registra lo publicado por el núcleo académico, idealmente de los últimos cinco años.'])}</div>
+  </div>`;
+}
+
+function vVinculacion(){
+  const R=S.data.vinculacion;
+  const rows=filterRows('vinculacion',R,['nombre','contraparte','tipo','ambito','estado']);
+  return`<div class="head"><div><div class="eyebrow">Compromiso social</div><h1>Vinculación</h1><p class="sub">Convenios, proyectos con comunidades o con los sectores público y productivo, redes académicas y financiamiento externo. Describe el impacto: el SNP valora la incidencia social.</p></div></div>
+  <div class="stack">
+    <div class="grid">
+      ${tile('Vigentes',R.filter(r=>r.estado==='Vigente').length,`${R.length} registrados`)}
+      ${tile('Internacionales',R.filter(r=>r.ambito==='Internacional').length,'convenios y proyectos')}
+      ${tile('Financiamiento externo','$'+R.reduce((a,r)=>a+(+r.monto||0),0).toLocaleString('es-MX'),'MXN registrados')}
+    </div>
+    <div>${toolbar('vinculacion')}${table('vinculacion',rows,[
+      {l:'Nombre',f:r=>`<b>${esc(r.nombre)}</b>${ex(r)}<div class="small muted">${esc(r.contraparte||'')}</div>`},
+      {l:'Tipo',k:'tipo'},{l:'Ámbito',k:'ambito'},
+      {l:'Estado',f:r=>r.estado?`<span class="pill ${r.estado==='Vigente'?'ok':r.estado==='En gestión'?'warn':''}">${esc(r.estado)}</span>`:''},
+      {l:'Vigencia',f:r=>r.fin?'hasta '+fmtDate(r.fin):''}],
+      ['Sin actividades de vinculación','Los profesores externos, nacionales e internacionales, suelen traer convenios y redes. Regístralos aquí.'])}</div>
+  </div>`;
+}
+
+function vDocumentos(){
+  const R=S.data.documentos,cat=S.f.docCat||'Todas';
+  const rows=filterRows('documentos',R.filter(r=>cat==='Todas'||r.categoria===cat),['nombre','categoria','notas','archivo']).sort((a,b)=>(b.actualizado||'').localeCompare(a.actualizado||''));
+  const band=R.filter(r=>r.categoria==='Control escolar (por procesar)');
+  const can=!!S.assets;
+  return`<div class="head"><div><div class="eyebrow">Evidencias</div><h1>Documentos</h1><p class="sub">Sube aquí los PDFs de control escolar y cualquier evidencia. Cada documento puede ligarse a uno o varios criterios del diagnóstico.</p></div></div>
+  <div class="stack">
+    ${can?`<div class="drop" id="drop"><b>Arrastra PDFs aquí</b><span class="small muted">PDF, imágenes, CSV o texto · hasta 20 MB por archivo</span>
+      <div class="row" style="justify-content:center"><label class="btn primary" for="file-in">Elegir archivos</label><span class="small">Guardar en:</span><select id="up-cat" class="search" style="max-width:260px" aria-label="Categoría">${DOC_CATS.map(c=>`<option ${c===(S.f.upCat||DOC_CATS[0])?'selected':''}>${c}</option>`).join('')}</select></div>
+      <input type="file" id="file-in" multiple accept="application/pdf,image/*,.csv,.txt,.md" hidden></div>`
+      :`<div class="banner">La carga de archivos está disponible para quien tiene permiso de edición en esta plataforma. Puedes registrar el documento sin archivo con «Agregar documento».</div>`}
+    ${band.length?`<div class="panel"><div class="row" style="justify-content:space-between"><h3>Bandeja de control escolar: ${band.length} por procesar</h3></div><p class="small muted" style="margin:4px 0 10px">Abre cada PDF, captura sus datos en Estudiantes y márcalo como procesado.</p>
+      <div class="alerts">${band.map(x=>`<div class="alert warn"><span class="ic">•</span><div style="flex:1">${docLink(x)}</div><button class="btn sm" data-act="processed" data-id="${x.id}">Marcar como procesado</button></div>`).join('')}</div></div>`:''}
+    <div>${toolbar('documentos',`<select class="search" style="max-width:240px" id="f-doc" data-fsel="docCat" aria-label="Categoría"><option>Todas</option>${DOC_CATS.map(c=>`<option ${cat===c?'selected':''}>${c}</option>`).join('')}</select>`)}
+    ${table('documentos',rows,[
+      {l:'Documento',f:r=>`<b>${esc(r.nombre)}</b>${ex(r)}<div class="small muted">${esc(r.archivo||'sin archivo')}${r.size?' · '+(r.size/1048576).toFixed(1)+' MB':''}</div>`},
+      {l:'Categoría',k:'categoria'},{l:'Programa',k:'programa'},
+      {l:'Criterios',f:r=>(r.criterios||[]).map(c=>`<span class="pill acc">${esc(c)}</span>`).join(' ')},
+      {l:'Archivo',f:r=>r.assetId?`<a class="doclink" href="/_blob/${r.assetId}" target="_blank" rel="noopener" data-stop="1">Abrir</a>`:''}],
+      ['Sin documentos','Empieza por los PDFs que te entregue control escolar.'])}</div>
+  </div>`;
+}
+
+function vMejora(){
+  const R=S.data.mejora,hoy=today();
+  const rows=filterRows('mejora',R,['accion','responsable','criterio','estado']).sort((a,b)=>(a.fechaLimite||'9').localeCompare(b.fechaLimite||'9'));
+  const n=k=>R.filter(r=>r.estado===k).length;
+  return`<div class="head"><div><div class="eyebrow">Mejora continua</div><h1>Plan de mejora</h1><p class="sub">Por cada criterio en «No cumple» o «Parcial», registra una acción con responsable y fecha. El SNP pide este plan junto con la autoevaluación.</p></div></div>
+  <div class="stack">
+    <div class="grid">${tile('Pendientes',n('Pendiente'))}${tile('En proceso',n('En proceso'))}${tile('Concluidas',n('Concluida'),'',meterBar(pct(n('Concluida'),R.length),0))}${tile('Vencidas',R.filter(r=>r.estado!=='Concluida'&&r.fechaLimite&&d(r.fechaLimite)<hoy).length)}</div>
+    ${(()=>{const gaps=PROGS.flatMap(pg=>CRITS.filter(c=>['no','parcial'].includes(critState(pg.id,c.id).estado)&&!R.some(m=>m.criterio===c.id)).map(c=>({pg,c})));
+      return gaps.length?`<div class="panel"><h3>Criterios sin acción de mejora</h3><div class="alerts" style="margin-top:8px">${gaps.slice(0,12).map(({pg,c})=>`<div class="alert warn"><span class="ic">•</span><div style="flex:1">${pg.n} · ${c.id} ${esc(c.t)}</div><button class="btn sm" data-act="newmejora" data-crit="${c.id}" data-prog="${pg.n}">Crear acción</button></div>`).join('')}</div></div>`:''})()}
+    <div>${toolbar('mejora')}${table('mejora',rows,[
+      {l:'Acción',f:r=>`<b>${esc(r.accion)}</b>${ex(r)}<div class="small muted">${esc(r.meta||'')}</div>`},
+      {l:'Criterio',f:r=>r.criterio?`<span class="pill acc">${esc(r.criterio)}</span>`:''},{l:'Programa',k:'programa'},{l:'Responsable',k:'responsable'},
+      {l:'Fecha límite',f:r=>r.fechaLimite?`<span class="${r.estado!=='Concluida'&&d(r.fechaLimite)<hoy?'pill bad':''}">${fmtDate(r.fechaLimite)}</span>`:''},
+      {l:'Estado',f:r=>`<span class="pill ${r.estado==='Concluida'?'ok':r.estado==='En proceso'?'warn':''}">${esc(r.estado||'')}</span>`}],
+      ['Sin acciones todavía','Revisa el diagnóstico: cada criterio que no se cumple necesita al menos una acción.'])}</div>
+  </div>`;
+}
+
+const RENDER={inicio:vInicio,diagnostico:vDiagnostico,programas:vProgramas,profesores:vProfesores,estudiantes:vEstudiantes,egresados:vEgresados,produccion:vProduccion,vinculacion:vVinculacion,documentos:vDocumentos,mejora:vMejora};
+let _raf=0;
+function render(){cancelAnimationFrame(_raf);_raf=requestAnimationFrame(doRender)}
+function doRender(){
+  const ae=document.activeElement,aid=ae&&ae.id&&ae.closest('#main')?ae.id:null,sel=aid&&ae.selectionStart!=null?[ae.selectionStart,ae.selectionEnd]:null;
+  renderNav();
+  const banner=S.ready&&!S.online?'<div class="banner">No hay conexión con la base de datos: lo que captures se verá en pantalla pero no se guardará.</div>':'';
+  $('#main').innerHTML=banner+(RENDER[S.view]||vInicio)();
+  if(aid){const el=document.getElementById(aid);if(el){el.focus();if(sel)try{el.setSelectionRange(sel[0],sel[1])}catch(e){}}}
+  bindDrop();
+}
+
+/* ---------- formularios ---------- */
+function fieldHTML(f,val){
+  if(f.sec)return`<div class="sec">${f.sec}${f.h?`<div class="hint" style="font-family:var(--sans);font-weight:400">${f.h}</div>`:''}</div>`;
+  const id='fld-'+f.k,lab=`<label for="${id}">${f.l}${f.req?' *':''}</label>`,hint=f.h?`<span class="hint">${f.h}</span>`:'',cls='field'+(f.w||f.t==='textarea'?' wide':'');
+  const opts=(o,v)=>`<option value=""></option>`+o.map(x=>{const vv=typeof x==='object'?x.v:x,ll=typeof x==='object'?x.l:x;return`<option value="${esc(vv)}" ${vv===v?'selected':''}>${esc(ll)}</option>`}).join('');
+  const multi=(o,v)=>`<div class="${cls}"><span class="lab">${f.l}</span><div class="checks">${o.length?o.map((x,i)=>{const vv=typeof x==='object'?x.v:x,ll=typeof x==='object'?x.l:x;return`<label><input type="checkbox" name="${f.k}" value="${esc(vv)}" ${(v||[]).includes(vv)?'checked':''}> ${esc(ll)}</label>`}).join(''):'<span class="hint">No hay opciones todavía.</span>'}</div>${hint}</div>`;
+  switch(f.t){
+    case 'textarea':return`<div class="${cls}">${lab}<textarea id="${id}" name="${f.k}">${esc(val)}</textarea>${hint}</div>`;
+    case 'select':return`<div class="${cls}">${lab}<select id="${id}" name="${f.k}" ${f.req?'required':''}>${opts(f.o,val)}</select>${hint}</div>`;
+    case 'lgac':{const o=lgacList();if(val&&!o.includes(val))o.push(val);return`<div class="${cls}">${lab}<select id="${id}" name="${f.k}">${opts(o,val)}</select>${o.length?hint:'<span class="hint">Registra las LGAC en la ficha de cada programa.</span>'}</div>`}
+    case 'prof':{const o=S.data.profesores.map(p=>p.nombre).filter(Boolean).sort();if(val&&!o.includes(val))o.push(val);return`<div class="${cls}">${lab}<select id="${id}" name="${f.k}">${opts(o,val)}</select>${hint}</div>`}
+    case 'crit':return`<div class="${cls}">${lab}<select id="${id}" name="${f.k}">${opts(CRIT_OPTS,val)}</select>${hint}</div>`;
+    case 'multi':return multi(f.o,val);
+    case 'profmulti':return multi(S.data.profesores.map(p=>p.nombre).filter(Boolean).sort(),val);
+    case 'critmulti':return`<div class="${cls}"><label for="${id}">${f.l}</label><select id="${id}" name="${f.k}" multiple size="6">${CRIT_OPTS.map(o=>`<option value="${o.v}" ${(val||[]).includes(o.v)?'selected':''}>${esc(o.l)}</option>`).join('')}</select><span class="hint">Mantén presionado Ctrl (o ⌘) para elegir varios.</span></div>`;
+    default:return`<div class="${cls}">${lab}<input id="${id}" name="${f.k}" type="${f.t==='number'?'number':f.t==='date'?'date':'text'}" value="${esc(val)}" ${f.req?'required':''} ${f.t==='number'?'step="any"':''}>${hint}</div>`;
+  }
+}
+function openForm(schemaKey,col,id,preset={},opts={}){
+  const sc=SCHEMAS[schemaKey],rec=id?get(col,id)||{}:{...preset};
+  const m=$('#modal');
+  m.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mt"><header><h2 id="mt">${esc(opts.title||((id?'Editar ':'Nuevo ')+sc.titulo))}</h2><button class="btn ghost" data-close="1" aria-label="Cerrar">✕</button></header>
+  ${rec.ejemplo?'<p class="pill ex" style="margin-bottom:10px">Registro de ejemplo</p>':''}
+  <form id="frm" class="form" novalidate>${sc.fields.map(f=>fieldHTML(f,rec[f.k])).join('')}</form>
+  <div class="actions"><div>${id&&!opts.noDelete?`<button class="btn danger" id="del">Eliminar</button>`:''}</div><div class="row"><button class="btn" data-close="1">Cancelar</button><button class="btn primary" id="save">Guardar</button></div></div></div>`;
+  m.hidden=false;
+  const first=m.querySelector('input,select,textarea');first&&first.focus();
+  $('#save').onclick=async()=>{
+    const fm=$('#frm'),out={...rec};delete out.id;
+    for(const f of sc.fields){if(f.sec)continue;
+      if(f.t==='multi'||f.t==='profmulti')out[f.k]=[...fm.querySelectorAll(`input[name="${f.k}"]:checked`)].map(x=>x.value);
+      else if(f.t==='critmulti')out[f.k]=[...fm.querySelector(`[name="${f.k}"]`).selectedOptions].map(o=>o.value);
+      else{const el=fm.querySelector(`[name="${f.k}"]`);let v=el.value.trim();if(f.t==='number')v=v===''?'':Number(v);out[f.k]=v;}
+      if(f.req&&(out[f.k]===''||out[f.k]==null)){toast(`Falta: ${f.l}`);fm.querySelector(`[name="${f.k}"]`)?.focus();return}
+    }
+    $('#save').disabled=true;
+    try{await safe(store.save(col,id||opts.newId,out),'Guardado');closeModal();opts.after&&opts.after()}catch(e){$('#save').disabled=false}
+  };
+  const del=$('#del');if(del)del.onclick=async()=>{
+    if(!del.dataset.sure){del.dataset.sure=1;del.textContent='Confirmar: eliminar definitivamente';return}
+    del.disabled=true;
+    try{if(col==='documentos'&&rec.assetId&&S.assets){try{await S.assets.delete(rec.assetId)}catch(e){console.warn(e)}}
+      await safe(store.remove(col,id),'Eliminado');closeModal()}catch(e){del.disabled=false}
+  };
+}
+function closeModal(){const m=$('#modal');m.hidden=true;m.innerHTML=''}
+
+/* ---------- carga de archivos ---------- */
+const TYPES={pdf:'application/pdf',csv:'text/csv',txt:'text/plain',md:'text/markdown',png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',gif:'image/gif'};
+async function uploadFiles(files,preset={}){
+  if(!S.assets){toast('La carga de archivos no está disponible en esta vista.');return}
+  let ok=0;
+  for(const file of files){
+    const ext=(file.name.split('.').pop()||'').toLowerCase(),type=TYPES[ext]||file.type;
+    if(!type){toast(`Formato no admitido: ${file.name}`);continue}
+    toast(`Subiendo ${file.name}…`);
+    try{
+      const r=await S.assets.upload(file,{type});
+      await store.save('documentos',null,{nombre:file.name.replace(/\.[^.]+$/,''),archivo:file.name,assetId:r.id,size:r.sizeBytes,contentType:r.contentType,categoria:preset.categoria||S.f.upCat||DOC_CATS[0],programa:preset.programa||'Ambos',criterios:preset.criterios||[]});
+      ok++;
+    }catch(e){console.error(e);const m={too_large:'es mayor a 20 MB',unsupported_type:'tiene un formato no admitido',quota_or_state:'no cabe: se llenó el espacio de archivos',rate_limited:'no se subió: espera un momento e intenta de nuevo'}[e&&e.code]||'no se pudo subir';toast(`${file.name} ${m}.`)}
+  }
+  if(ok)toast(ok===1?'Archivo guardado':`${ok} archivos guardados`);
+}
+function bindDrop(){
+  const dz=$('#drop');if(!dz)return;
+  dz.ondragover=e=>{e.preventDefault();dz.classList.add('over')};
+  dz.ondragleave=()=>dz.classList.remove('over');
+  dz.ondrop=e=>{e.preventDefault();dz.classList.remove('over');uploadFiles([...e.dataTransfer.files])};
+  $('#file-in').onchange=e=>{uploadFiles([...e.target.files]);e.target.value=''};
+}
+function pickFiles(preset){
+  const i=document.createElement('input');i.type='file';i.multiple=true;i.accept='application/pdf,image/*,.csv,.txt,.md';
+  i.onchange=()=>uploadFiles([...i.files],preset);i.click();
+}
+
+/* ---------- exportar ---------- */
+async function saveFile(filename,data){
+  if(!S.downloads){toast('La descarga no está disponible en esta vista.');return}
+  try{await S.downloads.save({filename,data})}catch(e){if(e&&e.code!=='cancelled')toast('No se pudo generar el archivo.')}
+}
+function toCSV(col){
+  const fields=SCHEMAS[col].fields.filter(f=>!f.sec);
+  const q=v=>{v=Array.isArray(v)?v.join('; '):v??'';v=String(v);return/[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+  return'﻿'+[fields.map(f=>q(f.l)).join(','),...S.data[col].map(r=>fields.map(f=>q(r[f.k])).join(','))].join('\n');
+}
+
+/* ---------- datos de ejemplo ---------- */
+function sampleRows(){
+  const y=today().getFullYear();
+  return{
+    profesores:[
+      {nombre:'Dra. Ana Ejemplo Ruiz',grado:'Doctorado',vinculo:'Facultad · tiempo completo',rol:'Núcleo académico básico',programas:['Maestría','Doctorado'],institucion:'Facultad (ejemplo)',pais:'México',snii:'Nivel I',sniiVigencia:`${y}-12-31`,cvuActualizado:'Sí',tesisDirigiendo:3},
+      {nombre:'Dr. Luis Ejemplo Mora',grado:'Doctorado',vinculo:'Facultad · tiempo completo',rol:'Núcleo académico básico',programas:['Maestría'],institucion:'Facultad (ejemplo)',pais:'México',snii:'Candidato',cvuActualizado:'No',tesisDirigiendo:2},
+      {nombre:'Dra. Marta Ejemplo Silva',grado:'Doctorado',vinculo:'Externo internacional',rol:'Colaborador',programas:['Doctorado'],institucion:'Universidad extranjera (ejemplo)',pais:'España',snii:'Sin SNII',tesisDirigiendo:1},
+      {nombre:'Mtro. Jorge Ejemplo Paz',grado:'Maestría',vinculo:'Facultad · asignatura',rol:'Profesor invitado',programas:['Maestría'],institucion:'Facultad (ejemplo)',pais:'México',snii:'Sin SNII'},
+    ],
+    estudiantes:[
+      {nombre:'Estudiante Ejemplo 1',programa:'Maestría',generacion:y-4,fechaIngreso:`${y-4}-08-15`,estatus:'Titulado',fechaTitulacion:`${y-2}-11-20`,genero:'Mujer',dedicacion:'Tiempo completo',beca:'Beca SECIHTI',director:'Dra. Ana Ejemplo Ruiz',comite:'Dra. Ana Ejemplo Ruiz\nDr. Luis Ejemplo Mora',sector:'Académico',ocupacion:'Profesora de licenciatura',relacion:'Alta',ultimoContacto:`${y}-03-01`},
+      {nombre:'Estudiante Ejemplo 2',programa:'Maestría',generacion:y-4,fechaIngreso:`${y-4}-08-15`,estatus:'Egresado sin grado',genero:'Hombre',dedicacion:'Tiempo completo',beca:'Beca SECIHTI',director:'Dr. Luis Ejemplo Mora'},
+      {nombre:'Estudiante Ejemplo 3',programa:'Maestría',generacion:y-4,fechaIngreso:`${y-4}-08-15`,estatus:'Baja definitiva',genero:'Mujer'},
+      {nombre:'Estudiante Ejemplo 4',programa:'Maestría',generacion:y-1,fechaIngreso:`${y-1}-08-15`,estatus:'Activo',genero:'Mujer',dedicacion:'Tiempo completo',beca:'Beca institucional',director:'Dra. Ana Ejemplo Ruiz',comite:'Dra. Ana Ejemplo Ruiz\nMtro. Jorge Ejemplo Paz',ultimoAvance:`${y}-06-10`},
+      {nombre:'Estudiante Ejemplo 5',programa:'Doctorado',generacion:y-2,fechaIngreso:`${y-2}-08-15`,estatus:'Activo',genero:'Hombre',dedicacion:'Tiempo completo',beca:'Beca SECIHTI',director:'Dra. Ana Ejemplo Ruiz',codirector:'Dra. Marta Ejemplo Silva',comite:'Dra. Ana Ejemplo Ruiz\nDra. Marta Ejemplo Silva'},
+    ],
+    produccion:[
+      {titulo:'Artículo de ejemplo sobre la LGAC principal',tipo:'Artículo en revista indexada',anio:y-1,autores:'Ejemplo Ruiz A., Estudiante Ejemplo 1',profesores:['Dra. Ana Ejemplo Ruiz'],conEstudiantes:'Sí',programas:['Maestría']},
+      {titulo:'Capítulo de libro de ejemplo',tipo:'Capítulo de libro',anio:y-2,autores:'Ejemplo Mora L.',profesores:['Dr. Luis Ejemplo Mora'],conEstudiantes:'No',programas:['Maestría']},
+    ],
+    vinculacion:[{nombre:'Convenio de ejemplo con universidad extranjera',tipo:'Convenio académico',contraparte:'Universidad extranjera (ejemplo)',ambito:'Internacional',estado:'Vigente',fin:`${y+2}-06-30`,programas:['Doctorado'],impacto:'Codirección de tesis y estancias de estudiantes.'}],
+    mejora:[{accion:'Actualizar el plan de estudios de la maestría (ejemplo)',criterio:'B1',programa:'Maestría',responsable:'Coordinación',fechaLimite:`${y+1}-02-28`,estado:'En proceso',meta:'Plan aprobado por el consejo'}],
+  };
+}
+async function loadSample(){const s=sampleRows();const ps=[];for(const[c,rows]of Object.entries(s))rows.forEach(r=>ps.push(store.save(c,'ej-'+uid(),{...r,ejemplo:true})));try{await safe(Promise.all(ps),'Datos de ejemplo cargados')}catch(e){}}
+async function clearSample(){const ps=[];COLS.forEach(c=>S.data[c].filter(r=>r.ejemplo).forEach(r=>ps.push(store.remove(c,r.id))));try{await safe(Promise.all(ps),'Datos de ejemplo eliminados')}catch(e){}}
+
+/* ---------- eventos ---------- */
+document.addEventListener('click',async e=>{
+  const t=e.target.closest('[data-go],[data-prog],[data-act],[data-close],[data-f]');
+  if(!t)return;
+  if(t.dataset.stop)return;
+  if(t.dataset.close){closeModal();return}
+  if(t.dataset.go){e.preventDefault();go(t.dataset.go);return}
+  if(t.dataset.prog&&!t.dataset.act){setProg(t.dataset.prog);return}
+  if(t.dataset.f){S.f[t.dataset.f]=t.dataset.v;render();return}
+  const a=t.dataset.act;
+  if(a==='go')go(t.dataset.v);
+  else if(a==='new')openForm(t.dataset.col,t.dataset.col,null,t.dataset.col==='estudiantes'?{programa:progName(S.prog),estatus:'Activo'}:t.dataset.col==='mejora'?{estado:'Pendiente'}:{});
+  else if(a==='edit')openForm(t.dataset.col,t.dataset.col,t.dataset.id);
+  else if(a==='editprog')openForm('programa','programas',t.dataset.id,{},{fixedId:1,noDelete:1,title:'Ficha de '+progName(t.dataset.id)});
+  else if(a==='editgeneral')openForm('general','config','general',{},{fixedId:1,noDelete:1,title:'Datos generales'});
+  else if(a==='critstate'){const id=S.prog+'__'+t.dataset.crit,cur=critState(S.prog,t.dataset.crit);if(cur.estado===t.dataset.v)return;const{id:_,...rest}=cur;try{await safe(store.save('criterios',id,{...rest,estado:t.dataset.v}))}catch(err){}}
+  else if(a==='critnote'){const cid=t.dataset.crit,crit=CRITS.find(c=>c.id===cid);
+    SCHEMAS._nota={titulo:`nota · ${cid} ${crit.t} (${progName(S.prog)})`,fields:[{k:'notas',l:'Situación actual y observaciones',t:'textarea',w:1},{k:'responsable',l:'Responsable',t:'text'}]};
+    openForm('_nota','criterios',S.prog+'__'+cid,{},{fixedId:1,noDelete:1,title:SCHEMAS._nota.titulo[0].toUpperCase()+SCHEMAS._nota.titulo.slice(1)});}
+  else if(a==='critupload')pickFiles({categoria:DOC_CATS[DOC_CATS.length-1],programa:progName(S.prog),criterios:[t.dataset.crit]});
+  else if(a==='processed'){const r=get('documentos',t.dataset.id);if(r){const{id,...rest}=r;try{await safe(store.save('documentos',id,{...rest,categoria:'Control escolar (procesado)'}),'Marcado como procesado')}catch(err){}}}
+  else if(a==='newmejora')openForm('mejora','mejora',null,{criterio:t.dataset.crit,programa:t.dataset.prog,estado:'Pendiente'});
+  else if(a==='csv')saveFile(`${t.dataset.col}-${new Date().toISOString().slice(0,10)}.csv`,toCSV(t.dataset.col));
+  else if(a==='backup')saveFile(`respaldo-posgrado-${new Date().toISOString().slice(0,10)}.json`,JSON.stringify(S.data,null,2));
+  else if(a==='sample')loadSample();
+  else if(a==='clearsample')clearSample();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&!$('#modal').hidden)closeModal();
+  if(e.key==='Enter'&&e.target.matches('tr.click'))e.target.click();
+});
+document.addEventListener('input',e=>{const q=e.target.dataset&&e.target.dataset.q;if(q!=null){S.q[q]=e.target.value;render()}});
+document.addEventListener('change',e=>{const k=e.target.dataset&&e.target.dataset.fsel;if(k){S.f[k]=e.target.value;render()}if(e.target.id==='up-cat')S.f.upCat=e.target.value});
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+
+/* ---------- arranque ---------- */
+render();
+(async()=>{
+  const c=window.claude;
+  const use=n=>c&&c.use?c.use(n).catch(()=>null):Promise.resolve(null);
+  const[db,assets,downloads]=await Promise.all([use('db'),use('assets'),use('downloads')]);
+  S.assets=assets;S.downloads=downloads;S.ready=true;
+  if(db){S.db=db;S.online=true;
+    COLS.forEach(col=>db.collection(col).onSnapshot(snap=>{S.data[col]=snap.docs.map(x=>({id:x.id,...x.data()}));render()},err=>{console.error(col,err);if(err.code==='revoked'){S.online=false;render()}}));
+  }
+  render();
+})();
+</script>
