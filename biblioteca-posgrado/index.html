@@ -1,0 +1,592 @@
+<!doctype html>
+<title>Acervo Maestría en Derecho</title>
+<meta name="description" content="Bibliografía, tratados, legislación, jurisprudencia e infotecas para una maestría en derecho con acentuaciones en constitucional, penal, laboral, fiscal y corporativo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F3F5F7; --surface:#FFFFFF; --ink:#14202B; --muted:#56636F; --line:#D9DFE5;
+  --accent:#23446F; --accent-ink:#FFFFFF; --seal:#9A7220; --focus:#3C6FB0;
+  --a-comun:#3F5A66; --a-constitucional:#23446F; --a-penal:#8A2E2E; --a-laboral:#2F6B4F; --a-fiscal:#7A5A12; --a-corporativo:#4B3F7A;
+  --ok:#2F6B4F; --warn:#9A7220;
+  --display:"Libre Caslon Display", "Libre Caslon Text", Georgia, serif;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0F161D; --surface:#16202A; --ink:#E6ECF1; --muted:#9AA8B5; --line:#2A3743;
+    --accent:#8FB3E3; --accent-ink:#0F161D; --seal:#D4AE5E; --focus:#8FB3E3;
+    --a-comun:#9DB6C1; --a-constitucional:#8FB3E3; --a-penal:#E39A9A; --a-laboral:#8CCBA9; --a-fiscal:#D4AE5E; --a-corporativo:#B7AAE8;
+    --ok:#8CCBA9; --warn:#D4AE5E;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0F161D; --surface:#16202A; --ink:#E6ECF1; --muted:#9AA8B5; --line:#2A3743;
+  --accent:#8FB3E3; --accent-ink:#0F161D; --seal:#D4AE5E; --focus:#8FB3E3;
+  --a-comun:#9DB6C1; --a-constitucional:#8FB3E3; --a-penal:#E39A9A; --a-laboral:#8CCBA9; --a-fiscal:#D4AE5E; --a-corporativo:#B7AAE8;
+  --ok:#8CCBA9; --warn:#D4AE5E;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:28px 64px}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+button,input,select,textarea{font:inherit;color:inherit}
+
+/* Encabezado */
+header.top{display:grid;grid-template-columns:1fr minmax(0,420px);gap:24px 48px;align-items:end;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.eyebrow{font:500 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--seal);margin:0 0 10px}
+h1{font:400 clamp(34px,5.2vw,58px)/1.02 var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.lede{margin:12px 0 0;color:var(--muted);max-width:58ch}
+blockquote.art{margin:0;padding:14px 0 0 18px;border-left:2px solid var(--seal);font:italic 400 15.5px/1.5 var(--serif);color:var(--ink)}
+blockquote.art cite{display:block;margin-top:8px;font:500 11.5px/1.3 var(--mono);font-style:normal;color:var(--muted);letter-spacing:.02em}
+
+/* Pestañas */
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap;margin:22px 0 18px}
+nav.tabs button{border:1px solid transparent;background:none;padding:8px 14px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:500}
+nav.tabs button:hover{color:var(--ink);border-color:var(--line)}
+nav.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+nav.tabs .n{font:500 11px var(--mono);opacity:.75;margin-left:6px}
+
+/* Diseño principal */
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:32px;align-items:start}
+aside.filters{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);display:grid;gap:18px}
+.label{font:600 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.search{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.areas{display:grid;gap:2px}
+.areas button{display:flex;align-items:center;gap:10px;justify-content:space-between;width:100%;text-align:left;border:0;background:none;padding:7px 10px;border-radius:6px;cursor:pointer;color:var(--ink)}
+.areas button:hover{background:var(--surface)}
+.areas button[aria-pressed="true"]{background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);font-weight:600}
+.areas .dot{width:9px;height:9px;border-radius:50%;flex:none;background:var(--c,var(--muted))}
+.areas .nm{flex:1}
+.areas .ct{font:12px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+
+/* Lista */
+.listhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.listhead h2{font:400 26px/1.15 var(--display);margin:0}
+.listhead .meta{font:12px var(--mono);color:var(--muted)}
+.intro{color:var(--muted);margin:0 0 14px;max-width:70ch}
+ol.items{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+li.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 20px;padding:16px 0;border-bottom:1px solid var(--line)}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.chip{font:500 11px/1 var(--sans);letter-spacing:.04em;padding:4px 7px;border-radius:4px;color:var(--c,var(--muted));box-shadow:inset 0 0 0 1px currentColor;white-space:nowrap}
+.chip.kind{color:var(--muted);box-shadow:none;background:var(--surface);border:1px solid var(--line)}
+.chip.free{color:var(--ok)}
+.chip.paid{color:var(--warn)}
+.ref{font:400 16px/1.5 var(--serif);margin:0}
+.ref i{font-style:italic}
+.note{margin:6px 0 0;color:var(--muted);font-size:13.5px;max-width:78ch}
+.sig{font:12px var(--mono);color:var(--muted)}
+.actions{display:flex;gap:6px;align-items:flex-start;flex-wrap:wrap;justify-content:flex-end}
+.btn{border:1px solid var(--line);background:var(--surface);padding:6px 10px;border-radius:6px;cursor:pointer;font-size:13px;white-space:nowrap;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--muted)}
+.btn.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.state{padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font-size:13px}
+.empty{padding:40px 0;color:var(--muted);text-align:center}
+
+/* Mi plan */
+.progress{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:4px 0 22px}
+.prog{padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.prog .t{display:flex;justify-content:space-between;font-size:13px;font-weight:600}
+.prog .t span:last-child{font:12px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:3px;background:var(--line);margin-top:9px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--c,var(--accent));border-radius:3px}
+details.add{margin:0 0 20px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+details.add summary{cursor:pointer;padding:12px 14px;font-weight:600}
+form.addform{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;padding:0 14px 14px}
+form.addform label{display:grid;gap:4px;font-size:12.5px;color:var(--muted)}
+form.addform input,form.addform select{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--ground)}
+form.addform .full{grid-column:1/-1}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);background:var(--ink);color:var(--ground);padding:9px 16px;border-radius:999px;font-size:13.5px;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+textarea.fallback{width:100%;min-height:140px;margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font:13px/1.5 var(--mono)}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;max-width:90ch}
+
+@media (max-width:860px){
+  header.top{grid-template-columns:1fr}
+  .layout{grid-template-columns:1fr;gap:18px}
+  aside.filters{position:static}
+  .areas{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+}
+@media (max-width:560px){
+  li.item{grid-template-columns:1fr}
+  .actions{justify-content:flex-start}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">Posgrado · Maestría en Derecho</p>
+      <h1>Acervo Maestría en Derecho</h1>
+      <p class="lede">Bibliografía básica por acentuación, tratados internacionales, legislación federal, jurisprudencia clave y acceso directo a infotecas y organismos nacionales e internacionales.</p>
+    </div>
+    <blockquote class="art">“Las normas relativas a los derechos humanos se interpretarán de conformidad con esta Constitución y con los tratados internacionales de la materia favoreciendo en todo tiempo a las personas la protección más amplia.”
+      <cite>CPEUM, art. 1º, párr. 2 · reforma DOF 10-06-2011</cite>
+    </blockquote>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Secciones" id="tabs"></nav>
+
+  <div class="layout">
+    <aside class="filters" aria-label="Filtros">
+      <div>
+        <p class="label"><label for="q">Buscar</label></p>
+        <input id="q" class="search" type="search" placeholder="Autor, título, tema…" autocomplete="off">
+      </div>
+      <div>
+        <p class="label">Acentuación</p>
+        <div class="areas" id="areas"></div>
+      </div>
+      <div>
+        <p class="label"><label for="acceso">Acceso</label></p>
+        <select id="acceso" class="select">
+          <option value="">Todos</option>
+          <option value="libre">Libre / en línea</option>
+          <option value="suscripcion">Suscripción o biblioteca</option>
+        </select>
+      </div>
+      <p class="hint">Tu lista y tu avance de lectura se guardan solo en este navegador.</p>
+    </aside>
+
+    <main id="main"></main>
+  </div>
+
+  <footer>
+    Las fichas indican el año de la primera edición o de la edición de referencia; consulta siempre la edición más reciente disponible en tu biblioteca. Para leyes, verifica el texto vigente y sus últimas reformas en el portal de la Cámara de Diputados o en el DOF antes de citar. La bibliografía es una propuesta base: ajústala al plan de estudios de tu programa.
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Catálogos ---------- */
+var AREAS = [
+  {k:"comun", n:"Tronco común"},
+  {k:"constitucional", n:"Constitucional"},
+  {k:"penal", n:"Penal"},
+  {k:"laboral", n:"Laboral"},
+  {k:"fiscal", n:"Fiscal"},
+  {k:"corporativo", n:"Corporativo"}
+];
+var AREA_NAME = {}; AREAS.forEach(function(a){ AREA_NAME[a.k]=a.n; });
+
+var TABS = [
+  {k:"libros", n:"Bibliografía", tipo:"libro", h:"Bibliografía básica",
+   intro:"Obras de consulta obligada por acentuación. El tronco común reúne teoría del derecho, argumentación y metodología de la investigación jurídica."},
+  {k:"tratados", n:"Tratados", tipo:"tratado", h:"Tratados internacionales",
+   intro:"Instrumentos que integran el parámetro de regularidad constitucional (art. 1º y 133 CPEUM) y los convenios que rigen cada materia."},
+  {k:"leyes", n:"Legislación", tipo:"ley", h:"Legislación nacional",
+   intro:"Constitución y leyes federales. Los enlaces llevan al texto vigente publicado por la Cámara de Diputados."},
+  {k:"jurisprudencia", n:"Jurisprudencia", tipo:"juris", h:"Jurisprudencia y precedentes clave",
+   intro:"Resoluciones de la Suprema Corte y de la Corte Interamericana que todo posgrado en derecho mexicano debe conocer."},
+  {k:"infotecas", n:"Infotecas y organismos", tipo:"recurso", h:"Infotecas, bases de datos y organismos",
+   intro:"Bibliotecas digitales, buscadores jurídicos y portales oficiales de organismos nacionales e internacionales."},
+  {k:"mi-plan", n:"Mi plan de lectura", tipo:null, h:"Mi plan de lectura",
+   intro:"Lo que guardaste, tu avance por acentuación y tus propias referencias."}
+];
+
+var DIP = "https://www.diputados.gob.mx/LeyesBiblio/pdf/";
+var DIP_INDEX = "https://www.diputados.gob.mx/LeyesBiblio/index.htm";
+
+/* ---------- Acervo ---------- */
+/* tipo: libro | tratado | ley | juris | recurso ; acceso: libre | suscripcion */
+var DATA = [
+/* Tronco común */
+{id:"kelsen-tpd", tipo:"libro", areas:["comun","constitucional"], autor:"Kelsen, H.", anio:1979, titulo:"Teoría pura del derecho", ed:"R. J. Vernengo, trad.", editorial:"UNAM, Instituto de Investigaciones Jurídicas", acceso:"suscripcion", nota:"Traducción de la 2ª edición alemana (1960). Base de la teoría de la validez y la jerarquía normativa."},
+{id:"hart-cd", tipo:"libro", areas:["comun"], autor:"Hart, H. L. A.", anio:1963, titulo:"El concepto de derecho", ed:"G. R. Carrió, trad.", editorial:"Abeledo-Perrot", acceso:"suscripcion", nota:"Reglas primarias y secundarias; regla de reconocimiento."},
+{id:"dworkin-ds", tipo:"libro", areas:["comun","constitucional"], autor:"Dworkin, R.", anio:1984, titulo:"Los derechos en serio", editorial:"Ariel", acceso:"suscripcion", nota:"Principios frente a reglas; crítica al positivismo."},
+{id:"nino-iad", tipo:"libro", areas:["comun"], autor:"Nino, C. S.", anio:1980, titulo:"Introducción al análisis del derecho", editorial:"Astrea", acceso:"suscripcion", nota:"Manual clásico de conceptos jurídicos fundamentales."},
+{id:"atienza-rd", tipo:"libro", areas:["comun"], autor:"Atienza, M.", anio:1991, titulo:"Las razones del derecho. Teorías de la argumentación jurídica", editorial:"Centro de Estudios Constitucionales", acceso:"suscripcion", nota:"Existe edición mexicana del IIJ-UNAM."},
+{id:"alexy-taj", tipo:"libro", areas:["comun"], autor:"Alexy, R.", anio:1989, titulo:"Teoría de la argumentación jurídica", editorial:"Centro de Estudios Constitucionales", acceso:"suscripcion"},
+{id:"ferrajoli-dg", tipo:"libro", areas:["comun","constitucional"], autor:"Ferrajoli, L.", anio:1999, titulo:"Derechos y garantías. La ley del más débil", editorial:"Trotta", acceso:"suscripcion"},
+{id:"zagrebelsky-dd", tipo:"libro", areas:["comun","constitucional"], autor:"Zagrebelsky, G.", anio:1995, titulo:"El derecho dúctil. Ley, derechos, justicia", editorial:"Trotta", acceso:"suscripcion"},
+{id:"witker-mj", tipo:"libro", areas:["comun"], autor:"Witker, J. y Larios, R.", anio:1997, titulo:"Metodología jurídica", editorial:"McGraw-Hill", acceso:"suscripcion", nota:"Diseño de protocolo e investigación dogmática y empírica."},
+{id:"fix-mdi", tipo:"libro", areas:["comun"], autor:"Fix-Zamudio, H.", anio:1981, titulo:"Metodología, docencia e investigación jurídicas", editorial:"Porrúa", acceso:"suscripcion"},
+{id:"eco-tesis", tipo:"libro", areas:["comun"], autor:"Eco, U.", anio:1982, titulo:"Cómo se hace una tesis", editorial:"Gedisa", acceso:"suscripcion", nota:"Guía práctica para la tesis de grado."},
+
+/* Constitucional */
+{id:"tena-dcm", tipo:"libro", areas:["constitucional"], autor:"Tena Ramírez, F.", anio:1944, titulo:"Derecho constitucional mexicano", editorial:"Porrúa", acceso:"suscripcion", nota:"Consultar la edición más reciente."},
+{id:"carpizo-c17", tipo:"libro", areas:["constitucional"], autor:"Carpizo, J.", anio:1969, titulo:"La Constitución mexicana de 1917", editorial:"UNAM", acceso:"suscripcion"},
+{id:"fix-valencia", tipo:"libro", areas:["constitucional"], autor:"Fix-Zamudio, H. y Valencia Carmona, S.", anio:1999, titulo:"Derecho constitucional mexicano y comparado", editorial:"Porrúa; UNAM", acceso:"suscripcion"},
+{id:"burgoa-amparo", tipo:"libro", areas:["constitucional"], autor:"Burgoa Orihuela, I.", anio:1943, titulo:"El juicio de amparo", editorial:"Porrúa", acceso:"suscripcion", nota:"Obra clásica; contrastar con la Ley de Amparo de 2013."},
+{id:"carbonell-df", tipo:"libro", areas:["constitucional"], autor:"Carbonell, M.", anio:2004, titulo:"Los derechos fundamentales en México", editorial:"UNAM; CNDH", acceso:"suscripcion"},
+{id:"ferrer-panoramica", tipo:"libro", areas:["constitucional"], autor:"Ferrer Mac-Gregor, E.", anio:2013, titulo:"Panorámica del derecho procesal constitucional y convencional", editorial:"UNAM; Marcial Pons", acceso:"suscripcion", url:"https://biblio.juridicas.unam.mx/bjv", nota:"Busca el título en la Biblioteca Jurídica Virtual."},
+{id:"ferrer-dhc", tipo:"libro", areas:["constitucional"], autor:"Ferrer Mac-Gregor, E., Caballero Ochoa, J. L. y Steiner, C. (coords.)", anio:2013, titulo:"Derechos humanos en la Constitución: comentarios de jurisprudencia constitucional e interamericana", editorial:"SCJN; UNAM; Fundación Konrad Adenauer", acceso:"libre", url:"https://biblio.juridicas.unam.mx/bjv", nota:"Comentarios artículo por artículo; disponible en la Biblioteca Jurídica Virtual."},
+{id:"alexy-tdf", tipo:"libro", areas:["constitucional"], autor:"Alexy, R.", anio:1993, titulo:"Teoría de los derechos fundamentales", editorial:"Centro de Estudios Constitucionales", acceso:"suscripcion", nota:"Ponderación y principio de proporcionalidad."},
+{id:"cossio-control", tipo:"libro", areas:["constitucional"], autor:"Cossío Díaz, J. R.", anio:2011, titulo:"Sistemas y modelos de control constitucional en México", editorial:"UNAM", acceso:"suscripcion"},
+
+/* Penal */
+{id:"roxin-pg", tipo:"libro", areas:["penal"], autor:"Roxin, C.", anio:1997, titulo:"Derecho penal. Parte general. Tomo I: Fundamentos. La estructura de la teoría del delito", editorial:"Civitas", acceso:"suscripcion", nota:"Imputación objetiva y funcionalismo moderado."},
+{id:"jakobs-pg", tipo:"libro", areas:["penal"], autor:"Jakobs, G.", anio:1995, titulo:"Derecho penal. Parte general. Fundamentos y teoría de la imputación", editorial:"Marcial Pons", acceso:"suscripcion", nota:"Funcionalismo normativo."},
+{id:"zaffaroni-pg", tipo:"libro", areas:["penal"], autor:"Zaffaroni, E. R., Alagia, A. y Slokar, A.", anio:2000, titulo:"Derecho penal. Parte general", editorial:"Ediar", acceso:"suscripcion"},
+{id:"ferrajoli-dr", tipo:"libro", areas:["penal","comun"], autor:"Ferrajoli, L.", anio:1995, titulo:"Derecho y razón. Teoría del garantismo penal", editorial:"Trotta", acceso:"suscripcion"},
+{id:"munoz-pg", tipo:"libro", areas:["penal"], autor:"Muñoz Conde, F. y García Arán, M.", anio:1993, titulo:"Derecho penal. Parte general", editorial:"Tirant lo Blanch", acceso:"suscripcion"},
+{id:"castellanos", tipo:"libro", areas:["penal"], autor:"Castellanos Tena, F.", anio:1959, titulo:"Lineamientos elementales de derecho penal", editorial:"Porrúa", acceso:"suscripcion"},
+{id:"diaz-aranda", tipo:"libro", areas:["penal"], autor:"Díaz-Aranda, E.", anio:2003, titulo:"Derecho penal. Parte general", editorial:"Porrúa; UNAM", acceso:"suscripcion", nota:"Enfoque desde el derecho penal mexicano."},
+{id:"binder-proc", tipo:"libro", areas:["penal"], autor:"Binder, A. M.", anio:1993, titulo:"Introducción al derecho procesal penal", editorial:"Ad-Hoc", acceso:"suscripcion", nota:"Sistema acusatorio y oral."},
+{id:"beccaria", tipo:"libro", areas:["penal","comun"], autor:"Beccaria, C.", anio:1764, titulo:"De los delitos y de las penas", editorial:"Varias ediciones", acceso:"libre"},
+
+/* Laboral */
+{id:"cueva-ndmt", tipo:"libro", areas:["laboral"], autor:"De la Cueva, M.", anio:1972, titulo:"El nuevo derecho mexicano del trabajo", editorial:"Porrúa", acceso:"suscripcion", nota:"Dos tomos; fundamento doctrinal de la LFT de 1970."},
+{id:"buen-dt", tipo:"libro", areas:["laboral"], autor:"De Buen Lozano, N.", anio:1974, titulo:"Derecho del trabajo", editorial:"Porrúa", acceso:"suscripcion"},
+{id:"davalos-dit", tipo:"libro", areas:["laboral"], autor:"Dávalos, J.", titulo:"Derecho individual del trabajo", editorial:"Porrúa", acceso:"suscripcion"},
+{id:"pla-principios", tipo:"libro", areas:["laboral"], autor:"Plá Rodríguez, A.", anio:1978, titulo:"Los principios del derecho del trabajo", editorial:"Depalma", acceso:"suscripcion", nota:"Principio protector, irrenunciabilidad, primacía de la realidad."},
+{id:"oit-cls", tipo:"libro", areas:["laboral"], autor:"Organización Internacional del Trabajo", anio:2018, titulo:"La libertad sindical. Recopilación de decisiones del Comité de Libertad Sindical", ed:"6ª ed.", editorial:"OIT", acceso:"libre", url:"https://www.ilo.org/es", nota:"Clave para la reforma laboral de 2019 y la democracia sindical."},
+
+/* Fiscal */
+{id:"margain", tipo:"libro", areas:["fiscal"], autor:"Margáin Manautou, E.", titulo:"Introducción al estudio del derecho tributario mexicano", editorial:"Porrúa", acceso:"suscripcion"},
+{id:"garza-dfm", tipo:"libro", areas:["fiscal"], autor:"De la Garza, S. F.", titulo:"Derecho financiero mexicano", editorial:"Porrúa", acceso:"suscripcion"},
+{id:"flores-zavala", tipo:"libro", areas:["fiscal"], autor:"Flores Zavala, E.", titulo:"Elementos de finanzas públicas mexicanas. Los impuestos", editorial:"Porrúa", acceso:"suscripcion"},
+{id:"arrioja", tipo:"libro", areas:["fiscal"], autor:"Arrioja Vizcaíno, A.", titulo:"Derecho fiscal", editorial:"Themis", acceso:"suscripcion"},
+{id:"rodriguez-lobato", tipo:"libro", areas:["fiscal"], autor:"Rodríguez Lobato, R.", titulo:"Derecho fiscal", editorial:"Oxford University Press", acceso:"suscripcion"},
+{id:"jarach", tipo:"libro", areas:["fiscal"], autor:"Jarach, D.", titulo:"El hecho imponible. Teoría general del derecho tributario sustantivo", editorial:"Abeledo-Perrot", acceso:"suscripcion"},
+{id:"ocde-modelo", tipo:"libro", areas:["fiscal"], autor:"OCDE", anio:2017, titulo:"Modelo de Convenio Tributario sobre la Renta y sobre el Patrimonio: versión abreviada", editorial:"OECD Publishing", acceso:"libre", url:"https://www.oecd.org", nota:"Referencia para interpretar los convenios para evitar la doble imposición firmados por México."},
+{id:"ocde-beps", tipo:"libro", areas:["fiscal"], autor:"OCDE", anio:2013, titulo:"Plan de acción contra la erosión de la base imponible y el traslado de beneficios (BEPS)", editorial:"OECD Publishing", acceso:"libre", url:"https://www.oecd.org"},
+
+/* Corporativo */
+{id:"mantilla", tipo:"libro", areas:["corporativo"], autor:"Mantilla Molina, R. L.", anio:1946, titulo:"Derecho mercantil", editorial:"Porrúa", acceso:"suscripcion"},
+{id:"barrera-graf", tipo:"libro", areas:["corporativo"], autor:"Barrera Graf, J.", anio:1989, titulo:"Instituciones de derecho mercantil", editorial:"Porrúa", acceso:"suscripcion"},
+{id:"rodriguez-tsm", tipo:"libro", areas:["corporativo"], autor:"Rodríguez Rodríguez, J.", anio:1947, titulo:"Tratado de sociedades mercantiles", editorial:"Porrúa", acceso:"suscripcion"},
+{id:"frisch", tipo:"libro", areas:["corporativo"], autor:"Frisch Philipp, W.", titulo:"La sociedad anónima mexicana", editorial:"Oxford University Press", acceso:"suscripcion"},
+{id:"cervantes-toc", tipo:"libro", areas:["corporativo"], autor:"Cervantes Ahumada, R.", titulo:"Títulos y operaciones de crédito", editorial:"Porrúa", acceso:"suscripcion"},
+{id:"kraakman", tipo:"libro", areas:["corporativo"], autor:"Kraakman, R. et al.", anio:2017, titulo:"The anatomy of corporate law: A comparative and functional approach", ed:"3rd ed.", editorial:"Oxford University Press", acceso:"suscripcion", nota:"Referencia comparada de gobierno corporativo."},
+{id:"easterbrook", tipo:"libro", areas:["corporativo"], autor:"Easterbrook, F. H. y Fischel, D. R.", anio:1991, titulo:"The economic structure of corporate law", editorial:"Harvard University Press", acceso:"suscripcion", nota:"Análisis económico del derecho societario."},
+{id:"ocde-gc", tipo:"libro", areas:["corporativo"], autor:"OCDE", anio:2023, titulo:"Principios de Gobierno Corporativo de la OCDE y del G20", editorial:"OECD Publishing", acceso:"libre", url:"https://www.oecd.org"},
+{id:"cce-codigo", tipo:"libro", areas:["corporativo"], autor:"Consejo Coordinador Empresarial", titulo:"Código de Principios y Mejores Prácticas de Gobierno Corporativo", editorial:"CCE", acceso:"libre", nota:"Referente de autorregulación para sociedades mexicanas."},
+
+/* Tratados internacionales */
+{id:"dudh", tipo:"tratado", areas:["constitucional","comun"], titulo:"Declaración Universal de Derechos Humanos", fecha:"10 de diciembre de 1948", anio:1948, org:"ONU", acceso:"libre", url:"https://www.ohchr.org/es", nota:"Declaración; fuente interpretativa del sistema universal."},
+{id:"pidcp", tipo:"tratado", areas:["constitucional","penal"], titulo:"Pacto Internacional de Derechos Civiles y Políticos", fecha:"16 de diciembre de 1966", anio:1966, org:"ONU", acceso:"libre", url:"https://www.ohchr.org/es"},
+{id:"pidesc", tipo:"tratado", areas:["constitucional","laboral"], titulo:"Pacto Internacional de Derechos Económicos, Sociales y Culturales", fecha:"16 de diciembre de 1966", anio:1966, org:"ONU", acceso:"libre", url:"https://www.ohchr.org/es", nota:"Derecho al trabajo, a condiciones equitativas y a la seguridad social."},
+{id:"cadh", tipo:"tratado", areas:["constitucional","penal"], titulo:"Convención Americana sobre Derechos Humanos (Pacto de San José)", fecha:"22 de noviembre de 1969", anio:1969, org:"OEA", acceso:"libre", url:"https://www.oas.org/es/cidh/", nota:"Base del control de convencionalidad; competencia contenciosa de la Corte IDH reconocida por México en 1998."},
+{id:"san-salvador", tipo:"tratado", areas:["constitucional","laboral"], titulo:"Protocolo Adicional a la Convención Americana en materia de Derechos Económicos, Sociales y Culturales (Protocolo de San Salvador)", fecha:"17 de noviembre de 1988", anio:1988, org:"OEA", acceso:"libre", url:"https://www.oas.org/es/cidh/"},
+{id:"viena-tratados", tipo:"tratado", areas:["comun","constitucional"], titulo:"Convención de Viena sobre el Derecho de los Tratados", fecha:"23 de mayo de 1969", anio:1969, org:"ONU", acceso:"libre", url:"https://treaties.un.org", nota:"Pacta sunt servanda (art. 26) e interpretación de tratados (arts. 31–33)."},
+{id:"cedaw", tipo:"tratado", areas:["constitucional","laboral"], titulo:"Convención sobre la Eliminación de Todas las Formas de Discriminación contra la Mujer (CEDAW)", fecha:"18 de diciembre de 1979", anio:1979, org:"ONU", acceso:"libre", url:"https://www.ohchr.org/es"},
+{id:"belem", tipo:"tratado", areas:["constitucional","penal"], titulo:"Convención Interamericana para Prevenir, Sancionar y Erradicar la Violencia contra la Mujer (Belém do Pará)", fecha:"9 de junio de 1994", anio:1994, org:"OEA", acceso:"libre", url:"https://www.oas.org/es/cidh/"},
+{id:"cdn", tipo:"tratado", areas:["constitucional"], titulo:"Convención sobre los Derechos del Niño", fecha:"20 de noviembre de 1989", anio:1989, org:"ONU", acceso:"libre", url:"https://www.ohchr.org/es"},
+{id:"cdpd", tipo:"tratado", areas:["constitucional","laboral"], titulo:"Convención sobre los Derechos de las Personas con Discapacidad", fecha:"13 de diciembre de 2006", anio:2006, org:"ONU", acceso:"libre", url:"https://www.ohchr.org/es"},
+{id:"cat", tipo:"tratado", areas:["penal","constitucional"], titulo:"Convención contra la Tortura y Otros Tratos o Penas Crueles, Inhumanos o Degradantes", fecha:"10 de diciembre de 1984", anio:1984, org:"ONU", acceso:"libre", url:"https://www.ohchr.org/es"},
+{id:"cipst", tipo:"tratado", areas:["penal"], titulo:"Convención Interamericana para Prevenir y Sancionar la Tortura", fecha:"9 de diciembre de 1985", anio:1985, org:"OEA", acceso:"libre", url:"https://www.oas.org/es/cidh/"},
+{id:"roma", tipo:"tratado", areas:["penal"], titulo:"Estatuto de Roma de la Corte Penal Internacional", fecha:"17 de julio de 1998", anio:1998, org:"ONU", acceso:"libre", url:"https://www.icc-cpi.int", nota:"Reconocido en el art. 21, párr. 8, CPEUM."},
+{id:"palermo", tipo:"tratado", areas:["penal"], titulo:"Convención de las Naciones Unidas contra la Delincuencia Organizada Transnacional (Convención de Palermo) y sus Protocolos", fecha:"15 de noviembre de 2000", anio:2000, org:"ONU", acceso:"libre", url:"https://sherloc.unodc.org"},
+{id:"uncac", tipo:"tratado", areas:["penal","corporativo"], titulo:"Convención de las Naciones Unidas contra la Corrupción (Convención de Mérida)", fecha:"31 de octubre de 2003", anio:2003, org:"ONU", acceso:"libre", url:"https://sherloc.unodc.org"},
+{id:"cicc", tipo:"tratado", areas:["penal","corporativo"], titulo:"Convención Interamericana contra la Corrupción", fecha:"29 de marzo de 1996", anio:1996, org:"OEA", acceso:"libre", url:"https://www.oas.org"},
+{id:"ocde-cohecho", tipo:"tratado", areas:["corporativo","penal"], titulo:"Convención para Combatir el Cohecho de Servidores Públicos Extranjeros en Transacciones Comerciales Internacionales", fecha:"17 de diciembre de 1997", anio:1997, org:"OCDE", acceso:"libre", url:"https://www.oecd.org", nota:"Relevante para programas de cumplimiento (compliance) corporativo."},
+{id:"c087", tipo:"tratado", areas:["laboral"], titulo:"Convenio núm. 87 sobre la libertad sindical y la protección del derecho de sindicación", fecha:"1948", anio:1948, org:"OIT", acceso:"libre", url:"https://normlex.ilo.org"},
+{id:"c098", tipo:"tratado", areas:["laboral"], titulo:"Convenio núm. 98 sobre el derecho de sindicación y de negociación colectiva", fecha:"1949", anio:1949, org:"OIT", acceso:"libre", url:"https://normlex.ilo.org", nota:"Ratificado por México en 2018; antecedente directo de la reforma laboral de 2019."},
+{id:"c100", tipo:"tratado", areas:["laboral"], titulo:"Convenio núm. 100 sobre igualdad de remuneración", fecha:"1951", anio:1951, org:"OIT", acceso:"libre", url:"https://normlex.ilo.org"},
+{id:"c111", tipo:"tratado", areas:["laboral"], titulo:"Convenio núm. 111 sobre la discriminación (empleo y ocupación)", fecha:"1958", anio:1958, org:"OIT", acceso:"libre", url:"https://normlex.ilo.org"},
+{id:"c190", tipo:"tratado", areas:["laboral"], titulo:"Convenio núm. 190 sobre la violencia y el acoso", fecha:"2019", anio:2019, org:"OIT", acceso:"libre", url:"https://normlex.ilo.org"},
+{id:"tmec", tipo:"tratado", areas:["laboral","corporativo","fiscal"], titulo:"Tratado entre México, Estados Unidos y Canadá (T-MEC)", fecha:"en vigor el 1 de julio de 2020", anio:2020, org:"México–EUA–Canadá", acceso:"libre", url:"https://www.gob.mx/t-mec", nota:"Capítulo 23 (laboral) y Anexo 23-A sobre representación de los trabajadores en la negociación colectiva en México."},
+{id:"ny-1958", tipo:"tratado", areas:["corporativo"], titulo:"Convención sobre el Reconocimiento y la Ejecución de las Sentencias Arbitrales Extranjeras (Convención de Nueva York)", fecha:"10 de junio de 1958", anio:1958, org:"ONU", acceso:"libre", url:"https://uncitral.un.org"},
+{id:"cisg", tipo:"tratado", areas:["corporativo"], titulo:"Convención de las Naciones Unidas sobre los Contratos de Compraventa Internacional de Mercaderías", fecha:"11 de abril de 1980", anio:1980, org:"ONU", acceso:"libre", url:"https://uncitral.un.org"},
+{id:"mutua-fiscal", tipo:"tratado", areas:["fiscal"], titulo:"Convención sobre Asistencia Administrativa Mutua en Materia Fiscal", fecha:"25 de enero de 1988 (enmendada por Protocolo de 2010)", anio:1988, org:"OCDE / Consejo de Europa", acceso:"libre", url:"https://www.oecd.org", nota:"Intercambio de información tributaria entre administraciones."},
+{id:"mli", tipo:"tratado", areas:["fiscal"], titulo:"Convención Multilateral para Aplicar las Medidas Relacionadas con los Tratados Fiscales para Prevenir la Erosión de las Bases Imponibles y el Traslado de Beneficios (MLI)", fecha:"24 de noviembre de 2016", anio:2016, org:"OCDE", acceso:"libre", url:"https://www.oecd.org"},
+{id:"sre-tratados", tipo:"tratado", areas:["comun","constitucional","penal","laboral","fiscal","corporativo"], titulo:"Buscador de tratados internacionales celebrados por México", org:"Secretaría de Relaciones Exteriores", acceso:"libre", url:"https://cja.sre.gob.mx/tratadosmexico/", nota:"Consulta el texto, la fecha de publicación en el DOF, reservas y declaraciones interpretativas de cada tratado."},
+
+/* Legislación nacional */
+{id:"cpeum", tipo:"ley", areas:["constitucional","comun"], titulo:"Constitución Política de los Estados Unidos Mexicanos", sigla:"CPEUM", fecha:"05-02-1917", acceso:"libre", url:DIP+"CPEUM.pdf", nota:"Arts. 1º (derechos humanos), 14 y 16 (legalidad), 20 (proceso penal), 31-IV (contribuciones), 103 y 107 (amparo), 123 (trabajo), 133 (supremacía)."},
+{id:"amparo", tipo:"ley", areas:["constitucional"], titulo:"Ley de Amparo, Reglamentaria de los artículos 103 y 107 de la Constitución Política de los Estados Unidos Mexicanos", sigla:"LA", fecha:"02-04-2013", acceso:"libre", url:DIP+"LAmp.pdf"},
+{id:"cpf", tipo:"ley", areas:["penal"], titulo:"Código Penal Federal", sigla:"CPF", fecha:"14-08-1931", acceso:"libre", url:DIP+"CPF.pdf"},
+{id:"cnpp", tipo:"ley", areas:["penal"], titulo:"Código Nacional de Procedimientos Penales", sigla:"CNPP", fecha:"05-03-2014", acceso:"libre", url:DIP+"CNPP.pdf", nota:"Sistema penal acusatorio."},
+{id:"lnep", tipo:"ley", areas:["penal"], titulo:"Ley Nacional de Ejecución Penal", sigla:"LNEP", fecha:"16-06-2016", acceso:"libre", url:DIP_INDEX},
+{id:"lft", tipo:"ley", areas:["laboral"], titulo:"Ley Federal del Trabajo", sigla:"LFT", fecha:"01-04-1970", acceso:"libre", url:DIP+"LFT.pdf", nota:"Reforma estructural en materia de justicia laboral y libertad sindical: DOF 01-05-2019."},
+{id:"lss", tipo:"ley", areas:["laboral","fiscal"], titulo:"Ley del Seguro Social", sigla:"LSS", fecha:"21-12-1995", acceso:"libre", url:DIP+"LSS.pdf"},
+{id:"cff", tipo:"ley", areas:["fiscal"], titulo:"Código Fiscal de la Federación", sigla:"CFF", fecha:"31-12-1981", acceso:"libre", url:DIP+"CFF.pdf"},
+{id:"lisr", tipo:"ley", areas:["fiscal","corporativo"], titulo:"Ley del Impuesto sobre la Renta", sigla:"LISR", fecha:"11-12-2013", acceso:"libre", url:DIP+"LISR.pdf"},
+{id:"liva", tipo:"ley", areas:["fiscal"], titulo:"Ley del Impuesto al Valor Agregado", sigla:"LIVA", fecha:"29-12-1978", acceso:"libre", url:DIP+"LIVA.pdf"},
+{id:"lfpca", tipo:"ley", areas:["fiscal"], titulo:"Ley Federal de Procedimiento Contencioso Administrativo", sigla:"LFPCA", fecha:"01-12-2005", acceso:"libre", url:DIP+"LFPCA.pdf"},
+{id:"lfdc", tipo:"ley", areas:["fiscal"], titulo:"Ley Federal de los Derechos del Contribuyente", sigla:"LFDC", fecha:"23-06-2005", acceso:"libre", url:DIP_INDEX},
+{id:"lgsm", tipo:"ley", areas:["corporativo"], titulo:"Ley General de Sociedades Mercantiles", sigla:"LGSM", fecha:"04-08-1934", acceso:"libre", url:DIP+"LGSM.pdf"},
+{id:"lgtoc", tipo:"ley", areas:["corporativo"], titulo:"Ley General de Títulos y Operaciones de Crédito", sigla:"LGTOC", fecha:"27-08-1932", acceso:"libre", url:DIP_INDEX},
+{id:"ccom", tipo:"ley", areas:["corporativo"], titulo:"Código de Comercio", sigla:"CCom", fecha:"07-10-1889 al 13-12-1889", acceso:"libre", url:DIP+"CCom.pdf"},
+{id:"lmv", tipo:"ley", areas:["corporativo"], titulo:"Ley del Mercado de Valores", sigla:"LMV", fecha:"30-12-2005", acceso:"libre", url:DIP+"LMV.pdf", nota:"Gobierno corporativo de sociedades anónimas bursátiles y SAPI."},
+{id:"lgra", tipo:"ley", areas:["corporativo","penal"], titulo:"Ley General de Responsabilidades Administrativas", sigla:"LGRA", fecha:"18-07-2016", acceso:"libre", url:DIP_INDEX, nota:"Responsabilidad de personas morales y política de integridad (art. 25)."},
+
+/* Jurisprudencia y precedentes */
+{id:"radilla-cidh", tipo:"juris", areas:["constitucional","penal"], titulo:"Caso Radilla Pacheco vs. Estados Unidos Mexicanos", tribunal:"Corte Interamericana de Derechos Humanos", sig:"Sentencia de 23 de noviembre de 2009, Serie C, núm. 209", acceso:"libre", url:"https://www.corteidh.or.cr", nota:"Obliga a México a ejercer control de convencionalidad y a restringir el fuero militar."},
+{id:"varios-912", tipo:"juris", areas:["constitucional"], titulo:"Expediente Varios 912/2010", tribunal:"Pleno de la SCJN", sig:"Resuelto el 14 de julio de 2011", acceso:"libre", url:"https://sjf2.scjn.gob.mx", nota:"Cumplimiento de la sentencia Radilla; control difuso de constitucionalidad y convencionalidad."},
+{id:"ct-293", tipo:"juris", areas:["constitucional"], titulo:"Contradicción de tesis 293/2011", tribunal:"Pleno de la SCJN", sig:"Resuelta el 3 de septiembre de 2013", acceso:"libre", url:"https://sjf2.scjn.gob.mx", nota:"Parámetro de control de regularidad constitucional; vinculatoriedad de la jurisprudencia interamericana."},
+{id:"cuadernillos-cidh", tipo:"juris", areas:["constitucional","penal","laboral"], titulo:"Cuadernillos de Jurisprudencia de la Corte Interamericana de Derechos Humanos", tribunal:"Corte IDH", sig:"Serie temática", acceso:"libre", url:"https://www.corteidh.or.cr", nota:"Compilaciones por tema: debido proceso, libertad personal, derechos económicos y sociales, entre otros."},
+{id:"sjf", tipo:"juris", areas:["comun","constitucional","penal","laboral","fiscal","corporativo"], titulo:"Semanario Judicial de la Federación (consulta de tesis y ejecutorias)", tribunal:"SCJN", sig:"Cita por número de registro digital", acceso:"libre", url:"https://sjf2.scjn.gob.mx", nota:"Busca por rubro, registro digital, época, instancia y materia."},
+
+/* Infotecas y organismos */
+{id:"scjn", tipo:"recurso", sub:"Organismo nacional", areas:["comun","constitucional","penal","laboral","fiscal","corporativo"], titulo:"Suprema Corte de Justicia de la Nación", acceso:"libre", url:"https://www.scjn.gob.mx", nota:"Sentencias, engroses, versiones taquigráficas y publicaciones."},
+{id:"bj-scjn", tipo:"recurso", sub:"Buscador jurídico", areas:["comun","constitucional","penal","laboral","fiscal","corporativo"], titulo:"Buscador Jurídico de la SCJN", acceso:"libre", url:"https://bj.scjn.gob.mx", nota:"Busca a la vez en tesis, sentencias, legislación y acervo bibliográfico de la Corte."},
+{id:"cec-scjn", tipo:"recurso", sub:"Organismo nacional", areas:["constitucional"], titulo:"Centro de Estudios Constitucionales de la SCJN", acceso:"libre", url:"https://www.sitios.scjn.gob.mx/cec/", nota:"Cuadernos de Jurisprudencia y publicaciones en acceso abierto."},
+{id:"diputados-leyes", tipo:"recurso", sub:"Legislación", areas:["comun","constitucional","penal","laboral","fiscal","corporativo"], titulo:"Leyes Federales Vigentes — Cámara de Diputados", acceso:"libre", url:DIP_INDEX, nota:"Texto vigente, reformas y reglamentos."},
+{id:"dof", tipo:"recurso", sub:"Legislación", areas:["comun","constitucional","penal","laboral","fiscal","corporativo"], titulo:"Diario Oficial de la Federación", acceso:"libre", url:"https://www.dof.gob.mx"},
+{id:"ojn", tipo:"recurso", sub:"Legislación", areas:["comun","constitucional"], titulo:"Orden Jurídico Nacional", acceso:"libre", url:"http://www.ordenjuridico.gob.mx", nota:"Legislación federal y estatal, y tratados."},
+{id:"bjv", tipo:"recurso", sub:"Infoteca", areas:["comun","constitucional","penal","laboral","fiscal","corporativo"], titulo:"Biblioteca Jurídica Virtual del IIJ-UNAM", acceso:"libre", url:"https://biblio.juridicas.unam.mx/bjv", nota:"Miles de libros jurídicos completos en acceso abierto. La infoteca más importante del derecho mexicano."},
+{id:"revistas-iij", tipo:"recurso", sub:"Infoteca", areas:["comun","constitucional","penal","laboral","fiscal","corporativo"], titulo:"Revistas jurídicas del IIJ-UNAM", acceso:"libre", url:"https://revistas.juridicas.unam.mx", nota:"Cuestiones Constitucionales, Boletín Mexicano de Derecho Comparado, Revista Latinoamericana de Derecho Social, Anuario Mexicano de Derecho Internacional."},
+{id:"bidi", tipo:"recurso", sub:"Infoteca", areas:["comun"], titulo:"BiDi UNAM — Biblioteca Digital", acceso:"suscripcion", url:"https://bidi.unam.mx", nota:"Acceso remoto a bases como JSTOR, HeinOnline o vLex según la suscripción vigente; requiere credenciales UNAM."},
+{id:"tesiunam", tipo:"recurso", sub:"Infoteca", areas:["comun"], titulo:"TESIUNAM — Catálogo de tesis", acceso:"libre", url:"https://tesiunam.dgb.unam.mx", nota:"Útil para el estado del arte de tu tesis de maestría."},
+{id:"rn-cti", tipo:"recurso", sub:"Infoteca", areas:["comun"], titulo:"Repositorio Nacional de Ciencia, Tecnología e Innovación", acceso:"libre", url:"https://www.repositorionacionalcti.mx"},
+{id:"inacipe", tipo:"recurso", sub:"Organismo nacional", areas:["penal"], titulo:"Instituto Nacional de Ciencias Penales (INACIPE)", acceso:"libre", url:"https://www.inacipe.gob.mx", nota:"Publicaciones sobre sistema acusatorio y política criminal."},
+{id:"cndh", tipo:"recurso", sub:"Organismo nacional", areas:["constitucional","penal"], titulo:"Comisión Nacional de los Derechos Humanos", acceso:"libre", url:"https://www.cndh.org.mx", nota:"Recomendaciones y publicaciones."},
+{id:"tfja", tipo:"recurso", sub:"Organismo nacional", areas:["fiscal"], titulo:"Tribunal Federal de Justicia Administrativa", acceso:"libre", url:"https://www.tfja.gob.mx", nota:"Precedentes y jurisprudencia en materia fiscal y administrativa."},
+{id:"sat", tipo:"recurso", sub:"Organismo nacional", areas:["fiscal"], titulo:"Servicio de Administración Tributaria", acceso:"libre", url:"https://www.sat.gob.mx", nota:"Resolución Miscelánea Fiscal, criterios normativos y no vinculativos."},
+{id:"prodecon", tipo:"recurso", sub:"Organismo nacional", areas:["fiscal"], titulo:"Procuraduría de la Defensa del Contribuyente", acceso:"libre", url:"https://www.prodecon.gob.mx", nota:"Criterios sustantivos y análisis sistémicos."},
+{id:"cfcrl", tipo:"recurso", sub:"Organismo nacional", areas:["laboral"], titulo:"Centro Federal de Conciliación y Registro Laboral", acceso:"libre", url:"https://centrolaboral.gob.mx", nota:"Registro de sindicatos y contratos colectivos tras la reforma de 2019."},
+{id:"cnbv", tipo:"recurso", sub:"Organismo nacional", areas:["corporativo"], titulo:"Comisión Nacional Bancaria y de Valores", acceso:"libre", url:"https://www.gob.mx/cnbv", nota:"Disposiciones de carácter general para emisoras."},
+{id:"corteidh", tipo:"recurso", sub:"Organismo internacional", areas:["constitucional","penal"], titulo:"Corte Interamericana de Derechos Humanos", acceso:"libre", url:"https://www.corteidh.or.cr", nota:"Sentencias, opiniones consultivas y biblioteca."},
+{id:"cidh", tipo:"recurso", sub:"Organismo internacional", areas:["constitucional"], titulo:"Comisión Interamericana de Derechos Humanos", acceso:"libre", url:"https://www.oas.org/es/cidh/"},
+{id:"ohchr", tipo:"recurso", sub:"Organismo internacional", areas:["constitucional","comun"], titulo:"Oficina del Alto Comisionado de la ONU para los Derechos Humanos", acceso:"libre", url:"https://www.ohchr.org/es", nota:"Tratados, observaciones generales de los comités."},
+{id:"untc", tipo:"recurso", sub:"Organismo internacional", areas:["comun"], titulo:"United Nations Treaty Collection", acceso:"libre", url:"https://treaties.un.org", nota:"Estado de firmas, ratificaciones y reservas."},
+{id:"normlex", tipo:"recurso", sub:"Organismo internacional", areas:["laboral"], titulo:"NORMLEX — Sistema de información sobre normas internacionales del trabajo (OIT)", acceso:"libre", url:"https://normlex.ilo.org"},
+{id:"oecd", tipo:"recurso", sub:"Organismo internacional", areas:["fiscal","corporativo"], titulo:"OCDE — Publicaciones", acceso:"libre", url:"https://www.oecd.org"},
+{id:"uncitral", tipo:"recurso", sub:"Organismo internacional", areas:["corporativo"], titulo:"CNUDMI / UNCITRAL", acceso:"libre", url:"https://uncitral.un.org", nota:"Leyes modelo y textos de arbitraje y comercio internacional."},
+{id:"icc", tipo:"recurso", sub:"Organismo internacional", areas:["penal"], titulo:"Corte Penal Internacional", acceso:"libre", url:"https://www.icc-cpi.int"},
+{id:"sherloc", tipo:"recurso", sub:"Organismo internacional", areas:["penal"], titulo:"SHERLOC — Portal de la UNODC sobre delincuencia organizada y corrupción", acceso:"libre", url:"https://sherloc.unodc.org"},
+{id:"scielo", tipo:"recurso", sub:"Base de datos", areas:["comun"], titulo:"SciELO México", acceso:"libre", url:"https://www.scielo.org.mx"},
+{id:"redalyc", tipo:"recurso", sub:"Base de datos", areas:["comun"], titulo:"Redalyc", acceso:"libre", url:"https://www.redalyc.org"},
+{id:"dialnet", tipo:"recurso", sub:"Base de datos", areas:["comun"], titulo:"Dialnet", acceso:"libre", url:"https://dialnet.unirioja.es", nota:"Artículos de revistas jurídicas iberoamericanas."},
+{id:"scholar", tipo:"recurso", sub:"Base de datos", areas:["comun"], titulo:"Google Académico", acceso:"libre", url:"https://scholar.google.com"},
+{id:"ssrn", tipo:"recurso", sub:"Base de datos", areas:["comun","corporativo","fiscal"], titulo:"SSRN — Legal Scholarship Network", acceso:"libre", url:"https://www.ssrn.com"},
+{id:"vlex", tipo:"recurso", sub:"Base de datos", areas:["comun"], titulo:"vLex México", acceso:"suscripcion", url:"https://vlex.com.mx"},
+{id:"heinonline", tipo:"recurso", sub:"Base de datos", areas:["comun"], titulo:"HeinOnline", acceso:"suscripcion", url:"https://home.heinonline.org"},
+{id:"jstor", tipo:"recurso", sub:"Base de datos", areas:["comun"], titulo:"JSTOR", acceso:"suscripcion", url:"https://www.jstor.org"}
+];
+
+var KIND = {libro:"Libro", tratado:"Tratado", ley:"Ley", juris:"Jurisprudencia", recurso:"Recurso", propia:"Propia"};
+
+/* ---------- Estado persistente ---------- */
+var KEY = "acervo-maestria-derecho-v1";
+var store = {marks:{}, custom:[]};
+try { var raw = localStorage.getItem(KEY); if(raw){ var p = JSON.parse(raw); store.marks = p.marks||{}; store.custom = p.custom||[]; } } catch(e){}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+
+var ui = {tab:"libros", area:"", q:"", acceso:""};
+try { var u = JSON.parse(localStorage.getItem(KEY+"-ui")||"{}"); if(u.tab) ui.tab=u.tab; if(u.area!=null) ui.area=u.area; } catch(e){}
+var h = (location.hash||"").replace("#","");
+if(TABS.some(function(t){return t.k===h;})) ui.tab = h;
+function saveUi(){ try{ localStorage.setItem(KEY+"-ui", JSON.stringify({tab:ui.tab, area:ui.area})); }catch(e){} }
+
+function all(){ return DATA.concat(store.custom); }
+function mark(id){ return store.marks[id] || {}; }
+
+/* ---------- Utilidades ---------- */
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];}); }
+function norm(s){ return String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""); }
+
+/* Cita en formato APA 7 (adaptado a fuentes jurídicas mexicanas) */
+function cite(it, html){
+  var I = html ? function(t){return "<i>"+esc(t)+"</i>";} : function(t){return t;};
+  var E = html ? esc : function(t){return t;};
+  var url = it.url ? " " + it.url : "";
+  switch(it.tipo){
+    case "libro":
+    case "propia":
+      return E(it.autor||"s. a.") + " (" + (it.anio||"s. f.") + "). " + I(it.titulo) + (it.ed ? " (" + E(it.ed) + ")" : "") + ". " + E(it.editorial||"") + (it.editorial?".":"") + (it.tipo==="propia"?url:"");
+    case "tratado":
+      return I(it.titulo) + (it.fecha ? ", " + E(it.fecha) : "") + (it.org ? ". " + E(it.org) : "") + "." + (html?"":url);
+    case "ley":
+      return I(it.titulo) + " [" + E(it.sigla) + "]. Diario Oficial de la Federación [DOF], " + E(it.fecha) + ", últimas reformas (consultar texto vigente) (México)." + (html?"":url);
+    case "juris":
+      return E(it.tribunal) + ". " + I(it.titulo) + ". " + E(it.sig) + "." + (html?"":url);
+    default:
+      return E(it.titulo) + ". (s. f.)." + (html?"":url);
+  }
+}
+
+function toast(msg){
+  var t = document.getElementById("toast");
+  t.textContent = msg; t.hidden = false;
+  clearTimeout(toast._t); toast._t = setTimeout(function(){ t.hidden = true; }, 2200);
+}
+function copy(text, okMsg, fallbackHost){
+  function fallback(){
+    if(!fallbackHost) { toast("No se pudo copiar: selecciona el texto manualmente"); return; }
+    var ta = fallbackHost.querySelector("textarea.fallback");
+    if(!ta){ ta = document.createElement("textarea"); ta.className="fallback"; ta.readOnly = true; ta.setAttribute("aria-label","Texto para copiar"); fallbackHost.appendChild(ta); }
+    ta.value = text; ta.focus(); ta.select();
+    toast("Texto seleccionado: cópialo con Ctrl/Cmd + C");
+  }
+  try {
+    navigator.clipboard.writeText(text).then(function(){ toast(okMsg); }, fallback);
+  } catch(e){ fallback(); }
+}
+
+/* ---------- Render ---------- */
+var elTabs = document.getElementById("tabs"), elAreas = document.getElementById("areas"), elMain = document.getElementById("main");
+var elQ = document.getElementById("q"), elAcc = document.getElementById("acceso");
+
+function inTab(it, tab){
+  if(tab.k==="mi-plan") return !!(mark(it.id).fav || mark(it.id).estado) || it.tipo==="propia";
+  return it.tipo===tab.tipo;
+}
+function matches(it){
+  if(ui.area && it.areas.indexOf(ui.area)<0) return false;
+  if(ui.acceso && it.acceso!==ui.acceso) return false;
+  if(ui.q){
+    var hay = norm([it.autor,it.titulo,it.editorial,it.nota,it.org,it.sigla,it.tribunal,it.sig,it.sub].join(" "));
+    var ok = norm(ui.q).split(/\s+/).every(function(w){ return hay.indexOf(w)>=0; });
+    if(!ok) return false;
+  }
+  return true;
+}
+function currentTab(){ return TABS.filter(function(t){return t.k===ui.tab;})[0] || TABS[0]; }
+
+function renderTabs(){
+  var items = all();
+  elTabs.innerHTML = TABS.map(function(t){
+    var n = items.filter(function(it){ return inTab(it,t); }).length;
+    return '<button role="tab" id="tab-'+t.k+'" aria-selected="'+(t.k===ui.tab)+'" data-tab="'+t.k+'">'+esc(t.n)+'<span class="n">'+n+'</span></button>';
+  }).join("");
+}
+function renderAreas(){
+  var tab = currentTab(), items = all().filter(function(it){ return inTab(it,tab); });
+  var opts = [{k:"", n:"Todas"}].concat(AREAS);
+  elAreas.innerHTML = opts.map(function(a){
+    var n = a.k ? items.filter(function(it){return it.areas.indexOf(a.k)>=0;}).length : items.length;
+    var c = a.k ? "var(--a-"+a.k+")" : "var(--muted)";
+    return '<button type="button" aria-pressed="'+(ui.area===a.k)+'" data-area="'+a.k+'" style="--c:'+c+'"><span class="dot"></span><span class="nm">'+esc(a.n)+'</span><span class="ct">'+n+'</span></button>';
+  }).join("");
+}
+
+function itemHtml(it){
+  var m = mark(it.id);
+  var tags = it.areas.map(function(a){ return '<span class="chip" style="--c:var(--a-'+a+')">'+esc(AREA_NAME[a])+'</span>'; }).join("");
+  if(it.sub) tags = '<span class="chip kind">'+esc(it.sub)+'</span>' + tags;
+  else if(ui.tab==="mi-plan") tags = '<span class="chip kind">'+esc(KIND[it.tipo])+'</span>' + tags;
+  tags += it.acceso==="libre" ? '<span class="chip free">Acceso libre</span>' : '<span class="chip paid">Suscripción / biblioteca</span>';
+  var main = it.tipo==="recurso"
+    ? '<p class="ref"><strong>'+esc(it.titulo)+'</strong></p>'
+    : '<p class="ref">'+cite(it,true)+'</p>';
+  var sig = '';
+  if(it.tipo==="recurso" && it.url) sig = '<div class="sig">'+esc(it.url.replace(/^https?:\/\//,"").replace(/\/$/,""))+'</div>';
+  var estado = '<select class="state" data-estado="'+esc(it.id)+'" aria-label="Estado de lectura">'
+    + ['','por-leer','leyendo','leido'].map(function(v){
+        var lbl = {"":"Sin estado","por-leer":"Por leer","leyendo":"Leyendo","leido":"Leído"}[v];
+        return '<option value="'+v+'"'+((m.estado||"")===v?" selected":"")+'>'+lbl+'</option>';
+      }).join("") + '</select>';
+  var actions = ''
+    + (it.url ? '<a class="btn" href="'+esc(it.url)+'" target="_blank" rel="noopener">Abrir ↗</a>' : '')
+    + (it.tipo!=="recurso" ? '<button class="btn" type="button" data-cite="'+esc(it.id)+'">Copiar cita</button>' : '')
+    + '<button class="btn'+(m.fav?' on':'')+'" type="button" data-fav="'+esc(it.id)+'" aria-pressed="'+(!!m.fav)+'">'+(m.fav?'Guardado':'Guardar')+'</button>'
+    + (it.tipo!=="recurso" ? estado : '')
+    + (it.tipo==="propia" ? '<button class="btn" type="button" data-del="'+esc(it.id)+'">Eliminar</button>' : '');
+  return '<li class="item"><div><div class="tags">'+tags+'</div>'+main+sig
+    + (it.nota ? '<p class="note">'+esc(it.nota)+'</p>' : '')
+    + '</div><div class="actions">'+actions+'</div></li>';
+}
+
+function renderProgress(){
+  var books = all().filter(function(it){ return it.tipo==="libro"||it.tipo==="propia"; });
+  return '<div class="progress">' + AREAS.map(function(a){
+    var set = books.filter(function(b){ return b.areas.indexOf(a.k)>=0; });
+    var read = set.filter(function(b){ return mark(b.id).estado==="leido"; }).length;
+    var pct = set.length ? Math.round(read*100/set.length) : 0;
+    return '<div class="prog" style="--c:var(--a-'+a.k+')"><div class="t"><span>'+esc(a.n)+'</span><span>'+read+' / '+set.length+'</span></div><div class="bar" role="img" aria-label="'+pct+'% leído"><i style="width:'+pct+'%"></i></div></div>';
+  }).join("") + '</div>';
+}
+
+function addForm(){
+  return '<details class="add" id="addbox"><summary>Agregar una referencia propia</summary>'
+   + '<form class="addform" id="addform">'
+   + '<label>Autor(es)<input id="f-autor" name="autor" placeholder="Apellido, N." required></label>'
+   + '<label>Año<input id="f-anio" name="anio" inputmode="numeric" placeholder="2024"></label>'
+   + '<label class="full">Título<input id="f-titulo" name="titulo" required placeholder="Título de la obra"></label>'
+   + '<label>Editorial / fuente<input id="f-editorial" name="editorial" placeholder="Tirant lo Blanch"></label>'
+   + '<label>Acentuación<select id="f-area" name="area">'+AREAS.map(function(a){return '<option value="'+a.k+'">'+esc(a.n)+'</option>';}).join("")+'</select></label>'
+   + '<label>Enlace (opcional)<input id="f-url" name="url" type="url" placeholder="https://…"></label>'
+   + '<label>Acceso<select id="f-acceso" name="acceso"><option value="libre">Libre / en línea</option><option value="suscripcion">Suscripción o biblioteca</option></select></label>'
+   + '<div class="full"><button class="btn primary" type="submit">Agregar a mi plan</button></div>'
+   + '</form></details>';
+}
+
+function render(){
+  var tab = currentTab();
+  renderTabs(); renderAreas();
+  var list = all().filter(function(it){ return inTab(it,tab) && matches(it); });
+  if(tab.k==="mi-plan"){
+    var order = {"leyendo":0,"por-leer":1,"":2,"leido":3};
+    list.sort(function(a,b){ return (order[mark(a.id).estado||""]) - (order[mark(b.id).estado||""]); });
+  }
+  var head = '<div class="listhead"><h2>'+esc(tab.h)+'</h2><span class="meta">'+list.length+' '+(list.length===1?'entrada':'entradas')+(ui.area?' · '+esc(AREA_NAME[ui.area]):'')+'</span></div>'
+    + '<p class="intro">'+esc(tab.intro)+'</p>';
+  var extra = "";
+  if(tab.k==="mi-plan"){
+    extra = renderProgress() + addForm()
+      + '<div class="toolbar" id="toolbar"><button class="btn" type="button" id="copy-all">Copiar bibliografía de mi plan (APA)</button></div>';
+  }
+  var body = list.length ? '<ol class="items">'+list.map(itemHtml).join("")+'</ol>'
+    : '<p class="empty">'+(tab.k==="mi-plan" ? 'Aún no guardas nada. Usa «Guardar» o elige un estado de lectura en cualquier sección.' : 'Nada coincide con estos filtros. Prueba con otra acentuación o borra la búsqueda.')+'</p>';
+  elMain.innerHTML = head + extra + body;
+  elMain.setAttribute("aria-labelledby","tab-"+tab.k);
+}
+
+/* ---------- Eventos ---------- */
+elTabs.addEventListener("click", function(e){
+  var b = e.target.closest("[data-tab]"); if(!b) return;
+  ui.tab = b.getAttribute("data-tab"); saveUi();
+  try{ history.replaceState(null,"","#"+ui.tab); }catch(err){}
+  render();
+});
+elAreas.addEventListener("click", function(e){
+  var b = e.target.closest("[data-area]"); if(!b) return;
+  ui.area = b.getAttribute("data-area"); saveUi(); render();
+});
+elQ.addEventListener("input", function(){ ui.q = elQ.value.trim(); render(); });
+elAcc.addEventListener("change", function(){ ui.acceso = elAcc.value; render(); });
+
+function find(id){ return all().filter(function(x){return x.id===id;})[0]; }
+elMain.addEventListener("click", function(e){
+  var t;
+  if((t = e.target.closest("[data-fav]"))){
+    var id = t.getAttribute("data-fav"), m = store.marks[id] || (store.marks[id]={});
+    m.fav = !m.fav; if(!m.fav && !m.estado) delete store.marks[id];
+    save(); render(); toast(m.fav ? "Guardado en tu plan de lectura" : "Quitado de tu plan");
+  } else if((t = e.target.closest("[data-cite]"))){
+    var it = find(t.getAttribute("data-cite"));
+    if(it) copy(cite(it,false), "Cita copiada", t.closest("li"));
+  } else if((t = e.target.closest("[data-del]"))){
+    var did = t.getAttribute("data-del");
+    store.custom = store.custom.filter(function(x){return x.id!==did;}); delete store.marks[did];
+    save(); render(); toast("Referencia eliminada");
+  } else if(e.target.id==="copy-all"){
+    var tab = currentTab();
+    var items = all().filter(function(it){ return inTab(it,tab) && it.tipo!=="recurso"; })
+      .map(function(it){ return cite(it,false); })
+      .sort(function(a,b){ return a.localeCompare(b,"es"); });
+    if(!items.length){ toast("Tu plan todavía no tiene fuentes citables"); return; }
+    copy(items.join("\n\n"), items.length+" referencias copiadas", document.getElementById("toolbar"));
+  }
+});
+elMain.addEventListener("change", function(e){
+  var s = e.target.closest("[data-estado]"); if(!s) return;
+  var id = s.getAttribute("data-estado"), m = store.marks[id] || (store.marks[id]={});
+  m.estado = s.value; if(!m.estado){ delete m.estado; if(!m.fav) delete store.marks[id]; }
+  save(); render();
+  toast(s.value==="leido" ? "Marcado como leído" : s.value ? "Estado actualizado" : "Estado borrado");
+});
+elMain.addEventListener("submit", function(e){
+  if(e.target.id!=="addform") return;
+  e.preventDefault();
+  var f = e.target;
+  var it = {
+    id:"propia-"+Date.now(), tipo:"propia", areas:[f.area.value],
+    autor:f.autor.value.trim(), anio:f.anio.value.trim()||null, titulo:f.titulo.value.trim(),
+    editorial:f.editorial.value.trim(), url:f.url.value.trim()||null, acceso:f.acceso.value
+  };
+  if(!it.autor || !it.titulo){ toast("Escribe al menos autor y título"); return; }
+  store.custom.push(it); store.marks[it.id] = {estado:"por-leer"};
+  save(); render(); toast("Referencia agregada a tu plan");
+});
+
+render();
+})();
+</script>
