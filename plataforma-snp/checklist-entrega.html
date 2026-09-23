@@ -1,0 +1,298 @@
+<title>Checklist Entrega-Recepción</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&display=swap">
+<style>
+:root{
+  --bg:#F2F5F1;--surface:#FFFFFF;--surface2:#E9EEE8;--line:#D3DBD3;--ink:#1A2622;--ink2:#46564F;--muted:#6B7C75;
+  --accent:#0E6655;--accent-ink:#FFFFFF;--accent-soft:#DAEDE6;
+  --ok:#2A7545;--ok-soft:#DDEFE2;--warn:#8F5B00;--warn-soft:#F5E9D0;--bad:#AD3629;--bad-soft:#F6DDD9;--na:#6F7C78;--na-soft:#E6EAE7;
+  --serif:"IBM Plex Serif",Georgia,serif;--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;--bg:#0E1513;--surface:#151F1C;--surface2:#1C2825;--line:#2A3935;--ink:#E2ECE8;--ink2:#B0C1BA;--muted:#889A94;
+  --accent:#4DBF9F;--accent-ink:#0A1411;--accent-soft:#16382F;
+  --ok:#5CC27E;--ok-soft:#163021;--warn:#E3AA4A;--warn-soft:#382B13;--bad:#F07B6D;--bad-soft:#3B1D19;--na:#8D9C97;--na-soft:#222D2A;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;--bg:#0E1513;--surface:#151F1C;--surface2:#1C2825;--line:#2A3935;--ink:#E2ECE8;--ink2:#B0C1BA;--muted:#889A94;
+  --accent:#4DBF9F;--accent-ink:#0A1411;--accent-soft:#16382F;
+  --ok:#5CC27E;--ok-soft:#163021;--warn:#E3AA4A;--warn-soft:#382B13;--bad:#F07B6D;--bad-soft:#3B1D19;--na:#8D9C97;--na-soft:#222D2A;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2{font-family:var(--serif);font-weight:600;margin:0;line-height:1.2;text-wrap:balance}
+h1{font-size:1.7rem}h2{font-size:1.1rem}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:24px 64px;display:flex;flex-direction:column;gap:18px}
+.eyebrow{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.sub{color:var(--ink2);max-width:70ch}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.people{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))}
+.people label{display:flex;flex-direction:column;gap:4px;font-size:.8rem;color:var(--ink2);font-weight:500}
+.people input{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--surface);font-size:.95rem}
+
+/* leyenda y resumen */
+.summary{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 6px 18px rgba(20,40,34,.08)}
+.sumrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 11px;font-size:.84rem;font-weight:600;border:1.5px solid transparent;cursor:pointer;background:var(--surface2);color:var(--ink2)}
+.chip .n{font-family:var(--mono)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}.chip.warn{background:var(--warn-soft);color:var(--warn)}.chip.bad{background:var(--bad-soft);color:var(--bad)}.chip.na{background:var(--na-soft);color:var(--na)}.chip.pend{background:var(--surface);color:var(--ink2);border-color:var(--line)}
+.chip.on{border-color:currentColor}
+.bar{height:10px;border-radius:99px;background:var(--surface2);display:flex;gap:2px;overflow:hidden}
+.bar i{display:block;height:100%}
+.bar .ok{background:var(--ok)}.bar .warn{background:var(--warn)}.bar .bad{background:var(--bad)}.bar .na{background:var(--na)}
+.pctx{font-family:var(--mono);font-size:1.3rem}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 12px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--ink2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+
+/* secciones */
+.sec{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.sec > header{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface2);cursor:pointer;border:0;width:100%;text-align:left}
+.badge{flex:none;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-family:var(--mono);font-weight:500;background:var(--accent);color:var(--accent-ink)}
+.sec > header .tt{flex:1;min-width:0}
+.sec > header .meta{font-size:.8rem;color:var(--muted)}
+.sec > header .mini{width:110px}
+.sec > header .caret{color:var(--muted);transition:transform .15s}
+.sec.closed > header .caret{transform:rotate(-90deg)}
+.sec.closed .items{display:none}
+.sec.done .badge{background:var(--ok)}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;padding:12px 16px;border-top:1px solid var(--line);border-left:5px solid var(--line)}
+.item.s-ok{border-left-color:var(--ok)}.item.s-warn{border-left-color:var(--warn)}.item.s-bad{border-left-color:var(--bad)}.item.s-na{border-left-color:var(--na)}
+.item .t{font-weight:500}
+.item .h{font-size:.84rem;color:var(--muted)}
+.item .noteb{background:none;border:0;padding:0;color:var(--accent);font-size:.84rem;cursor:pointer;margin-top:4px}
+.item textarea{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:8px;padding:6px 9px;min-height:60px;background:var(--surface);font-size:.9rem;resize:vertical}
+.item .note{font-size:.86rem;color:var(--ink2);margin-top:4px;white-space:pre-wrap;padding-left:8px;border-left:2px solid var(--line)}
+.ctrls{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.ctrl{display:flex;align-items:center;gap:8px}
+.ctrl .lab{font-size:.75rem;color:var(--muted);font-weight:600;letter-spacing:.04em;text-transform:uppercase;min-width:24px;text-align:right}
+.st{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.st button{border:0;border-right:1px solid var(--line);background:var(--surface);padding:5px 9px;cursor:pointer;font-size:.82rem;color:var(--ink2);display:inline-flex;gap:4px;align-items:center}
+.st button:last-child{border-right:0}
+.st button .ic{font-family:var(--mono);font-weight:500}
+.st button.on.ok{background:var(--ok);color:var(--surface);font-weight:600}
+.st button.on.warn{background:var(--warn);color:var(--surface);font-weight:600}
+.st button.on.bad{background:var(--bad);color:var(--surface);font-weight:600}
+.st button.on.na{background:var(--na);color:var(--surface);font-weight:600}
+.foot{font-size:.84rem;color:var(--muted)}
+.toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:9px;font-size:.9rem;z-index:20}
+.banner{padding:9px 13px;border-radius:10px;background:var(--warn-soft);color:var(--warn);font-size:.9rem}
+@media (max-width:720px){
+  .item{grid-template-columns:1fr}
+  .ctrls{align-items:stretch}
+  .ctrl{justify-content:space-between}
+  .st button .tx{display:none}
+  .st button{padding:6px 12px}
+  .sec > header .mini{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Posgrado · Facultad de Jurisprudencia</div>
+    <h1>Checklist de entrega-recepción</h1>
+    <p class="sub" style="margin-top:6px">Marca cada punto conforme lo revisas. Donde aparecen <b>M</b> y <b>D</b>, califica por separado la Maestría y el Doctorado. Lo que marques como incompleto o faltante va a las observaciones del acta.</p>
+  </header>
+  <div id="banner"></div>
+  <section class="panel people" aria-label="Datos del acta">
+    <label for="p-entrega">Entrega (coordinador saliente)<input id="p-entrega" data-g="entrega" autocomplete="off"></label>
+    <label for="p-recibe">Recibe<input id="p-recibe" data-g="recibe" autocomplete="off"></label>
+    <label for="p-fecha">Fecha de la entrega<input id="p-fecha" type="date" data-g="fecha"></label>
+    <label for="p-plazo">Fecha límite para observaciones<input id="p-plazo" type="date" data-g="plazo"></label>
+  </section>
+  <section class="summary" id="summary" aria-label="Resumen"></section>
+  <div id="list" style="display:flex;flex-direction:column;gap:12px"></div>
+  <p class="foot">Checklist de trabajo. Si tu universidad tiene un formato oficial de entrega-recepción, úsalo junto con esta lista. Revisa físicamente cada documento antes de marcarlo como recibido.</p>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* p:1 = se revisa por separado para Maestría (M) y Doctorado (D) */
+const SECTIONS=[
+ {id:'A',t:'Datos del acta',items:[
+  {id:'A1',t:'Formato oficial de acta de la Contraloría u Órgano Interno de Control',h:'Pregunta si existe antes de empezar.'},
+  {id:'A2',t:'Nombramiento de quien recibe y renuncia o baja de quien entrega'},
+  {id:'A3',t:'Representante de Contraloría o de la Dirección que da fe'},
+  {id:'A4',t:'Dos testigos con identificación'},
+  {id:'A5',t:'Relación de anexos numerados con número de hojas'},
+ ]},
+ {id:'B',t:'Normativa y registro de los programas',items:[
+  {id:'B1',t:'Plan de estudios vigente y acta de aprobación',p:1},
+  {id:'B2',t:'Registro ante SEP / Dirección General de Profesiones (clave del programa)',p:1,h:'Indispensable para títulos y cédulas.'},
+  {id:'B3',t:'Programas de cada materia, mapa curricular y LGAC',p:1},
+  {id:'B4',t:'Reglamento de posgrado y lineamientos internos'},
+  {id:'B5',t:'Actas del Colegio o Consejo Académico (últimos 5 años)'},
+  {id:'B6',t:'Evaluaciones previas, autoevaluaciones o dictámenes del SNP / PNPC',p:1},
+ ]},
+ {id:'C',t:'Estudiantes',items:[
+  {id:'C1',t:'Padrón por generación y estatus (activos, egresados, titulados, bajas)',p:1},
+  {id:'C2',t:'Expedientes individuales completos (físicos y digitales)',p:1,h:'Título y cédula del grado anterior, acta, CURP, admisión.'},
+  {id:'C3',t:'Kárdex y actas de calificación firmadas',p:1},
+  {id:'C4',t:'Actas de calificación pendientes de firma',p:1},
+  {id:'C5',t:'Directores de tesis y comités tutoriales con nombramiento',p:1},
+  {id:'C6',t:'Exámenes de candidatura o predoctorales y avances semestrales',h:'Solo Doctorado.'},
+  {id:'C7',t:'Becas vigentes (SECIHTI, institucionales) y reportes pendientes',p:1},
+  {id:'C8',t:'Casos especiales: prórrogas, bajas temporales, inconformidades',p:1},
+ ]},
+ {id:'D',t:'Titulación y obtención del grado',items:[
+  {id:'D1',t:'Exámenes de grado programados (fechas, jurados, oficios)',p:1},
+  {id:'D2',t:'Tesis en revisión, votos aprobatorios y sínodos designados',p:1},
+  {id:'D3',t:'Trámites de título y cédula en proceso, con folios',p:1},
+  {id:'D4',t:'Libro de actas de examen de grado y control de folios'},
+ ]},
+ {id:'E',t:'Profesores',items:[
+  {id:'E1',t:'Plantilla: grado, contratación, horas, materias y SNII',p:1},
+  {id:'E2',t:'Profesores externos e invitados: convenios, oficios, pagos pendientes'},
+  {id:'E3',t:'Carga académica del semestre en curso y del siguiente',p:1},
+  {id:'E4',t:'Contratos u honorarios en trámite o sin pagar'},
+ ]},
+ {id:'F',t:'Procesos en curso',items:[
+  {id:'F1',t:'Convocatoria de admisión: aspirantes, resultados y actas del comité',p:1},
+  {id:'F2',t:'Calendario escolar, horarios y aulas del semestre'},
+  {id:'F3',t:'Eventos programados: coloquios, seminarios, congresos'},
+  {id:'F4',t:'Informes con fecha próxima a la Facultad, Rectoría o SECIHTI'},
+ ]},
+ {id:'G',t:'Vinculación',items:[
+  {id:'G1',t:'Convenios vigentes (poder judicial, tribunales, fiscalías, barras y colegios, universidades)'},
+  {id:'G2',t:'Redes académicas, doble grado y codirecciones'},
+  {id:'G3',t:'Proyectos con financiamiento: saldos e informes pendientes'},
+ ]},
+ {id:'H',t:'Recursos financieros',items:[
+  {id:'H1',t:'Presupuesto asignado y ejercido en el año'},
+  {id:'H2',t:'Ingresos propios: cuotas, colegiaturas, recibos y estado de cuenta'},
+  {id:'H3',t:'Adeudos de estudiantes'},
+  {id:'H4',t:'Cuentas bancarias o fondo revolvente conciliados'},
+  {id:'H5',t:'Facturas, comprobaciones y compromisos de pago pendientes'},
+  {id:'H6',t:'Observaciones de auditorías anteriores'},
+ ]},
+ {id:'I',t:'Recursos materiales',items:[
+  {id:'I1',t:'Inventario de mobiliario y equipo con número de inventario y resguardos'},
+  {id:'I2',t:'Acervo bibliográfico del posgrado'},
+  {id:'I3',t:'Suscripciones a bases de datos jurídicas y su vigencia'},
+  {id:'I4',t:'Llaves'},
+  {id:'I5',t:'Sellos oficiales y papelería foliada'},
+ ]},
+ {id:'J',t:'Archivo, cuentas y sistemas',items:[
+  {id:'J1',t:'Archivo físico con inventario'},
+  {id:'J2',t:'Archivo digital: ubicación y acceso (unidades compartidas, discos)'},
+  {id:'J3',t:'Correo institucional del posgrado',h:'Cambiar contraseña en el momento y asentarlo en el acta.'},
+  {id:'J4',t:'Página web y redes sociales'},
+  {id:'J5',t:'Sistema de control escolar y plataformas de SECIHTI'},
+  {id:'J6',t:'Correspondencia y oficios sin responder'},
+ ]},
+ {id:'K',t:'Asuntos pendientes',items:[
+  {id:'K1',t:'Relación de asuntos en trámite con estado y siguiente paso'},
+  {id:'K2',t:'Quejas, inconformidades o procedimientos de estudiantes o profesores'},
+  {id:'K3',t:'Solicitudes de transparencia en trámite'},
+  {id:'K4',t:'Acuerdos verbales con la Dirección que no estén por escrito'},
+ ]},
+ {id:'L',t:'Cierre del acta',items:[
+  {id:'L1',t:'Manifestación de veracidad de quien entrega'},
+  {id:'L2',t:'Observaciones de quien recibe asentadas en el acta'},
+  {id:'L3',t:'Plazo para aclaraciones y contacto del coordinador saliente'},
+  {id:'L4',t:'Firmas en todas las hojas y anexos'},
+  {id:'L5',t:'Copia firmada para quien recibe'},
+ ]},
+];
+const ST=[{k:'ok',ic:'✓',tx:'Recibido'},{k:'warn',ic:'◐',tx:'Incompleto'},{k:'bad',ic:'✗',tx:'Falta'},{k:'na',ic:'–',tx:'No aplica'}];
+const LBL={ok:'Recibido',warn:'Incompleto',bad:'Falta',na:'No aplica',pend:'Sin revisar'};
+const S={db:null,downloads:null,online:false,ready:false,items:{},gen:{},filter:null,closed:{},editing:null};
+try{S.closed=JSON.parse(localStorage.getItem('er.closed')||'{}')}catch(e){}
+const $=s=>document.querySelector(s);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,2400)}
+
+/* cada casilla: item sin programa -> clave "s"; con programa -> "m" y "d" */
+const slots=it=>it.p?['m','d']:['s'];
+function allChecks(){const r=[];SECTIONS.forEach(s=>s.items.forEach(it=>slots(it).forEach(k=>r.push({sec:s,it,k,v:(S.items[it.id]||{})[k]||'pend'}))));return r}
+function count(list){const c={ok:0,warn:0,bad:0,na:0,pend:0};list.forEach(x=>c[x.v]++);return c}
+function bar(c,total){const w=k=>total?c[k]/total*100:0;return`<div class="bar" role="img" aria-label="${c.ok} recibidos de ${total}">${['ok','warn','bad','na'].filter(k=>c[k]).map(k=>`<i class="${k}" style="width:${w(k)}%"></i>`).join('')}</div>`}
+function itemState(it){const v=slots(it).map(k=>(S.items[it.id]||{})[k]||'pend');if(v.includes('bad'))return'bad';if(v.includes('warn'))return'warn';if(v.includes('pend'))return'pend';if(v.every(x=>x==='na'))return'na';return'ok'}
+
+async function write(id,patch){
+  const cur={...(S.items[id]||{})},next={...cur,...patch};
+  S.items[id]=next;render();
+  if(!S.db)return;
+  try{await S.db.doc('items/'+id).set(next)}catch(e){console.error(e);toast('No se guardó el cambio. Revisa tu conexión.')}
+}
+let gTimer=0;
+function writeGen(){clearTimeout(gTimer);gTimer=setTimeout(async()=>{if(!S.db)return;try{await S.db.doc('acta/general').set({...S.gen})}catch(e){toast('No se guardaron los datos del acta.')}},600)}
+
+function renderSummary(){
+  const all=allChecks(),c=count(all),tot=all.length,rev=tot-c.pend;
+  $('#summary').innerHTML=`<div class="sumrow"><div><span class="pctx">${tot?Math.round((c.ok+c.na)/tot*100):0}%</span> <span class="foot">recibido · ${rev} de ${tot} casillas revisadas</span></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" data-act="toggleall">${Object.values(S.closed).some(Boolean)?'Abrir todo':'Cerrar todo'}</button><button class="btn primary" data-act="export">Exportar observaciones</button></div></div>
+    ${bar(c,tot)}
+    <div class="chips" role="group" aria-label="Filtrar">${[['ok','✓'],['warn','◐'],['bad','✗'],['na','–'],['pend','○']].map(([k,ic])=>`<button class="chip ${k} ${S.filter===k?'on':''}" data-filter="${k}" aria-pressed="${S.filter===k}">${ic} ${LBL[k]} <span class="n">${c[k]}</span></button>`).join('')}${S.filter?'<button class="chip" data-filter="">Ver todo</button>':''}</div>`;
+}
+function ctrl(it,k){const v=(S.items[it.id]||{})[k]||'pend';return`<div class="ctrl">${k!=='s'?`<span class="lab">${k==='m'?'M':'D'}</span>`:''}<div class="st" role="group" aria-label="${k==='m'?'Maestría':k==='d'?'Doctorado':'Estado'}">${ST.map(s=>`<button class="${s.k} ${v===s.k?'on':''}" data-id="${it.id}" data-k="${k}" data-v="${s.k}" aria-pressed="${v===s.k}" title="${s.tx}"><span class="ic">${s.ic}</span><span class="tx">${s.tx}</span></button>`).join('')}</div></div>`}
+function renderList(){
+  $('#list').innerHTML=SECTIONS.map(sec=>{
+    const checks=allChecks().filter(x=>x.sec===sec),c=count(checks),done=c.pend===0&&c.bad===0&&c.warn===0;
+    const items=sec.items.filter(it=>!S.filter||slots(it).some(k=>((S.items[it.id]||{})[k]||'pend')===S.filter));
+    if(S.filter&&!items.length)return'';
+    const closed=S.filter?false:!!S.closed[sec.id];
+    return`<section class="sec ${closed?'closed':''} ${done?'done':''}"><header data-sec="${sec.id}" role="button" tabindex="0" aria-expanded="${!closed}"><span class="badge">${done?'✓':sec.id}</span><div class="tt"><h2>${esc(sec.t)}</h2><div class="meta">${c.ok+c.na} de ${checks.length} listos${c.bad?` · <b style="color:var(--bad)">${c.bad} faltan</b>`:''}${c.warn?` · <b style="color:var(--warn)">${c.warn} incompletos</b>`:''}</div></div><div class="mini">${bar(c,checks.length)}</div><span class="caret" aria-hidden="true">▾</span></header>
+    <div class="items">${items.map(it=>{const st=itemState(it),r=S.items[it.id]||{},ed=S.editing===it.id;
+      return`<div class="item s-${st}"><div><div class="t"><span class="foot" style="font-family:var(--mono)">${it.id}</span> ${esc(it.t)}</div>${it.h?`<div class="h">${esc(it.h)}</div>`:''}
+        ${ed?`<textarea id="nt-${it.id}" data-note="${it.id}" placeholder="Qué falta, qué no coincide, a quién se le pidió…">${esc(r.nota||'')}</textarea><button class="noteb" data-done="${it.id}">Listo</button>`
+          :(r.nota?`<div class="note">${esc(r.nota)}</div><button class="noteb" data-edit="${it.id}">Editar observación</button>`:`<button class="noteb" data-edit="${it.id}">+ Observación</button>`)}</div>
+        <div class="ctrls">${slots(it).map(k=>ctrl(it,k)).join('')}</div></div>`}).join('')}</div></section>`}).join('')||'<div class="panel foot">No hay puntos con ese estado.</div>';
+}
+function render(){
+  $('#banner').innerHTML=S.ready&&!S.online?'<div class="banner">Sin conexión con la base de datos: las marcas se ven en pantalla pero no se guardan.</div>':'';
+  const ae=document.activeElement,aid=ae&&ae.id&&ae.id.startsWith('nt-')?ae.id:null,sel=aid?[ae.selectionStart,ae.selectionEnd]:null;
+  renderSummary();renderList();
+  if(aid){const el=document.getElementById(aid);if(el){el.focus();try{el.setSelectionRange(sel[0],sel[1])}catch(e){}}}
+  document.querySelectorAll('[data-g]').forEach(el=>{if(document.activeElement!==el)el.value=S.gen[el.dataset.g]||''});
+}
+
+function exportText(){
+  const g=S.gen,lines=[`OBSERVACIONES DE ENTREGA-RECEPCIÓN · POSGRADO, FACULTAD DE JURISPRUDENCIA`,`Entrega: ${g.entrega||'—'}   Recibe: ${g.recibe||'—'}   Fecha: ${g.fecha||'—'}   Plazo de observaciones: ${g.plazo||'—'}`,''];
+  const all=allChecks(),c=count(all);
+  lines.push(`Resumen: ${c.ok} recibidos, ${c.warn} incompletos, ${c.bad} faltantes, ${c.na} no aplican, ${c.pend} sin revisar (${all.length} casillas).`,'');
+  SECTIONS.forEach(sec=>{
+    const rows=sec.items.map(it=>{const r=S.items[it.id]||{};const st=slots(it).map(k=>({k,v:r[k]||'pend'}));
+      const bad=st.filter(x=>x.v==='warn'||x.v==='bad'||x.v==='pend');if(!bad.length&&!r.nota)return null;
+      const who=st.map(x=>(x.k==='s'?'':x.k==='m'?'Maestría: ':'Doctorado: ')+LBL[x.v]).join(' · ');
+      return`  ${it.id}. ${it.t} — ${who}${r.nota?`\n      Observación: ${r.nota.replace(/\n/g,' ')}`:''}`}).filter(Boolean);
+    if(rows.length)lines.push(`${sec.id}. ${sec.t.toUpperCase()}`,...rows,'');
+  });
+  return lines.join('\n');
+}
+
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('button,[data-sec]');if(!b)return;
+  if(b.dataset.v&&b.dataset.id){const cur=(S.items[b.dataset.id]||{})[b.dataset.k];write(b.dataset.id,{[b.dataset.k]:cur===b.dataset.v?'pend':b.dataset.v});return}
+  if(b.dataset.filter!=null){S.filter=b.dataset.filter||null;render();return}
+  if(b.dataset.sec){S.closed[b.dataset.sec]=!S.closed[b.dataset.sec];try{localStorage.setItem('er.closed',JSON.stringify(S.closed))}catch(e){}render();return}
+  if(b.dataset.edit){S.editing=b.dataset.edit;render();const t=document.getElementById('nt-'+b.dataset.edit);t&&t.focus();return}
+  if(b.dataset.done){const id=b.dataset.done,v=document.getElementById('nt-'+id).value.trim();S.editing=null;write(id,{nota:v});return}
+  const a=b.dataset.act;
+  if(a==='toggleall'){const anyClosed=Object.values(S.closed).some(Boolean);SECTIONS.forEach(s=>S.closed[s.id]=!anyClosed);try{localStorage.setItem('er.closed',JSON.stringify(S.closed))}catch(e){}render()}
+  if(a==='export'){const txt=exportText();
+    if(S.downloads){try{await S.downloads.save({filename:`observaciones-entrega-recepcion-${new Date().toISOString().slice(0,10)}.txt`,data:txt})}catch(err){}}
+    else{try{await navigator.clipboard.writeText(txt);toast('Observaciones copiadas')}catch(err){toast('No se pudo exportar en esta vista.')}}}
+});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-sec]')){e.preventDefault();e.target.click()}});
+document.addEventListener('input',e=>{const g=e.target.dataset.g;if(g){S.gen[g]=e.target.value;writeGen()}});
+document.addEventListener('focusout',e=>{const id=e.target.dataset&&e.target.dataset.note;if(id&&!e.relatedTarget?.dataset?.done){const v=e.target.value.trim();if(v!==((S.items[id]||{}).nota||'')){S.editing=null;write(id,{nota:v})}}});
+
+render();
+(async()=>{
+  const c=window.claude,use=n=>c&&c.use?c.use(n).catch(()=>null):Promise.resolve(null);
+  const[db,dl]=await Promise.all([use('db'),use('downloads')]);
+  S.downloads=dl;S.ready=true;
+  if(db){S.db=db;S.online=true;
+    db.collection('items').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());S.items=m;render()},err=>{if(err.code==='revoked'){S.online=false;render()}});
+    db.doc('acta/general').onSnapshot(s=>{if(s.exists){S.gen={...s.data()};render()}});
+  }
+  render();
+})();
+</script>
