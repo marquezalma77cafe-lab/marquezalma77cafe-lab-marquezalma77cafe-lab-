@@ -10,10 +10,13 @@ import wave
 
 SR = 22050
 FPS = 30
-TITLE, LEVEL, END = 90, 150, 180
+TITLE, LEVEL, END, SUB = 90, 150, 180, 150
+SUB_CLICK = 62
 N_LEVELS = 7
 JUMP_START, STOMP, CLEAR = 55, 78, 108
-TOTAL = TITLE + LEVEL * N_LEVELS + END
+END_START = TITLE + LEVEL * N_LEVELS
+SUB_START = END_START + END
+TOTAL = SUB_START + SUB
 N = int(TOTAL / FPS * SR)
 buf = [0.0] * N
 
@@ -64,7 +67,7 @@ MELODY = [
 ]
 BASS = [C4 - 12, A4 - 24, F4 - 12, G4 - 12] * 2
 
-music_end = (TOTAL - END) / FPS
+music_end = END_START / FPS
 t, bar = 0.0, 0
 while t < music_end:
     notes = MELODY[bar % 8]
@@ -94,7 +97,7 @@ square(62 / FPS, 0.08, hz(C6), 0.15)
 square(62 / FPS + 0.08, 0.2, hz(G5 + 12), 0.15)
 
 # Fanfarria final
-fan = (TOTAL - END) / FPS
+fan = END_START / FPS
 seq = [(G4, 1), (C5, 1), (E5, 1), (G5, 3), (E5, 1), (G5, 6),
        (A4, 1), (C5, 1), (F5, 1), (A5, 3), (F5, 1), (A5, 6),
        (B4, 1), (D5, 1), (G5, 1), (B5, 3), (A5, 1), (B5, 2), (C6, 12)]
@@ -103,8 +106,25 @@ for m, d in seq:
     square(tt, d * E * 0.9, hz(m), 0.12, duty=0.25)
     square(tt, d * E * 0.9, hz(m - 12), 0.07, duty=0.5)
     tt += d * E
-for k in range(int((TOTAL / FPS - fan) / E)):
+for k in range(int((SUB_START / FPS - fan) / E)):
     triangle(fan + k * E, E * 0.9, hz((C4 - 12) + (12 if k % 2 else 0)), 0.14)
+
+# Pantalla «Suscríbete»: vuelve el tema principal, clic y campanita
+sub = SUB_START / FPS
+for bar in range(int((TOTAL / FPS - sub) / (8 * E)) + 1):
+    for k in range(8):
+        nt = sub + (bar * 8 + k) * E
+        if nt >= TOTAL / FPS:
+            break
+        m = MELODY[(bar + 4) % 8][k]
+        if m is not None:
+            square(nt, E * 0.85, hz(m), 0.08, duty=0.25)
+        triangle(nt, E * 0.9, hz(BASS[bar % 8] + (12 if k % 2 else 0)), 0.14)
+        noise(nt, 0.03, 0.04)
+click = sub + SUB_CLICK / FPS
+noise(click, 0.04, 0.3)
+for j, m in enumerate([E5 + 12, G5 + 12, C6 + 12]):
+    square(click + 0.08 + j * 0.06, 0.1 if j < 2 else 0.4, hz(m), 0.12, 0.25)
 
 peak = max(abs(x) for x in buf) or 1
 fade_n = int(0.6 * SR)

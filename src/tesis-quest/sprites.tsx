@@ -162,3 +162,33 @@ export const iconPalette: Palette = {
   C: "#8a5a3b",
   L: "#9aa4b1",
 };
+
+export const BELL = [
+  "....KK....",
+  "...KYYK...",
+  "..KYYYYK..",
+  "..KYYYYK..",
+  ".KYYYYYYK.",
+  ".KYYYYYYK.",
+  "KYYYYYYYYK",
+  "KKKKKKKKKK",
+  "....KK....",
+];
+
+export const CURSOR = [
+  "K.........",
+  "KK........",
+  "KWK.......",
+  "KWWK......",
+  "KWWWK.....",
+  "KWWWWK....",
+  "KWWWWWK...",
+  "KWWWWWWK..",
+  "KWWWKKKKK.",
+  "KWKWK.....",
+  "KK.KWK....",
+  "....KWK...",
+  "....KK....",
+];
+
+export const brandPalette = { K: "#1a1423", Y: "#ffd166", W: "#ffffff" };

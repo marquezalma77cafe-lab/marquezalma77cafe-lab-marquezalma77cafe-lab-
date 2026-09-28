@@ -20,6 +20,9 @@ import {
   PixelSprite,
   SLIME,
   SLIME_SQUASH,
+  BELL,
+  CURSOR,
+  brandPalette,
   iconPalette,
   playerPalette,
   slimePalette,
@@ -34,6 +37,9 @@ import {
   LEVEL_FRAMES,
   Level,
   STOMP,
+  SUB_CLICK,
+  SUB_FRAMES,
+  SUB_START,
   TITLE_FRAMES,
   TOTAL_FRAMES,
   levelStart,
@@ -52,6 +58,31 @@ const pixelText = (size: number, color = "#fff", shadow = INK): React.CSSPropert
   lineHeight: 1.5,
   textShadow: `${size / 6}px ${size / 6}px 0 ${shadow}`,
 });
+
+// La fuente pixelada dibuja las mayúsculas acentuadas como minúsculas:
+// se usa la letra base y se le pinta el acento encima.
+const ACCENTED: Record<string, string> = { Á: "A", É: "E", Í: "I", Ó: "O", Ú: "U" };
+const acc = (text: string): React.ReactNode =>
+  [...text].map((ch, i) =>
+    ACCENTED[ch] ? (
+      <span key={i} style={{ position: "relative" }}>
+        {ACCENTED[ch]}
+        <span
+          style={{
+            position: "absolute",
+            top: "-0.3em",
+            left: "0.36em",
+            width: "0.26em",
+            height: "0.2em",
+            background: "currentColor",
+            clipPath: "polygon(50% 0, 100% 0, 50% 100%, 0 100%)",
+          }}
+        />
+      </span>
+    ) : (
+      ch
+    )
+  );
 
 // Mundo del juego (ocupa y=440..1360 en el lienzo de 1080x1920)
 const WORLD_TOP = 440;
@@ -365,7 +396,7 @@ const LevelScene: React.FC<{ level: Level; index: number }> = ({ level, index })
               }}
             >
               {level.boss ? "JEFE: " : ""}
-              {level.enemy}
+              {acc(level.enemy)}
             </div>
           ) : null}
           <PixelSprite
@@ -406,7 +437,7 @@ const LevelScene: React.FC<{ level: Level; index: number }> = ({ level, index })
                 textAlign: "center",
               }}
             >
-              ★ {level.item} ★
+              ★ {acc(level.item)} ★
             </div>
           </div>
         ) : null}
@@ -454,7 +485,7 @@ const LevelScene: React.FC<{ level: Level; index: number }> = ({ level, index })
         >
           <span style={{ color: "#ffd166" }}>NIVEL {index + 1}</span>
           <br />
-          {level.title}
+          {acc(level.title)}
         </div>
       </div>
 
@@ -511,10 +542,13 @@ const TitleScreen: React.FC = () => {
       >
         <div style={{ ...pixelText(120, "#ffd166", "#e63946"), letterSpacing: 6 }}>TESIS</div>
         <div style={{ ...pixelText(120, "#fff", "#e63946"), letterSpacing: 6 }}>QUEST</div>
-        <div style={{ ...pixelText(30, "#9fc3ff"), marginTop: 40 }}>
+        <div style={{ ...pixelText(26, "#e63946", INK), marginTop: 36 }}>
+          UN JUEGO DE LA DRA. ALMA HERRERA
+        </div>
+        <div style={{ ...pixelText(30, "#9fc3ff"), marginTop: 30 }}>
           LA DOCTORANDA Y EL
           <br />
-          PROTOCOLO DE INVESTIGACIÓN
+          {acc("PROTOCOLO DE INVESTIGACIÓN")}
         </div>
       </div>
       <div style={{ marginTop: 110, transform: `translateY(${-Math.abs(Math.sin(f / 6)) * 40}px)` }}>
@@ -530,7 +564,7 @@ const TitleScreen: React.FC = () => {
         ▶ PRESS START
       </div>
       <div style={{ ...pixelText(20, "#847e87"), position: "absolute", bottom: 80 }}>
-        © 2026 POSGRADO GAMES
+        © 2026 {acc("METODOLOGÍA BRUTAL")}
       </div>
       <AbsoluteFill style={{ background: "#000", opacity: fade }} />
     </AbsoluteFill>
@@ -597,7 +631,7 @@ const EndScreen: React.FC = () => {
               key={k}
               style={{ display: "flex", justifyContent: "space-between", opacity: o }}
             >
-              <span style={pixelText(26, "#9fc3ff")}>{k}</span>
+              <span style={pixelText(26, "#9fc3ff")}>{acc(k)}</span>
               <span style={pixelText(26, "#fff")}>{v}</span>
             </div>
           );
@@ -616,7 +650,123 @@ const EndScreen: React.FC = () => {
         <br />
         TRABAJO DE CAMPO...
         <br />
-        <span style={{ color: "#fff", fontSize: 22 }}>¿INSERTAR CAFÉ PARA CONTINUAR?</span>
+        <span style={{ color: "#fff", fontSize: 22 }}>{acc("¿INSERTAR CAFÉ PARA CONTINUAR?")}</span>
+      </div>
+      <AbsoluteFill style={{ background: "#000", opacity: Math.max(fadeIn, fadeOut) }} />
+    </AbsoluteFill>
+  );
+};
+
+const SubscribeScreen: React.FC = () => {
+  const f = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const name = spring({ frame: f - 4, fps, config: { damping: 10 } });
+  const stamp = spring({ frame: f - 18, fps, config: { damping: 6, stiffness: 200 } });
+  const btn = spring({ frame: f - 34, fps, config: { damping: 10 } });
+  const clicked = f >= SUB_CLICK;
+  const press = f >= SUB_CLICK && f < SUB_CLICK + 5 ? 0.92 : 1;
+  const cursorT = interpolate(f, [38, SUB_CLICK], [0, 1], {
+    ...clamp,
+    easing: (t) => 1 - (1 - t) ** 3,
+  });
+  const bellSwing = clicked ? Math.sin((f - SUB_CLICK) / 2.2) * 22 * Math.max(0, 1 - (f - SUB_CLICK) / 40) : 0;
+  const fadeIn = interpolate(f, [0, 8], [1, 0], clamp);
+  const fadeOut = interpolate(f, [SUB_FRAMES - 10, SUB_FRAMES], [0, 1], clamp);
+  return (
+    <AbsoluteFill
+      style={{
+        background: "radial-gradient(circle at 50% 45%, #3a1020, #1a1423 70%)",
+        alignItems: "center",
+      }}
+    >
+      {Array.from({ length: 36 }, (_, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            left: (i * 191) % 1080,
+            top: (i * 283) % 1920,
+            width: 8,
+            height: 8,
+            background: i % 3 ? "#fff" : "#e63946",
+            opacity: (Math.sin(f / 5 + i) + 1) / 2,
+          }}
+        />
+      ))}
+      <div style={{ marginTop: 250, textAlign: "center", transform: `scale(${name})` }}>
+        <div style={pixelText(28, "#9fc3ff")}>UN JUEGO DE</div>
+        <div style={{ ...pixelText(60, "#ffd166", "#e63946"), marginTop: 30 }}>
+          DRA. ALMA
+          <br />
+          HERRERA
+        </div>
+      </div>
+      <div
+        style={{
+          ...pixelText(58, "#fff"),
+          marginTop: 60,
+          textAlign: "center",
+          background: "#e63946",
+          border: "10px solid #fff",
+          boxShadow: `14px 14px 0 ${INK}`,
+          padding: "30px 36px",
+          transform: `scale(${stamp}) rotate(-3deg)`,
+        }}
+      >
+        {acc("METODOLOGÍA")}
+        <br />
+        BRUTAL
+      </div>
+      <div style={{ marginTop: 70, transform: `translateY(${-Math.abs(Math.sin(f / 6)) * 30}px)` }}>
+        <PixelSprite grid={PLAYER_A} palette={playerPalette} px={12} />
+      </div>
+      <div
+        style={{
+          marginTop: 70,
+          display: "flex",
+          alignItems: "center",
+          gap: 34,
+          transform: `scale(${btn * press})`,
+        }}
+      >
+        <div
+          style={{
+            ...pixelText(40, "#fff"),
+            background: clicked ? "#5a5566" : "#e63946",
+            border: `8px solid ${INK}`,
+            boxShadow: `0 0 0 6px #fff, 10px 10px 0 6px ${INK}`,
+            padding: "26px 34px",
+          }}
+        >
+          {clicked ? "SUSCRITO ✔" : acc("▶ SUSCRÍBETE")}
+        </div>
+        <div style={{ transform: `rotate(${bellSwing}deg)`, transformOrigin: "50% 0" }}>
+          <PixelSprite grid={BELL} palette={brandPalette} px={9} />
+        </div>
+      </div>
+      <div
+        style={{
+          ...pixelText(30, "#ffd166"),
+          position: "absolute",
+          bottom: 130,
+          textAlign: "center",
+          opacity: interpolate(f, [SUB_CLICK + 6, SUB_CLICK + 14], [0, 1], clamp) * (Math.floor(f / 8) % 2 ? 1 : 0.55),
+        }}
+      >
+        {acc("¡SUSCRÍBETE A MI CANAL")}
+        <br />
+        Y ACTIVA LA CAMPANITA!
+      </div>
+      {/* Cursor que da clic */}
+      <div
+        style={{
+          position: "absolute",
+          left: interpolate(cursorT, [0, 1], [980, 420]),
+          top: interpolate(cursorT, [0, 1], [1850, 1520]) + (clicked && f < SUB_CLICK + 5 ? 8 : 0),
+          opacity: interpolate(f, [34, 40, SUB_CLICK + 25, SUB_CLICK + 35], [0, 1, 1, 0], clamp),
+        }}
+      >
+        <PixelSprite grid={CURSOR} palette={brandPalette} px={8} />
       </div>
       <AbsoluteFill style={{ background: "#000", opacity: Math.max(fadeIn, fadeOut) }} />
     </AbsoluteFill>
@@ -638,8 +788,25 @@ export const TesisQuest: React.FC = () => {
         </Sequence>
       ))}
       {inLevels ? <Hud frame={frame} /> : null}
+      {inLevels ? (
+        <div
+          style={{
+            ...pixelText(22, "#ffd166"),
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 1838,
+            textAlign: "center",
+          }}
+        >
+          DRA. ALMA HERRERA · <span style={{ color: "#e63946" }}>{acc("METODOLOGÍA BRUTAL")}</span>
+        </div>
+      ) : null}
       <Sequence from={END_START} durationInFrames={END_FRAMES}>
         <EndScreen />
+      </Sequence>
+      <Sequence from={SUB_START} durationInFrames={SUB_FRAMES}>
+        <SubscribeScreen />
       </Sequence>
       {/* Scanlines de pantalla retro */}
       <AbsoluteFill

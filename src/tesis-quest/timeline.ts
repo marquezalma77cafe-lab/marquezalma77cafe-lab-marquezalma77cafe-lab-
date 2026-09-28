@@ -3,6 +3,8 @@ export const FPS = 30;
 export const TITLE_FRAMES = 90;
 export const LEVEL_FRAMES = 150;
 export const END_FRAMES = 180;
+export const SUB_FRAMES = 150;
+export const SUB_CLICK = 62; // frame local del clic en «Suscríbete»
 
 // Momentos clave dentro de cada nivel (frames locales).
 export const JUMP_START = 55;
@@ -90,4 +92,5 @@ export const LEVELS: Level[] = [
 
 export const levelStart = (i: number) => TITLE_FRAMES + i * LEVEL_FRAMES;
 export const END_START = levelStart(LEVELS.length);
-export const TOTAL_FRAMES = END_START + END_FRAMES;
+export const SUB_START = END_START + END_FRAMES;
+export const TOTAL_FRAMES = SUB_START + SUB_FRAMES;
