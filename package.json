@@ -6,10 +6,14 @@
     "start": "remotion studio src/index.ts",
     "render": "remotion render src/index.ts TeacherPositiveMessage out/teacher-positive-message.mp4",
     "still": "remotion still src/index.ts TeacherPositiveMessage out/preview.png",
-    "upgrade": "remotion upgrade"
+    "upgrade": "remotion upgrade",
+    "frases": "node scripts/render-frases.mjs"
   },
   "dependencies": {
+    "@remotion/bundler": "4.0.286",
     "@remotion/cli": "4.0.286",
+    "@remotion/media-utils": "4.0.286",
+    "@remotion/renderer": "4.0.286",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "remotion": "4.0.286"
